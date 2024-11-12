@@ -53,8 +53,8 @@ function initializeMap() {
     });
 
     // Add custom attribution (as per Mapbox policy)
-    map.addControl(new mapboxgl.AttributionControl({
-        compact: true
+ //*   map.addControl(new mapboxgl.AttributionControl({
+    //*    compact: true
     }));
 
     // Once the map loads, perform the fly-in animation
