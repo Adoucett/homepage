@@ -1,11 +1,27 @@
 /* Photography Page Specific Styles */
 
+/* Reset default browser styles for consistency */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #000; /* Black background for minimalism */
+    color: #fff; /* White text for contrast */
+}
+
+/* Navigation Styles (Assuming shared styles in style.css handle most) */
+
 /* Slideshow Styles */
 .slideshow {
     position: relative;
     width: 100%;
     height: 100vh; /* Full viewport height */
     overflow: hidden;
+    background-color: #000; /* Black background */
 }
 
 .slides-container {
@@ -26,6 +42,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  //*  filter: grayscale(100%); /* Black and white images */
 }
 
 /* Fade Animation */
@@ -46,27 +63,25 @@
     width: auto;
     padding: 16px;
     margin-top: -22px;
-    color: white;
+    color: #fff;
     font-weight: bold;
     font-size: 30px;
     transition: background-color 0.3s ease;
     user-select: none;
-    background-color: rgba(0,0,0,0.5);
-    border-radius: 3px;
+    background-color: rgba(255,255,255,0.2);
+    border-radius: 50%;
 }
 
 .next {
     right: 20px;
-    border-radius: 3px 0 0 3px;
 }
 
 .prev {
     left: 20px;
-    border-radius: 0 3px 3px 0;
 }
 
 .prev:hover, .next:hover {
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(255,255,255,0.6);
 }
 
 /* Slideshow Indicators (Dots) */
@@ -96,21 +111,21 @@
 .photography-header {
     padding: 4rem 2rem;
     text-align: center;
-    background-color: #fff; /* White background for minimalist look */
+    background-color: #000; /* Black background */
 }
 
 .photography-header h1 {
-    font-family: 'DM Sans', sans-serif;
     font-size: 3rem;
     margin-bottom: 1rem;
-    color: #333; /* Dark Gray for text */
+    color: #fff; /* White text */
     text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .photography-header p {
     font-size: 1.2rem;
     margin-bottom: 2rem;
-    color: #666; /* Lighter Gray */
+    color: #aaa; /* Light gray for subtext */
 }
 
 .social-links {
@@ -121,8 +136,8 @@
 
 .social-btn {
     padding: 0.5rem 1.5rem;
-    background: #ddd; /* Light Gray */
-    color: #333; /* Dark Gray */
+    background: #fff; /* White background */
+    color: #000; /* Black text */
     text-decoration: none;
     font-weight: 500;
     border-radius: 25px;
@@ -130,7 +145,7 @@
 }
 
 .social-btn:hover {
-    background: #bbb; /* Darker Light Gray */
+    background: #333; /* Dark gray on hover */
     transform: scale(1.05);
     color: #fff; /* White text on hover */
 }
@@ -141,7 +156,7 @@
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
     padding: 2rem;
-    background-color: #f9f9f9; /* Light Gray */
+    background-color: #111; /* Slightly lighter black for distinction */
 }
 
 .gallery-item {
@@ -149,7 +164,7 @@
     overflow: hidden;
     border: none; /* Removed border for a cleaner look */
     border-radius: 5px;
-    background-color: #fff; /* White background for each item */
+    background-color: #000; /* Black background */
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -159,6 +174,7 @@
     height: 100%;
     object-fit: cover;
     transition: transform 0.5s;
+  //*  filter: grayscale(100%); /* Black and white thumbnails */
 }
 
 .gallery-item:hover img {
@@ -167,7 +183,7 @@
 
 .gallery-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2); /* Subtle white shadow */
 }
 
 /* Lightbox Styles */
@@ -181,7 +197,7 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.8); /* Semi-transparent black */
+    background-color: rgba(0,0,0,0.9); /* Dark overlay */
 }
 
 .lightbox-content {
@@ -190,7 +206,8 @@
     max-width: 90%;
     max-height: 80%;
     border-radius: 5px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+    box-shadow: 0 5px 25px rgba(255,255,255,0.2); /* White shadow for contrast */
+    filter: grayscale(0%); /* Full-color images in lightbox */
 }
 
 #caption {
@@ -199,7 +216,7 @@
     width: 80%;
     max-width: 700px;
     text-align: center;
-    color: #ccc; /* Light Gray */
+    color: #ccc; /* Light gray for caption */
     padding: 1rem 0;
     font-size: 1rem;
 }
@@ -217,7 +234,7 @@
 
 .close:hover,
 .close:focus {
-    color: #bbb; /* Medium Gray */
+    color: #bbb; /* Medium gray on hover */
     text-decoration: none;
     cursor: pointer;
 }

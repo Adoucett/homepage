@@ -69,7 +69,7 @@ function setupSlideshow() {
             data.photos.forEach((photo, index) => {
                 // Create slide div
                 const slideDiv = document.createElement('div');
-                slideDiv.classList.add('slides');
+                slideDiv.classList.add('slides', 'fade');
 
                 // Create image element
                 const img = document.createElement('img');
@@ -88,7 +88,7 @@ function setupSlideshow() {
                 dot.addEventListener('click', () => {
                     clearInterval(slideshowInterval); // Stop automatic slideshow on manual navigation
                     currentSlide(index);
-                    slideshowInterval = setInterval(nextSlide, 5000); // Restart automatic slideshow
+                    slideshowInterval = setInterval(nextSlide, 10000); // Restart automatic slideshow
                 });
 
                 // Append dot to dot container
@@ -114,13 +114,13 @@ function setupSlideshow() {
         prevButton.addEventListener('click', () => {
             clearInterval(slideshowInterval); // Stop automatic slideshow on manual navigation
             prevSlide();
-            slideshowInterval = setInterval(nextSlide, 5000); // Restart automatic slideshow
+            slideshowInterval = setInterval(nextSlide, 10000); // Restart automatic slideshow
         });
 
         nextButton.addEventListener('click', () => {
             clearInterval(slideshowInterval); // Stop automatic slideshow on manual navigation
             nextSlide();
-            slideshowInterval = setInterval(nextSlide, 5000); // Restart automatic slideshow
+            slideshowInterval = setInterval(nextSlide, 10000); // Restart automatic slideshow
         });
     }
 }
