@@ -52,20 +52,66 @@ function initializeMap() {
         attributionControl: false // Hide default attribution
     });
 
-//    // Add custom attribution (as per Mapbox policy)
-//   map.addControl(new mapboxgl.AttributionControl({
-//        compact: true
-//    }));
-
     // Once the map loads, perform the fly-in animation
     map.on('load', () => {
+        // Initial flyTo to the desired location with zoom level 13
         map.flyTo({
             center: [-71.0589, 42.3601], // Boston, MA [lng, lat]
-            zoom: 12, // Neighborhood level
-            speed: 0.5, // Fly speed
+            zoom: 13, // Final zoom level
+            speed: 0.5, // Fly speed (0.2 is slower, 1.2 is faster)
             essential: true // This animation is considered essential with respect to prefers-reduced-motion
         });
+
+        // After the initial flyTo completes, adjust pitch and start flying north
+        map.on('moveend', onInitialFlyEnd);
     });
+
+    // Flag to ensure the following actions happen only once
+    let initialFlyCompleted = false;
+
+    function onInitialFlyEnd() {
+        if (!initialFlyCompleted && map.getZoom() >= 13) {
+            initialFlyCompleted = true;
+
+            // Adjust the pitch and bearing
+            map.easeTo({
+                pitch: 45, // Tilt to 45 degrees
+                bearing: 0, // Facing north
+                duration: 2000 // Duration in milliseconds
+            });
+
+            // Start flying north slowly
+            flyNorth(map);
+        }
+    }
+
+    // Function to fly north slowly
+    function flyNorth(map) {
+        // Define the increment in latitude for each step
+        const increment = 0.0005; // Adjust this value for speed
+
+        // Define how often to update the map's center (milliseconds)
+        const interval = 50; // 50ms for smooth movement
+
+        // Define how far north to fly (number of steps)
+        const steps = 1000; // Total distance = increment * steps
+
+        let currentStep = 0;
+
+        const flyInterval = setInterval(() => {
+            if (currentStep >= steps) {
+                clearInterval(flyInterval);
+                return;
+            }
+
+            const currentCenter = map.getCenter();
+            const newLat = currentCenter.lat + increment;
+
+            map.setCenter([currentCenter.lng, newLat]);
+
+            currentStep++;
+        }, interval);
+    }
 }
 
 // Check if the screen width is greater than 768px before initializing the map
