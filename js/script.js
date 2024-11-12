@@ -36,83 +36,77 @@ navLinks.forEach(link => {
 /* =========================
    Mapbox Integration (from index.html)
    ========================= */
+        // Function to initialize the Mapbox map
+        function initializeMap() {
+            // Mapbox Access Token (Ensure to keep this secure in production)
+            mapboxgl.accessToken = 'pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY20zZXZyN20zMGd3MzJycTBxYTFza29iYiJ9.ozrkMII8kTiKtHYTS54P2w';
 
-// Function to initialize the Mapbox map
-function initializeMap() {
-    // Mapbox Access Token
-    mapboxgl.accessToken = 'pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY20zZXZyN20zMGd3MzJycTBxYTFza29iYiJ9.ozrkMII8kTiKtHYTS54P2w';
-
-    // Initialize the map
-    const map = new mapboxgl.Map({
-        container: 'map', // Container ID
-        style: 'mapbox://styles/adoucett/cl59necov000b15pk1jirufhx', // Map style
-        center: [0, 0], // Starting position [lng, lat]
-        zoom: 1, // Starting zoom
-        interactive: false, // Disable all interactions
-        attributionControl: false // Hide default attribution
-    });
-
-    // Once the map loads, perform the fly-in animation
-    map.on('load', () => {
-        // Initial flyTo to the desired location with zoom level 13
-        map.flyTo({
-            center: [-71.0589, 42.3601], // Boston, MA [lng, lat]
-            zoom: 13, // Final zoom level
-            speed: 0.5, // Fly speed (0.2 is slower, 1.2 is faster)
-            essential: true // This animation is considered essential with respect to prefers-reduced-motion
-        });
-
-        // After the initial flyTo completes, adjust pitch and start flying north
-        map.on('moveend', onInitialFlyEnd);
-    });
-
-    // Flag to ensure the following actions happen only once
-    let initialFlyCompleted = false;
-
-    function onInitialFlyEnd() {
-        if (!initialFlyCompleted && map.getZoom() >= 13) {
-            initialFlyCompleted = true;
-
-            // Adjust the pitch and bearing
-            map.easeTo({
-                pitch: 45, // Tilt to 45 degrees
-                bearing: 0, // Facing north
-                duration: 2000 // Duration in milliseconds
+            // Initialize the map
+            const map = new mapboxgl.Map({
+                container: 'map', // Container ID
+                style: 'mapbox://styles/adoucett/cl59necov000b15pk1jirufhx', // Map style
+                center: [0, 55], // Starting position [lng, lat]
+                zoom: 2, // Starting zoom
+                interactive: false, // Disable all interactions
+                attributionControl: false // Hide default attribution
             });
 
-            // Start flying north slowly
-            flyNorth(map);
+            // Once the map loads, perform the fly-in animation
+            map.on('load', () => {
+                // Fly to Boston, MA with smooth transition
+                map.flyTo({
+                    center: [-71.0589, 42.3601], // Boston, MA [lng, lat]
+                    zoom: 12, // Final zoom level
+                    speed: 0.5, // Adjusted speed for smoother transition
+                    curve: 1.5, // Adjusted curve for smoother path
+                    essential: true // This animation is considered essential with respect to prefers-reduced-motion
+                });
+
+                // Adjust pitch and bearing after the flyTo animation completes
+                map.once('moveend', () => {
+                    map.easeTo({
+                        pitch: 45, // Tilt to 45 degrees
+                        bearing: 0, // Facing north
+                        duration: 4000, // Duration in milliseconds
+                        easing: (t) => t, // Linear easing
+                        essential: true // Respect user's prefers-reduced-motion setting
+                    });
+
+                    // Start flying north slowly after adjusting pitch and bearing
+                    flyNorth(map);
+                });
+            });
         }
-    }
 
-    // Function to fly north slowly
-    function flyNorth(map) {
-        // Define the increment in latitude for each step
-        const increment = 0.0005; // Adjust this value for speed
+        // Function to fly north smoothly using requestAnimationFrame
+        function flyNorth(map) {
+            const targetLatitude = map.getCenter().lat + 1; // Fly 1 degree north
+            const duration = 100000; // Duration of the flight in milliseconds (e.g., 20 seconds)
+            const start = performance.now();
+            const startLat = map.getCenter().lat;
+            const deltaLat = targetLatitude - startLat;
 
-        // Define how often to update the map's center (milliseconds)
-        const interval = 50; // 50ms for smooth movement
+            function animate(time) {
+                const elapsed = time - start;
+                const progress = Math.min(elapsed / duration, 1); // Ensure progress does not exceed 1
 
-        // Define how far north to fly (number of steps)
-        const steps = 1000; // Total distance = increment * steps
+                const newLat = startLat + deltaLat * easeInOutQuad(progress);
+                map.setCenter([map.getCenter().lng, newLat]);
 
-        let currentStep = 0;
-
-        const flyInterval = setInterval(() => {
-            if (currentStep >= steps) {
-                clearInterval(flyInterval);
-                return;
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
             }
 
-            const currentCenter = map.getCenter();
-            const newLat = currentCenter.lat + increment;
+            // Easing function for smooth acceleration and deceleration
+            function easeInOutQuad(t) {
+                return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            }
 
-            map.setCenter([currentCenter.lng, newLat]);
-
-            currentStep++;
-        }, interval);
-    }
-}
+            requestAnimationFrame(animate);
+        }
+    
+     
 
 // Check if the screen width is greater than 768px before initializing the map
 if (window.innerWidth > 768) {

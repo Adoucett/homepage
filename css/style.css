@@ -98,21 +98,71 @@ nav {
     z-index: 2;
 }
 
-.hero h1 {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 4.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #fff3b0; /* Vanilla */
-    text-transform: uppercase;
-}
-
-.hero p {
+.hero-content p {
     font-size: 1.5rem;
     margin-bottom: 2rem;
     color: #e09f3e; /* Hunyadi yellow */
 }
 
+/* Text Overlay */
+.text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    text-align: center;
+    padding: 0 1rem;
+    background: rgba(0, 0, 0, 0.4); /* Semi-transparent background for readability */
+    border-radius: 10px;
+}
+
+.text-overlay h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #ffffff; /* White */
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    animation: fadeInDown 2s ease-out forwards;
+}
+
+@media (max-width: 1200px) {
+    .text-overlay h1 {
+        font-size: 4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .text-overlay h1 {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .text-overlay h1 {
+        font-size: 2.5rem;
+    }
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.hero h1 {
+    /* Removed to prevent duplication */
+}
+
+/* Button Styling */
 .btn {
     padding: 0.75rem 2rem;
     background: #e09f3e; /* Hunyadi yellow */
@@ -364,6 +414,11 @@ footer {
         top: 15px;
         right: 25px;
         font-size: 2rem;
+    }
+
+    /* Adjust Text Overlay for Smaller Screens */
+    .text-overlay h1 {
+        font-size: 2.5rem;
     }
 }
 
