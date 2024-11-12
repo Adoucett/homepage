@@ -38,6 +38,21 @@
     </header>
 
     <main>
+        <!-- Full-Screen Slideshow -->
+        <section class="slideshow">
+            <div class="slides-container">
+                <!-- Slideshow images will be injected here by photography.js -->
+            </div>
+            <!-- Slideshow Controls -->
+            <a class="prev">&#10094;</a>
+            <a class="next">&#10095;</a>
+            <!-- Slideshow Indicators -->
+            <div class="dot-container">
+                <!-- Dots will be injected here by photography.js -->
+            </div>
+        </section>
+
+        <!-- Photography Header -->
         <section class="photography-header">
             <h1>Photography Portfolio</h1>
             <p>Explore my collection of captivating photographs.</p>
@@ -47,13 +62,14 @@
             </div>
         </section>
 
+        <!-- Gallery Section -->
         <section class="gallery" id="gallery">
             <!-- Gallery items will be injected here by photography.js -->
         </section>
     </main>
 
     <!-- Lightbox Modal -->
-    <div id="lightbox" class="lightbox">
+    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-labelledby="caption">
         <span class="close" aria-label="Close">&times;</span>
         <img class="lightbox-content" id="lightbox-img" alt="">
         <div id="caption"></div>

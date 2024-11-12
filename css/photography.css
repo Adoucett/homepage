@@ -1,8 +1,100 @@
 /* Photography Page Specific Styles */
 
-/* Reset specific to photography page if needed */
+/* Slideshow Styles */
+.slideshow {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden;
+}
+
+.slides-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.slides {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: opacity 1s ease-in-out;
+}
+
+.slides img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Fade Animation */
+.fade {
+    opacity: 0;
+}
+
+.fade.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Slideshow Controls */
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 3px;
+}
+
+.next {
+    right: 20px;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev {
+    left: 20px;
+    border-radius: 0 3px 3px 0;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+/* Slideshow Indicators (Dots) */
+.dot-container {
+    text-align: center;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+}
+
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: rgba(255,255,255,0.5);
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.dot.active, .dot:hover {
+    background-color: rgba(255,255,255,0.9);
+}
+
+/* Photography Header */
 .photography-header {
-    padding: 8rem 2rem 4rem 2rem; /* Adjusted top padding for fixed header */
+    padding: 4rem 2rem;
     text-align: center;
     background-color: #fff; /* White background for minimalist look */
 }
@@ -46,8 +138,8 @@
 /* Gallery Styles */
 .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
     padding: 2rem;
     background-color: #f9f9f9; /* Light Gray */
 }
@@ -55,7 +147,7 @@
 .gallery-item {
     position: relative;
     overflow: hidden;
-    border: 1px solid #e0e0e0; /* Very Light Gray */
+    border: none; /* Removed border for a cleaner look */
     border-radius: 5px;
     background-color: #fff; /* White background for each item */
     cursor: pointer;
@@ -108,4 +200,75 @@
     max-width: 700px;
     text-align: center;
     color: #ccc; /* Light Gray */
- 
+    padding: 1rem 0;
+    font-size: 1rem;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: bold;
+    transition: color 0.3s;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb; /* Medium Gray */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .photography-header {
+        padding: 3rem 1rem;
+    }
+
+    .photography-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .photography-header p {
+        font-size: 1rem;
+    }
+
+    .social-links {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .social-btn {
+        width: 150px;
+        text-align: center;
+    }
+
+    .gallery {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .lightbox-content {
+        max-width: 90%;
+        max-height: 70%;
+    }
+
+    .close {
+        top: 15px;
+        right: 25px;
+        font-size: 2rem;
+    }
+
+    .prev, .next {
+        font-size: 24px;
+        padding: 12px;
+    }
+
+    .dot {
+        height: 12px;
+        width: 12px;
+    }
+}

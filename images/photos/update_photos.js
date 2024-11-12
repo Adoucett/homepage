@@ -2,52 +2,101 @@
 
 const fs = require('fs');
 const path = require('path');
+const sharp = require('sharp');
 
-// Define the directory to scan (current directory)
-const directoryPath = __dirname;
+// Define directories
+const fullDir = path.join(__dirname, 'full');
+const thumbDir = path.join(__dirname, 'thumbnails');
+const photosJSONPath = path.join(__dirname, 'photos.json');
 
 // Define allowed image extensions
 const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
 
+// Define thumbnail size
+const thumbnailWidth = 300; // pixels
+
+// Ensure the thumbnails directory exists
+if (!fs.existsSync(thumbDir)) {
+    fs.mkdirSync(thumbDir, { recursive: true });
+    console.log(`Created thumbnails directory at ${thumbDir}`);
+}
+
 // Function to scan directory and generate photos.json
 function generatePhotosJSON() {
-    fs.readdir(directoryPath, (err, files) => {
+    fs.readdir(fullDir, (err, files) => {
         if (err) {
-            console.error('Unable to scan directory:', err);
+            console.error('Unable to scan full images directory:', err);
             return;
         }
 
         // Filter files by allowed extensions
-        const photos = files.filter(file => {
+        const imageFiles = files.filter(file => {
             const ext = path.extname(file).toLowerCase();
             return allowedExtensions.includes(ext);
         });
 
-        // Create the JSON object
-        const photosJSON = {
-            photos: photos
-        };
+        // Initialize photos array
+        const photos = [];
 
-        // Define the output path (assuming photos.json is in /data/ directory relative to project root)
-        // Adjust the path as needed
-        const outputPath = path.join(directoryPath, '..', '..', 'data', 'photos.json');
+        if (imageFiles.length === 0) {
+            console.warn('No image files found in the full directory.');
+            writeJSON(photos);
+            return;
+        }
 
-        // Ensure the /data/ directory exists
-        fs.mkdir(path.dirname(outputPath), { recursive: true }, (err) => {
-            if (err) {
-                console.error('Error creating /data/ directory:', err);
-                return;
-            }
+        // Process each image file
+        let processedCount = 0;
 
-            // Write the JSON file with indentation for readability
-            fs.writeFile(outputPath, JSON.stringify(photosJSON, null, 4), 'utf8', (err) => {
-                if (err) {
-                    console.error('Error writing photos.json:', err);
-                    return;
-                }
-                console.log(`photos.json has been successfully created at ${outputPath}`);
-            });
+        imageFiles.forEach(file => {
+            const fullImagePath = path.join(fullDir, file);
+            const thumbnailImagePath = path.join(thumbDir, file);
+
+            // Generate thumbnail using sharp
+            sharp(fullImagePath)
+                .resize({ width: thumbnailWidth })
+                .toFile(thumbnailImagePath)
+                .then(() => {
+                    console.log(`Thumbnail created for ${file}`);
+
+                    // Add photo entry to photos array
+                    photos.push({
+                        thumbnail: path.relative(__dirname, thumbnailImagePath).replace(/\\/g, '/'),
+                        full: path.relative(__dirname, fullImagePath).replace(/\\/g, '/'),
+                        alt: path.basename(file, path.extname(file)).replace(/_/g, ' ')
+                    });
+
+                    processedCount++;
+
+                    // After processing all files, write JSON
+                    if (processedCount === imageFiles.length) {
+                        writeJSON(photos);
+                    }
+                })
+                .catch(error => {
+                    console.error(`Error creating thumbnail for ${file}:`, error);
+                    processedCount++;
+
+                    // Even if thumbnail creation fails, proceed to next file
+                    if (processedCount === imageFiles.length) {
+                        writeJSON(photos);
+                    }
+                });
         });
+    });
+}
+
+// Function to write photos.json
+function writeJSON(photos) {
+    const photosJSON = {
+        photos: photos
+    };
+
+    fs.writeFile(photosJSONPath, JSON.stringify(photosJSON, null, 4), 'utf8', (err) => {
+        if (err) {
+            console.error('Error writing photos.json:', err);
+            return;
+        }
+        console.log(`photos.json has been successfully created at ${photosJSONPath}`);
     });
 }
 
