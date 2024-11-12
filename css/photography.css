@@ -1,0 +1,111 @@
+/* Photography Page Specific Styles */
+
+/* Reset specific to photography page if needed */
+.photography-header {
+    padding: 8rem 2rem 4rem 2rem; /* Adjusted top padding for fixed header */
+    text-align: center;
+    background-color: #fff; /* White background for minimalist look */
+}
+
+.photography-header h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #333; /* Dark Gray for text */
+    text-transform: uppercase;
+}
+
+.photography-header p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #666; /* Lighter Gray */
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.social-btn {
+    padding: 0.5rem 1.5rem;
+    background: #ddd; /* Light Gray */
+    color: #333; /* Dark Gray */
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 25px;
+    transition: background 0.3s, transform 0.3s, color 0.3s;
+}
+
+.social-btn:hover {
+    background: #bbb; /* Darker Light Gray */
+    transform: scale(1.05);
+    color: #fff; /* White text on hover */
+}
+
+/* Gallery Styles */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem;
+    background-color: #f9f9f9; /* Light Gray */
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #e0e0e0; /* Very Light Gray */
+    border-radius: 5px;
+    background-color: #fff; /* White background for each item */
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Lightbox Styles */
+.lightbox {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 2000;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8); /* Semi-transparent black */
+}
+
+.lightbox-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 5px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+}
+
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc; /* Light Gray */
+ 
