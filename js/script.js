@@ -52,10 +52,10 @@ function initializeMap() {
         attributionControl: false // Hide default attribution
     });
 
-    // Add custom attribution (as per Mapbox policy)
- //*   map.addControl(new mapboxgl.AttributionControl({
-    //*    compact: true
-    }));
+//    // Add custom attribution (as per Mapbox policy)
+//   map.addControl(new mapboxgl.AttributionControl({
+//        compact: true
+//    }));
 
     // Once the map loads, perform the fly-in animation
     map.on('load', () => {
