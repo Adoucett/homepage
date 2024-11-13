@@ -1,15 +1,23 @@
-<!-- admin/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Content Manager</title>
-    <script src="https://unpkg.com/decap-cms@latest/dist/decap-cms.js"></script>
+    <title>Decap CMS Admin</title>
 </head>
 <body>
+    <!-- Load the Decap CMS script from the official CDN -->
+    <script src="https://unpkg.com/decap-cms@latest/dist/decap-cms.js"></script>
+
+    <!-- Initialize Decap CMS -->
     <script>
-        DecapCMS.init();
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof DecapCMS !== 'undefined') {
+                DecapCMS.init();
+            } else {
+                console.error('DecapCMS is not defined. Please check the script URL.');
+            }
+        });
     </script>
 </body>
 </html>
