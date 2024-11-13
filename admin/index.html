@@ -6,16 +6,20 @@
     <title>Decap CMS Admin</title>
 </head>
 <body>
-    <!-- Load the Decap CMS script from the official CDN -->
-    <script src="https://unpkg.com/decap-cms@latest/dist/decap-cms.js"></script>
+    <h1>Welcome to Decap CMS</h1>
+    <div id="cms"></div>
+
+    <!-- Load the Decap CMS script from the correct CDN -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
     <!-- Initialize Decap CMS -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof DecapCMS !== 'undefined') {
+        // Wait for the script to load before initializing
+        window.addEventListener('load', () => {
+            try {
                 DecapCMS.init();
-            } else {
-                console.error('DecapCMS is not defined. Please check the script URL.');
+            } catch (error) {
+                console.error('Failed to initialize Decap CMS:', error);
             }
         });
     </script>
