@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: adoucett/homepage # Replace with your GitHub username and repo name
+  repo: https://adoucett.github.io/homepage/ # Replace with your GitHub username and repo name
   branch: main # Use 'main' or 'master', depending on your default branch
   auth:
     client_id: Ov23liLF4Ru7GrcL5f8X
