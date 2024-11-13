@@ -1,36 +1,151 @@
 /* About Page Specific Styles */
 
-/* Import Poppins Font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
-
-/* Global Font Family Override */
+/* Override if necessary */
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Geologica', sans-serif;
 }
 
-/* Contour Lines Background */
-.section {
+/* Hero Section Styling */
+.hero {
     position: relative;
-    padding: 4rem 2rem;
-    background-color: #000; /* Black background for consistency */
-    color: #fff; /* White text */
+    height: 100vh;
+    background-image: url('../images/intro-background.jpg'); /* Replace with your hero image */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* For parallax effect */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: #fff;
     overflow: hidden;
 }
 
-.section::before {
-    content: "";
+.hero .overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../images/contour-lines.svg'); /* Ensure the SVG is placed correctly */
-    background-repeat: repeat;
-    opacity: 0.1; /* Subtle contour lines */
-    pointer-events: none;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    z-index: 1;
+}
+
+.hero .text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    text-align: center;
+    padding: 0;
+}
+
+.hero .text-overlay h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    margin: 0;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1;
+    text-align: center;
+    animation: fadeInDown 1.5s ease-out forwards;
+}
+
+.hero .content {
+    position: relative;
+    z-index: 2;
+    width: 33.333%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero .content p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: #e67e22; /* Vibrant Accent Color */
+    font-weight: 500;
+}
+
+.hero .btn {
+    /* Inherit styles from .btn */
+}
+
+/* Banded Color Sections */
+.banded-color {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    opacity: 0.2;
     z-index: 0;
 }
 
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Full-Page Image Sections */
+.section.introduction,
+.section.skills {
+    position: relative;
+    color: #fff; /* White text over images */
+}
+
+.section.introduction .full-page-image,
+.section.skills .full-page-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Parallax effect */
+    z-index: -1;
+}
+
+.section.introduction {
+    background-color: #000; /* Fallback background color */
+}
+
+.section.skills {
+    background-color: #000; /* Fallback background color */
+}
+
+.section.biography,
+.section.contact {
+    background-color: #000; /* Black background */
+    color: #fff; /* White text */
+    position: relative;
+}
+
+.section.biography .banded-color,
+.section.contact .banded-color {
+    /* Positioning handled in HTML */
+}
+
+.section.map-section {
+    padding: 4rem 2rem;
+    background-color: #fdf6e3; /* Light background */
+}
+
+.mapbox-map {
+    width: 100%;
+    height: 500px; /* Adjust as needed */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Section Container */
 .container {
     position: relative;
     max-width: 800px;
@@ -39,57 +154,13 @@ body {
     z-index: 1;
 }
 
-.hero {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 60vh;
-    background-color: #000; /* Black background */
-    color: #fff; /* White text */
-    text-align: center;
-    position: relative;
-}
-
-.hero::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100px;
-    background-image: url('../images/contour-lines.svg');
-    background-repeat: repeat-x;
-    opacity: 0.2;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.hero-content h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    transition: transform 0.5s ease, letter-spacing 0.5s ease;
-}
-
-.hero-content p {
-    font-size: 1.2rem;
-    color: #aaa; /* Light gray */
-    transition: color 0.5s ease;
-}
-
-/* Scaling Effects on Hover */
-.hero-content h1:hover {
-    transform: scale(1.05);
-    letter-spacing: 6px;
-}
-
+/* Section Headings */
 .section h2 {
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: #fff; /* White text */
+    color: #fff;
     transition: transform 0.3s ease;
 }
 
@@ -97,10 +168,11 @@ body {
     transform: scale(1.02);
 }
 
+/* Section Paragraphs */
 .section p {
     font-size: 1rem;
     line-height: 1.6;
-    color: #ccc; /* Light gray for paragraph text */
+    color: #ccc;
     transition: color 0.3s ease;
 }
 
@@ -123,7 +195,7 @@ body {
     padding: 0.5rem 1rem;
     border-radius: 20px;
     font-size: 1rem;
-    color: #fff; /* White text */
+    color: #fff;
     transition: background-color 0.3s, transform 0.3s;
 }
 
@@ -182,18 +254,50 @@ footer {
     font-size: 0.9rem;
 }
 
+/* Button Styling */
+.btn {
+    padding: 0.75rem 2rem;
+    background: #e67e22; /* Vibrant Accent Color */
+    color: #fdf6e3; /* Softer Contrast */
+    text-decoration: none;
+    font-weight: 700; /* Bold for Buttons */
+    border-radius: 50px;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    font-size: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.btn:hover {
+    background: #d35400; /* Darker Accent on Hover */
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .hero {
+        flex-direction: column;
+        justify-content: center;
+        height: 60vh;
+    }
+
+    .map-container {
+        width: 100%;
         height: 40vh;
-        padding: 2rem 1rem;
     }
 
-    .hero-content h1 {
-        font-size: 2rem;
+    .text-overlay h1 {
+        font-size: 2.5rem;
+        /* Removed left and top offsets for better centering */
     }
 
-    .hero-content p {
+    .hero .content {
+        width: 100%;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .hero .content p {
         font-size: 1rem;
     }
 
@@ -222,4 +326,57 @@ footer {
         width: 100%;
         text-align: center;
     }
+
+    .mapbox-map {
+        height: 300px;
+    }
+}
+
+/* Animation Keyframes */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Content Section Styling */
+.content {
+    position: relative;
+    z-index: 2;
+    width: 33.333%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Center content horizontally */
+    text-align: center;
+}
+
+.content p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: #e67e22; /* Vibrant Accent Color */
+    font-weight: 500;
+}
+
+.content .btn {
+    margin-bottom: 2rem; /* Space between button and image */
+}
+
+.content-image img {
+    width: 100%;
+    max-width: 300px; /* Adjust as needed */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.content-image img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
 }

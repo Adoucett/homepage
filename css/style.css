@@ -81,39 +81,24 @@ nav {
 .hero {
     position: relative;
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; /* Enable Flexbox */
+    flex-direction: row; /* Arrange children horizontally */
+    align-items: center; /* Vertically center the content */
+    justify-content: flex-start; /* Align items to the start */
     color: #2c3e50; /* Darker Text for Contrast */
-    text-align: center;
+    text-align: left; /* Align text to the left */
     overflow: hidden;
-    padding: 0 1rem;
+    padding: 0; /* Remove padding to allow map to extend fully */
 }
 
 .map-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    width: 66.666%; /* 2/3 of the width */
     height: 100%;
     z-index: 1;
-    opacity: 0.7; /* Subtle Map Visibility */
+    opacity: 0.9;
+    position: relative; /* Establish positioning context for text-overlay */
 }
 
-.hero-content {
-    position: relative;
-    z-index: 2;
-}
-
-.hero-content p {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-    color: #e67e22; /* Vibrant Accent Color */
-    font-weight: 500;
-}
-
-/* Text Overlay */
-/* Text Overlay */
 .text-overlay {
     position: absolute;
     top: 50%;
@@ -137,7 +122,7 @@ nav {
     color: #ffffff; /* White text */
     text-transform: uppercase;
     letter-spacing: 1px; /* Adjusted kerning for modern look */
-    line-height: .8; /* Improved line spacing */
+    line-height: 0.8; /* Improved line spacing */
     text-align: left;
     /* Removed text-shadow for a cleaner look */
     animation: fadeInDown 1.5s ease-out forwards;
@@ -146,18 +131,24 @@ nav {
 @media (max-width: 1200px) {
     .text-overlay h1 {
         font-size: 4rem;
+        left: 150px; /* Adjusted for smaller screens */
+        top: 150px;
     }
 }
 
 @media (max-width: 768px) {
     .text-overlay h1 {
         font-size: 3rem;
+        left: 100px; /* Further adjustments */
+        top: 100px;
     }
 }
 
 @media (max-width: 480px) {
     .text-overlay h1 {
         font-size: 2.5rem;
+        left: 50px; /* Further adjustments */
+        top: 50px;
     }
 }
 
@@ -170,6 +161,31 @@ nav {
         opacity: 1;
         transform: translate(-50%, -50%);
     }
+}
+
+/* Content Section */
+.content {
+    width: 33.333%; /* 1/3 of the width */
+    z-index: 2;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.content h1 {
+    /* Removed as .text-overlay handles the main heading */
+}
+
+.content p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: #e67e22; /* Vibrant Accent Color */
+    font-weight: 500;
+}
+
+.content .btn {
+    /* Inherit styles from .btn */
 }
 
 /* Button Styling */
@@ -333,6 +349,32 @@ footer {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .hero {
+        flex-direction: column; /* Stack vertically */
+        justify-content: center;
+    }
+
+    .map-container {
+        width: 100%;
+        height: 50vh; /* Adjust height as needed */
+    }
+
+    .content {
+        width: 100%;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .text-overlay h1 {
+        font-size: 2.5rem;
+        left: 50px; /* Adjusted for smaller screens */
+        top: 50px;
+    }
+
+    .content p {
+        font-size: 1rem;
+    }
+
     .nav-links {
         position: absolute;
         right: 0;
@@ -370,20 +412,6 @@ footer {
         transform: rotate(45deg) translate(-5px, -6px);
     }
 
-    /* Hide Map on small screens */
-    #map {
-        display: none;
-    }
-
-    /* Photography Header Adjustments */
-    .photography-header h1 {
-        font-size: 2.5rem;
-    }
-
-    .photography-header p {
-        font-size: 1rem;
-    }
-
     .social-links {
         flex-direction: column;
         gap: 0.5rem;
@@ -408,11 +436,6 @@ footer {
         top: 15px;
         right: 25px;
         font-size: 2rem;
-    }
-
-    /* Adjust Text Overlay for Smaller Screens */
-    .text-overlay h1 {
-        font-size: 2.5rem;
     }
 }
 
@@ -452,4 +475,16 @@ html {
     background-color: #e67e22;
     border-radius: 10px;
     border: 2px solid #fdf6e3;
+}
+
+/* Animation */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
 }

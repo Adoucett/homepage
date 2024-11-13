@@ -215,3 +215,34 @@ function initializeLightbox() {
 
 // Initialize gallery on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', populateGallery);
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to show the next slide
+    function showNextSlide() {
+        document.querySelector('.next').click();
+    }
+
+    // Function to show the previous slide
+    function showPrevSlide() {
+        document.querySelector('.prev').click();
+    }
+
+    // Listen for keydown events
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowRight') {
+            showNextSlide();
+        } else if (event.key === 'ArrowLeft') {
+            showPrevSlide();
+        }
+    });
+
+    // Optional: Close lightbox with Esc key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const lightbox = document.querySelector('.lightbox');
+            if (lightbox.style.display === 'block') {
+                lightbox.style.display = 'none';
+            }
+        }
+    });
+});

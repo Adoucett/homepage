@@ -8,18 +8,21 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- About Page Specific CSS -->
     <link rel="stylesheet" href="css/about.css">
-    <!-- Google Fonts: Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Geologica (consistent with style.css) -->
+    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Favicon (optional) -->
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <!-- SEO Meta Tags -->
     <meta name="description" content="Learn more about Your Name, a passionate photographer and creative professional.">
     <meta name="keywords" content="About, Your Name, Photography, Portfolio, Creative">
     <meta name="author" content="Your Name">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+
+
 </head>
 <body>
     <header>
-        <nav>
+        <nav aria-label="Main Navigation">
             <div class="logo">YourLogo</div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
@@ -29,7 +32,7 @@
                 <li><a href="media.html">Media</a></li>
                 <li><a href="resume.html">Resume</a></li>
             </ul>
-            <div class="burger">
+            <div class="burger" aria-label="Toggle Navigation Menu">
                 <div class="line1"></div>
                 <div class="line2"></div>
                 <div class="line3"></div>
@@ -37,42 +40,46 @@
         </nav>
     </header>
 
-    <!-- North Arrow SVG -->
-    <div class="north-arrow">
-        <svg width="50" height="50" viewBox="0 0 64 64">
-            <polygon points="32,4 36,24 56,24 40,36 44,56 32,44 20,56 24,36 8,24 28,24" fill="#fff"/>
-            <line x1="32" y1="44" x2="32" y2="60" stroke="#fff" stroke-width="2"/>
-            <circle cx="32" cy="32" r="3" fill="#fff"/>
-        </svg>
-    </div>
-
     <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-content">
-                <h1>About Me</h1>
-                <p>Scroll down to learn more about me.</p>
+        <!-- Hero Section with Background Image -->
+        <section class="hero" id="hero">
+            <div class="overlay"></div>
+            <!-- Text Overlay on Hero -->
+            <div class="text-overlay">
+                <h1>Welcome to My Website</h1>
             </div>
+
+            <!-- Content Section -->
+
         </section>
 
-        <!-- Section 1: Introduction -->
-        <section class="section" id="introduction">
+        <!-- Section 1: Introduction with Parallax Background -->
+        <section class="section introduction" id="introduction">
             <div class="container">
                 <h2>Introduction</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, nunc vel tincidunt luctus, nisi erat consequat neque, a egestas urna nulla nec risus. Donec et nisi ut ligula aliquam vulputate.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, nunc vel tincidunt luctus, nisi erat consequat neque, a egestas urna nulla nec risus. Donec et nisi ut ligula aliquam vulputate
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, nunc vel tincidunt luctus, nisi erat consequat neque, a egestas urna nulla nec risus. Donec et nisi ut ligula aliquam vulputate.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, nunc vel tincidunt luctus, nisi erat consequat neque, a egestas urna nulla nec risus. Donec et nisi ut ligula aliquam vulputate.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, nunc vel tincidunt luctus, nisi erat consequat neque, a egestas urna nulla nec risus. Donec et nisi ut ligula aliquam vulputate..</p>
             </div>
         </section>
 
-        <!-- Section 2: Biography -->
-        <section class="section" id="biography">
+        <!-- Section 2: Biography with Banded Colors -->
+        <section class="section biography" id="biography">
+            <div class="banded-color"></div>
             <div class="container">
                 <h2>Biography</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vehicula ex eu massa efficitur, ut tempor magna interdum. Integer nec magna vitae sapien aliquam placerat. Maecenas euismod, massa non tempus elementum, nisl nisi ultricies urna, vitae commodo nisl justo nec justo.</p>
+
+    <div class="content-image">
+        <img src="images/content-image.jpg" alt="Photography and Cartography" />
+    </div>
+
             </div>
         </section>
 
-        <!-- Section 3: Skills -->
-        <section class="section" id="skills">
+        <!-- Section 3: Skills with Parallax Background -->
+        <section class="section skills" id="skills">
             <div class="container">
                 <h2>Skills</h2>
                 <ul class="skills-list">
@@ -85,8 +92,17 @@
             </div>
         </section>
 
-        <!-- Section 4: Contact -->
-        <section class="section" id="contact">
+        <!-- Section 4: Interactive Map -->
+        <section class="section map-section" id="map-section">
+            <div class="container">
+                <h2>My Work Locations</h2>
+                <div id="about-map" class="mapbox-map"></div>
+            </div>
+        </section>
+
+        <!-- Section 5: Contact with Banded Colors -->
+        <section class="section contact" id="contact">
+            <div class="banded-color"></div>
             <div class="container">
                 <h2>Contact</h2>
                 <p>Feel free to reach out to me through any of the platforms below:</p>
@@ -103,9 +119,12 @@
         <p>&copy; 2024 Your Name. All rights reserved.</p>
     </footer>
 
+   
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
     <!-- Shared JS -->
     <script src="js/script.js"></script>
-    <!-- About Page Specific JS (if any) -->
+    <!-- About Page Specific JS -->
     <script src="js/about.js"></script>
 </body>
 </html>
