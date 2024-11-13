@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: adoucett/homepage # Your GitHub username and repository name
+  repo: adoucett/homepage/ # Your GitHub username and repository name
   branch: main
   auth:
     client_id: Ov23liLF4Ru7GrcL5f8X
