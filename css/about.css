@@ -154,6 +154,15 @@ body {
     z-index: 1;
 }
 
+.container_intro {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+    z-index: 1;
+}
+
+
 /* Section Headings */
 .section h2 {
     font-size: 2.5rem;
@@ -379,4 +388,148 @@ footer {
 .content-image img:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+}
+
+/* Biography Section Styles */
+.biography {
+    padding: 4rem 2rem;
+    text-align: left; /* Left-justify all text in the section */
+    background-color: #1c1c1c;
+    color: #f0f0f0;
+}
+
+.biography h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: left; /* Left-justify the heading */
+}
+
+.biography-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align content to the left */
+    text-align: left;
+}
+
+.biography-text {
+    max-width: 660px;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.content-image {
+    max-width: 660px;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.content-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Animated Text Section Styles */
+.animated-text-section {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.animated-text-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+#dynamic-word {
+    font-weight: 800;
+    transition: opacity 0.5s ease;
+}
+
+/* Define custom font styles for each word */
+
+/* Cartographer: Classic geometric sans-serif with earthy orange color */
+.font-cartographer {
+    font-family: 'DM Sans', sans-serif;
+    color: #d97706; /* Earthy orange */
+}
+
+/* Cyclist: Sleek and modern sans-serif, green for nature */
+.font-cyclist {
+    font-family: 'Space Grotesk', sans-serif;
+    color: #4caf50; /* Vibrant green */
+}
+
+/* Runner: Bold, dynamic sans-serif with an energetic blue */
+.font-runner {
+    font-family: 'Poppins', sans-serif;
+    color: #0077b6; /* Ocean blue */
+}
+
+/* Geospatial Marketer: Professional and modern serif with tech-focused green */
+.font-geospatial-marketer {
+    font-family: 'IBM Plex Serif', serif;
+    color: #2d6a4f; /* Tech green */
+}
+
+/* Coffee Lover: Playful, rounded font with a coffee brown color */
+.font-coffee-lover {
+    font-family: 'Rubik', sans-serif;
+    color: #6f4e37; /* Coffee brown */
+}
+
+/* Strava Aficionado: Clean, bold sans-serif with Strava’s iconic red-orange */
+.font-strava-aficionado {
+    font-family: 'Mulish', sans-serif;
+    color: #fc4c02; /* Strava red-orange */
+}
+
+/* IKEA Fan: Geometric sans-serif with IKEA’s signature yellow */
+.font-ikea-fan {
+    font-family: 'Bebas Neue', sans-serif;
+    color: #ffcc00; /* IKEA yellow */
+}
+
+/* Nordic Skier: Clean, Nordic-style sans-serif with icy blue color */
+.font-nordic-skier {
+    font-family: 'Lexend', sans-serif;
+    color: #00a8e8; /* Icy blue */
+}
+
+/* Hot Sauce Lover: Playful serif with a spicy red color */
+.font-hot-sauce-lover {
+    font-family: 'Carter One', cursive;
+    color: #e63946; /* Spicy red */
+}
+
+/* Jazz Pianist: Elegant, flowing serif with a deep purple color */
+.font-jazz-pianist {
+    font-family: 'Playfair Display', serif;
+    color: #5a189a; /* Deep purple */
+}
+
+/* Sales Engineer: Modern sans-serif with a sleek tech-focused teal */
+.font-sales-engineer {
+    font-family: 'Work Sans', sans-serif;
+    color: #009688; /* Tech teal */
+}
+
+/* Cursor effect */
+#dynamic-word::after {
+    content: "|";
+    display: inline-block;
+    animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
 }

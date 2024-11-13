@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Name - About</title>
     <!-- Shared CSS -->
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Bangers&family=Caveat&family=Indie+Flower&family=Fredoka+One&family=Lobster&family=Montserrat&family=Oswald&family=Pacifico&family=Raleway&family=Roboto+Slab&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Space+Grotesk:wght@400;600&family=Poppins:wght@400;700&family=IBM+Plex+Serif:wght@400;600&family=Rubik:wght@400;700&family=Mulish:wght@400;700&family=Bebas+Neue&family=Lexend:wght@400;600&family=Carter+One&family=Playfair+Display:wght@400;600&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+
     <link rel="stylesheet" href="css/style.css">
     <!-- About Page Specific CSS -->
     <link rel="stylesheet" href="css/about.css">
@@ -61,13 +65,21 @@ body {
 
         <!-- Section 1: Introduction with Parallax Background -->
         <section class="section introduction" id="introduction">
-            <div class="container">
-                <h2><br>
-                Introduction</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, nunc vel tincidunt luctus, nisi erat consequat neque, a egestas urna nulla nec risus. Donec et nisi ut ligula aliquam vulputate
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, nunc vel tincidunt luctus, nisi erat consequat neque, a egestas urna nulla nec risus. Donec et nisi ut ligula aliquam vulputate.
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, nunc vel tincidunt luctus, nisi erat consequat neque, a egestas urna nulla nec risus. Donec et nisi ut ligula aliquam vulputate.
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod, nunc vel tincidunt luctus, nisi erat consequat neque, a egestas urna nulla nec risus. Donec et nisi ut ligula aliquam vulputate..</p>
+            <div class="container_intro">
+
+<!-- Animated Text Display -->
+<section class="animated-text-section">
+    <h2>
+        I AM A <span id="dynamic-word"></span>
+    </h2>
+</section>
+
+                <h2><br>Introduction</h2>
+              <p> 
+
+I'm Aaron Doucett, a geospatial professional and creative problem solver with a background in GIS, earth observation, and data-driven storytelling. Over the past decade, I've worked on everything from climate research and urban planning to developing marketing strategies for cutting-edge geospatial tech. 
+
+When I'm not exploring new ways to visualize complex data, you can find me logging miles on the roads training for marathons, cooking up something delicious in the kitchen, or capturing moments behind the camera. I’ve built this site to share my work, passions, and the projects that keep me inspired. Thanks for visiting—take a look around, and feel free to connect!</p>
                 <p><br>
                   <br>
                   <br>
@@ -76,22 +88,21 @@ body {
             </div>
         </section>
 
-        <!-- Section 2: Biography with Banded Colors -->
-        <section class="section biography" id="biography">
-            <div class="banded-color"></div>
-            <div class="container">
-                <h2><br>
-                Biography</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vehicula ex eu massa efficitur, ut tempor magna interdum. Integer nec magna vitae sapien aliquam placerat. Maecenas euismod, massa non tempus elementum, nisl nisi ultricies urna, vitae commodo nisl justo nec justo.</p>
-                <p><br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  &nbsp;</p>
-<div class="content-image">
-        <img src="images/content-image.jpg" alt="Photography and Cartography" />
+<!-- Section 2: Biography with Banded Colors -->
+<section class="section biography" id="biography">
+    <div class="banded-color"></div>
+    <div class="container">
+        <h2>Biography</h2>
+        <div class="biography-content">
+            <p class="biography-text">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vehicula ex eu massa efficitur, ut tempor magna interdum. Integer nec magna vitae sapien aliquam placerat. Maecenas euismod, massa non tempus elementum, nisl nisi ultricies urna, vitae commodo nisl justo nec justo.
+            </p>
+            <div class="content-image">
+                <img src="images/content-image.jpg" alt="Photography and Cartography">
+            </div>
+        </div>
     </div>
+</section>
 
             </div>
         </section>
@@ -157,5 +168,34 @@ body {
     <script src="js/script.js"></script>
     <!-- About Page Specific JS -->
     <script src="js/about.js"></script>
+
+<script>
+    const fonts = [
+        'DM+Sans',
+        'Space+Grotesk',
+        'Poppins',
+        'IBM+Plex+Serif',
+        'Rubik',
+        'Mulish',
+        'Bebas+Neue',
+        'Lexend',
+        'Carter+One',
+        'Playfair+Display',
+        'Work+Sans'
+    ];
+
+    fonts.forEach((font) => {
+        const link = document.createElement('link');
+        link.href = `https://fonts.googleapis.com/css2?family=${font.replace(' ', '+')}:wght@400;700&display=swap`;
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
+    });
+</script>
+
+
 </body>
+
+
+
+
 </html>

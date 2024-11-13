@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Household Income Map</title>
+    <!-- Mapbox GL JS CSS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <!-- Chart.js CSS (Optional for styling) -->
+    <style>
+        /* Ensure the map fills the entire viewport */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Container for the controls */
+        .controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-width: 320px;
+            z-index: 2;
+            overflow-y: auto;
+            max-height: 90%;
+            transition: background 0.3s ease;
+        }
+
+        .controls:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .controls h3 {
+            margin-top: 0;
+            font-size: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .visualization-mode, .control-group {
+            margin-bottom: 20px;
+        }
+
+        .visualization-mode label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .visualization-mode input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #4CAF50;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            transition: background 0.3s ease;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            border: none;
+        }
+
+        .control-group input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+            border: none;
+        }
+
+        .control-group input[type="range"]:hover {
+            background: #ccc;
+        }
+
+        .control-group .value {
+            font-size: 14px;
+            margin-top: 5px;
+            color: #333;
+            text-align: right;
+        }
+
+        .legend, .statistics {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-width: 250px;
+            z-index: 2;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .statistics {
+            left: auto;
+            right: 320px;
+            bottom: 10px;
+        }
+
+        .legend h4, .statistics h4 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .legend-color {
+            width: 22px;
+            height: 22px;
+            margin-right: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .statistics div {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        button#resetFilters {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button#resetFilters:hover {
+            background-color: #45a049;
+        }
+
+        .popup-content {
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* Histogram Container */
+        .histogram-container {
+            position: absolute;
+            bottom: 30px;
+            left: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 2;
+            max-width: 400px;
+            max-height: 250px;
+            overflow: hidden;
+            display: none; /* Hidden by default */
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .histogram-container.active {
+            display: block;
+        }
+
+        .histogram-container h4 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+        }
+
+        #incomeHistogram {
+            width: 100%;
+            height: 180px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <div class="controls">
+        <h3>Household Income Filters</h3>
+
+        <div class="visualization-mode">
+            <label>Visualization Mode:</label>
+            <input type="radio" id="thresholdMode" name="vizMode" value="threshold" checked>
+            <label for="thresholdMode">Threshold</label>
+            <input type="radio" id="gradientMode" name="vizMode" value="gradient">
+            <label for="gradientMode">Gradient</label>
+        </div>
+
+        <div class="control-group" id="thresholdControls">
+            <label for="minIncome">Minimum Income (Green Zone): <span id="minIncomeValue">$30,000</span></label>
+            <input type="range" id="minIncome" min="0" max="250000" step="10000" value="30000">
+        </div>
+        <div class="control-group" id="thresholdControlsMax">
+            <label for="maxIncome">Maximum Income (Red Zone): <span id="maxIncomeValue">$100,000</span></label>
+            <input type="range" id="maxIncome" min="0" max="250000" step="10000" value="100000">
+        </div>
+
+        <button id="resetFilters">Reset Filters</button>
+    </div>
+
+    <div class="legend" id="legend">
+        <h4>Income Legend</h4>
+        <!-- Legend items will be dynamically added here -->
+    </div>
+
+    <div class="statistics" id="statistics">
+        <h4>Data Statistics</h4>
+        <div id="featureCount">Visible Areas: N/A</div>
+        <div id="averageIncome">Average Income: N/A</div>
+    </div>
+
+    <!-- Histogram Container -->
+    <div class="histogram-container" id="histogramContainer">
+        <h4>Income Distribution Histogram</h4>
+        <canvas id="incomeHistogram"></canvas>
+    </div>
+
+    <!-- Mapbox GL JS -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Mapbox Access Token
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY20zZXZyN20zMGd3MzJycTBxYTFza29iYiJ9.ozrkMII8kTiKtHYTS54P2w';
+
+        // Initialize the map
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/adoucett/ck20lv4ie6ifw1cn6ajxeduis',
+            center: [-98.5795, 39.8283], // Center of the US
+            zoom: 4,
+            minZoom: 4,
+            maxZoom: 13
+        });
+
+        // Add navigation controls to the map (zoom buttons)
+        map.addControl(new mapboxgl.NavigationControl());
+
+        // Initial filter values
+        let minIncome = 30000; // Minimum Income Threshold (Green Zone)
+        let maxIncome = 100000; // Maximum Income Threshold (Red Zone)
+        let visualizationMode = 'threshold'; // 'threshold' or 'gradient'
+
+const numBins = 13;
+const midpoint = 75000;
+const lowerBins = Math.floor(numBins / 2);
+const upperBins = numBins - lowerBins;
+
+const lowerBinSize = midpoint / lowerBins;
+const upperBinSize = (250000 - midpoint) / upperBins;
+
+const incomeBins = [];
+
+// Lower bins (0 - $75,000)
+for (let i = 0; i < lowerBins; i++) {
+    const min = Math.round(i * lowerBinSize);
+    const max = Math.round((i + 1) * lowerBinSize);
+    incomeBins.push({
+        range: [min, max],
+        label: `$${min.toLocaleString()} - $${max.toLocaleString()}`
+    });
+}
+
+// Upper bins ($75,000 - $250,000)
+for (let i = 0; i < upperBins; i++) {
+    const min = midpoint + Math.round(i * upperBinSize);
+    const max = midpoint + Math.round((i + 1) * upperBinSize);
+    incomeBins.push({
+        range: [min, max],
+        label: `$${min.toLocaleString()} - $${max.toLocaleString()}`
+    });
+}
+
+// Predefined 13-color gradient (reversed for correct mapping)
+const gradientColors = [
+    "#de425b", 
+    "#dd6069",
+    "#e57e82",
+    "#ea9b9c",
+    "#eeb7b6",
+    "#efd2d2",
+    "#eeeeee",
+    "#cdddd7",
+    "#accbc0",
+    "#8bbaab",
+    "#69a995",
+    "#439880",
+    "#488f31"  
+];
+
+        // Define neutral color for threshold mode
+        const neutralColor = 'rgba(220, 220, 220, 0.2)';
+
+        // Initialize Chart.js Histogram
+        const ctx = document.getElementById('incomeHistogram').getContext('2d');
+        const incomeHistogram = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: incomeBins.map(bin => bin.label),
+                datasets: [{
+                    label: '# of ZIP Codes',
+                    data: Array(incomeBins.length).fill(0),
+                    backgroundColor: Array(incomeBins.length).fill('rgba(220, 220, 220, 0.2)'),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Income Brackets'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of ZIP Codes'
+                        },
+                        ticks: {
+                            precision:0
+                        }
+                    }
+                }
+            }
+        });
+
+        // Function to create the style expression based on filters and mode
+        function createStyleExpression() {
+            if (visualizationMode === 'threshold') {
+                return [
+                    "case",
+                    ["<", ["get", "CYEC17V001"], minIncome],
+                    "rgba(220, 20, 60, 0.8)", // Red for below minIncome ($30,000)
+                    [">", ["get", "CYEC17V001"], maxIncome],
+                    "rgba(72, 143, 49, 0.8)", // Green for above maxIncome ($100,000)
+                    neutralColor // Neutral for between
+                ];
+            } else if (visualizationMode === 'gradient') {
+                // Build the interpolate expression with literal numeric values
+                const expression = ["interpolate", ["linear"], ["get", "CYEC17V001"]];
+                incomeBins.forEach(bin => {
+                    const income = bin.range[0];
+                    const color = gradientColors[incomeBins.indexOf(bin)];
+                    expression.push(income);
+                    expression.push(color);
+                });
+                // Add the last income value and color to cover the upper boundary
+                const lastBin = incomeBins[incomeBins.length -1];
+                expression.push(lastBin.range[1]);
+                expression.push(gradientColors[gradientColors.length -1]);
+                return expression;
+            }
+        }
+
+        // Function to update the layer's paint property with variable opacity based on zoom
+        function updateLayer() {
+            if (map.getLayer('zip-demographics-layer')) {
+                map.setPaintProperty('zip-demographics-layer', 'fill-color', createStyleExpression());
+                // Variable opacity based on zoom level for smoother transitions
+                map.setPaintProperty('zip-demographics-layer', 'fill-opacity', [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    5, 0.8,
+                    13, 0.4
+                ]);
+                updateLegend();
+                updateStatistics();
+                updateHistogram();
+            }
+        }
+
+        // Function to update the legend
+        function updateLegend() {
+            const legend = document.getElementById('legend');
+            legend.innerHTML = '<h4>Income Legend</h4>';
+
+            if (visualizationMode === 'threshold') {
+                const ranges = [
+                    { color: "rgba(220, 20, 60, 0.8)", label: `Income below $${minIncome.toLocaleString()}` },
+                    { color: "rgba(72, 143, 49, 0.8)", label: `Income above $${maxIncome.toLocaleString()}` },
+                    { color: neutralColor, label: `Income between $${minIncome.toLocaleString()} and $${maxIncome.toLocaleString()}` }
+                ];
+
+                ranges.forEach(range => {
+                    const item = document.createElement('div');
+                    item.className = 'legend-item';
+                    const colorBox = document.createElement('span');
+                    colorBox.className = 'legend-color';
+                    colorBox.style.backgroundColor = range.color;
+                    const label = document.createElement('span');
+                    label.textContent = range.label;
+                    item.appendChild(colorBox);
+                    item.appendChild(label);
+                    legend.appendChild(item);
+                });
+            } else if (visualizationMode === 'gradient') {
+                // Clear previous gradient items
+                const existingItems = legend.querySelectorAll('.legend-item');
+                existingItems.forEach(item => item.remove());
+
+                // Display all gradient colors for accuracy
+                incomeBins.forEach((bin, index) => {
+                    const color = gradientColors[index];
+                    const item = document.createElement('div');
+                    item.className = 'legend-item';
+                    const colorBox = document.createElement('span');
+                    colorBox.className = 'legend-color';
+                    colorBox.style.backgroundColor = color;
+                    const label = document.createElement('span');
+                    label.textContent = bin.label;
+                    item.appendChild(colorBox);
+                    item.appendChild(label);
+                    legend.appendChild(item);
+                });
+            }
+        }
+
+        // Function to update statistics
+        function updateStatistics() {
+            const features = map.queryRenderedFeatures({ layers: ['zip-demographics-layer'] });
+            let totalIncome = 0;
+            let count = 0;
+
+            features.forEach(feature => {
+                const income = feature.properties.CYEC17V001;
+                if (income && typeof income === 'number') {
+                    totalIncome += parseFloat(income);
+                    count++;
+                }
+            });
+
+            const averageIncome = count > 0 ? totalIncome / count : 0;
+
+            const averageIncomeDiv = document.getElementById('averageIncome');
+            averageIncomeDiv.textContent = `Average Income: $${averageIncome.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+            const countDiv = document.getElementById('featureCount');
+            countDiv.textContent = `Visible Areas: ${count}`;
+        }
+
+        // Function to update the histogram
+        function updateHistogram() {
+            const features = map.queryRenderedFeatures({ layers: ['zip-demographics-layer'] });
+            const count = features.length;
+
+            // Only display histogram if count < 1000
+            const histogramContainer = document.getElementById('histogramContainer');
+            if (count < 1000 && count > 0) {
+                histogramContainer.classList.add('active');
+            } else {
+                histogramContainer.classList.remove('active');
+                incomeHistogram.data.datasets[0].data = Array(incomeBins.length).fill(0);
+                incomeHistogram.update();
+                return;
+            }
+
+            const histogramData = Array(incomeBins.length).fill(0);
+
+            features.forEach(feature => {
+                const income = feature.properties.CYEC17V001;
+                if (income && typeof income === 'number') {
+                    for (let i = 0; i < incomeBins.length; i++) {
+                        const [min, max] = incomeBins[i].range;
+                        if (income >= min && income < max) {
+                            histogramData[i]++;
+                            break;
+                        }
+                        // Handle the case where income equals the max of the last bin
+                        if (i === incomeBins.length - 1 && income === max) {
+                            histogramData[i]++;
+                        }
+                    }
+                }
+            });
+
+            incomeHistogram.data.datasets[0].data = histogramData;
+
+            // Update histogram colors based on current visualization mode
+            if (visualizationMode === 'gradient') {
+                incomeHistogram.data.datasets[0].backgroundColor = gradientColors.slice(0, incomeBins.length);
+            } else if (visualizationMode === 'threshold') {
+                // Neutral color for histogram in threshold mode
+                incomeHistogram.data.datasets[0].backgroundColor = Array(incomeBins.length).fill('rgba(220, 220, 220, 0.2)');
+            }
+
+            incomeHistogram.update();
+        }
+
+        // Add the zip demographics layer once the map loads
+        map.on('load', () => {
+            map.addSource('zip-demographics', {
+                type: 'vector',
+                url: 'mapbox://adoucett.3xsuly2j'
+            });
+
+            // Get the ID of the 'road-label' layer
+            const layers = map.getStyle().layers;
+            let roadLabelLayerId;
+            for (let i = 0; i < layers.length; i++) {
+                if (layers[i].id === 'road-label') {
+                    roadLabelLayerId = 'road-label';
+                    break;
+                }
+            }
+
+            // If 'road-label' layer ID is not found, find the topmost label layer
+            if (!roadLabelLayerId) {
+                for (let i = layers.length - 1; i >= 0; i--) {
+                    if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+                        roadLabelLayerId = layers[i].id;
+                        break;
+                    }
+                }
+            }
+
+            // Add the zip demographics layer before the 'road-label' layer
+            map.addLayer({
+                id: 'zip-demographics-layer',
+                type: 'fill',
+                source: 'zip-demographics',
+                'source-layer': 'zip_demographics-1iudi7',
+                layout: {},
+                paint: {
+                    'fill-color': createStyleExpression(),
+                    'fill-opacity': [
+                        "interpolate",
+                        ["linear"],
+                        ["zoom"],
+                        4, 0.3,
+                        13, 0.8
+                    ],
+                    'fill-outline-color': '#ffffff'
+                },
+                minzoom: 4,
+                maxzoom: 13
+            }, roadLabelLayerId);
+
+            // Initialize the legend, statistics, and histogram
+            updateLegend();
+            updateStatistics();
+            updateHistogram();
+        });
+
+        // Handle slider inputs and visualization mode changes
+        const minIncomeSlider = document.getElementById('minIncome');
+        const maxIncomeSlider = document.getElementById('maxIncome');
+        const minIncomeValue = document.getElementById('minIncomeValue');
+        const maxIncomeValue = document.getElementById('maxIncomeValue');
+        const resetButton = document.getElementById('resetFilters');
+        const vizModeRadios = document.getElementsByName('vizMode');
+        const thresholdControls = document.getElementById('thresholdControls');
+        const thresholdControlsMax = document.getElementById('thresholdControlsMax');
+
+        // Update the layer and controls when sliders change
+        minIncomeSlider.addEventListener('input', () => {
+            minIncome = parseInt(minIncomeSlider.value);
+            minIncomeValue.textContent = `$${minIncome.toLocaleString()}`;
+            if (minIncome > maxIncome) {
+                maxIncome = minIncome;
+                maxIncomeSlider.value = maxIncome;
+                maxIncomeValue.textContent = `$${maxIncome.toLocaleString()}`;
+            }
+            updateLayer();
+        });
+
+        maxIncomeSlider.addEventListener('input', () => {
+            maxIncome = parseInt(maxIncomeSlider.value);
+            maxIncomeValue.textContent = `$${maxIncome.toLocaleString()}`;
+            if (maxIncome < minIncome) {
+                minIncome = maxIncome;
+                minIncomeSlider.value = minIncome;
+                minIncomeValue.textContent = `$${minIncome.toLocaleString()}`;
+            }
+            updateLayer();
+        });
+
+        // Handle visualization mode changes
+        vizModeRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                visualizationMode = document.querySelector('input[name="vizMode"]:checked').value;
+                if (visualizationMode === 'threshold') {
+                    thresholdControls.style.display = 'block';
+                    thresholdControlsMax.style.display = 'block';
+                } else {
+                    thresholdControls.style.display = 'none';
+                    thresholdControlsMax.style.display = 'none';
+                }
+                updateLayer();
+            });
+        });
+
+        // Reset filters to default values
+        resetButton.addEventListener('click', () => {
+            minIncome = 30000;
+            maxIncome = 100000;
+            minIncomeSlider.value = minIncome;
+            maxIncomeSlider.value = maxIncome;
+            minIncomeValue.textContent = `$${minIncome.toLocaleString()}`;
+            maxIncomeValue.textContent = `$${maxIncome.toLocaleString()}`;
+            visualizationMode = 'threshold';
+            document.getElementById('thresholdMode').checked = true;
+            thresholdControls.style.display = 'block';
+            thresholdControlsMax.style.display = 'block';
+            updateLayer();
+        });
+
+        // Add a popup to show zip code and income when clicked
+        map.on('click', 'zip-demographics-layer', (e) => {
+            const features = map.queryRenderedFeatures(e.point, {
+                layers: ['zip-demographics-layer']
+            });
+
+            if (!features.length) {
+                return;
+            }
+
+            const feature = features[0];
+            const zipName = feature.properties.Name || 'N/A';
+            const zip = feature.properties.key || 'N/A';
+            const income = feature.properties.CYEC17V001 ? `$${parseInt(feature.properties.CYEC17V001).toLocaleString()}` : 'N/A';
+
+            new mapboxgl.Popup()
+                .setLngLat(e.lngLat)
+                .setHTML(`<div class="popup-content"><strong>ZIP Code:</strong> ${zip}<br><strong>Name:</strong> ${zipName}<br><strong>Household Income:</strong> ${income}</div>`)
+                .addTo(map);
+        });
+
+        // Change the cursor to a pointer when hovering over the layer
+        map.on('mouseenter', 'zip-demographics-layer', () => {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        map.on('mouseleave', 'zip-demographics-layer', () => {
+            map.getCanvas().style.cursor = '';
+        });
+
+        // Update statistics and histogram when the map finishes rendering
+        map.on('idle', () => {
+            updateStatistics();
+            updateHistogram();
+        });
+    </script>
+</body>
+</html>
