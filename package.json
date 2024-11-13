@@ -2,20 +2,25 @@
   "name": "homepage",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "TINA_PUBLIC_IS_LOCAL=true tinacms dev -c \"next dev\"",
-    "build": "tinacms build && next build"
-  },
+"scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
+    "next": "^15.0.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "tinacms": "^2.4.0"
   },
   "devDependencies": {
     "@tinacms/cli": "^1.6.11",
     "@types/node": "^22.9.0"
-  }
+  },
+  "description": ""
+
 }
+

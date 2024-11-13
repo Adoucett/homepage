@@ -1,0 +1,27 @@
+backend:
+  name: github
+  repo: adoucett/homepage # Replace with your GitHub username and repo name
+  branch: main # Use 'main' or 'master', depending on your default branch
+  auth:
+    client_id: Ov23liLF4Ru7GrcL5f8X
+    client_secret: 14702b2d5148560a5d3d052fb6d3e43475a8e497
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "Homepage"
+        name: "index"
+        file: "index.html"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Content", name: "body", widget: "markdown" }
+      - label: "About Page"
+        name: "about"
+        file: "about.html"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Content", name: "body", widget: "markdown" }
