@@ -277,8 +277,8 @@
             style: 'mapbox://styles/adoucett/ck20lv4ie6ifw1cn6ajxeduis',
             center: [-98.5795, 39.8283], // Center of the US
             zoom: 4,
-            minZoom: 4,
-            maxZoom: 13
+            minZoom: 5,
+            maxZoom: 12
         });
 
         // Add navigation controls to the map (zoom buttons)
@@ -289,7 +289,7 @@
         let maxIncome = 100000; // Maximum Income Threshold (Red Zone)
         let visualizationMode = 'threshold'; // 'threshold' or 'gradient'
 
-const numBins = 13;
+const numBins = 15;
 const midpoint = 75000;
 const lowerBins = Math.floor(numBins / 2);
 const upperBins = numBins - lowerBins;
@@ -321,19 +321,21 @@ for (let i = 0; i < upperBins; i++) {
 
 // Predefined 13-color gradient (reversed for correct mapping)
 const gradientColors = [
-    "#de425b", 
-    "#dd6069",
-    "#e57e82",
-    "#ea9b9c",
-    "#eeb7b6",
-    "#efd2d2",
-    "#eeeeee",
-    "#cdddd7",
-    "#accbc0",
-    "#8bbaab",
-    "#69a995",
-    "#439880",
-    "#488f31"  
+  "#c51a5a", 
+  "#de425b", 
+  "#dd6069",
+  "#e57e82",
+  "#ea9b9c",
+  "#eeb7b6",
+  "#efd2d2",
+  "#eeeeee",
+  "#cdddd7",
+  "#accbc0",
+  "#8bbaab",
+  "#69a995",
+  "#439880",
+  "#3e8f2f",
+  "#2c6d26"
 ];
 
         // Define neutral color for threshold mode
@@ -421,8 +423,8 @@ const gradientColors = [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    5, 0.8,
-                    13, 0.4
+                    8, 0.9,
+                    11, 0.6
                 ]);
                 updateLegend();
                 updateStatistics();
