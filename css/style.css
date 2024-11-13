@@ -488,3 +488,115 @@ html {
         transform: translate(-50%, -50%);
     }
 }
+
+/* Geospatial Specific Styles */
+
+.geospatial-hero {
+    position: relative;
+    height: 60vh;
+    background-image: url('../images/geospatial-hero.jpg'); /* Replace with your hero image */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+}
+
+.geospatial-hero .text-overlay {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 1rem 2rem;
+    border-radius: 10px;
+}
+
+.geospatial-gallery {
+    padding: 4rem 2rem;
+    background-color: #fdf6e3;
+}
+
+.geospatial-gallery h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #2c3e50;
+}
+
+.carousel-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-item {
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 1rem;
+}
+
+.map-thumbnail img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.project-description {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.project-description h3 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+}
+
+.project-description p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.btn {
+    padding: 0.75rem 2rem;
+    background: #e67e22;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 50px;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.btn:hover {
+    background: #d35400;
+    transform: scale(1.05);
+}
+
+/* Carousel Navigation */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+}
+
+.carousel-nav button {
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: #fff;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.carousel-nav button:hover {
+    background: rgba(0, 0, 0, 0.8);
+}

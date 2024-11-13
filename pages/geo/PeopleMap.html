@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>MA One Dot Per Person Map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        
+        
+        
+
+        	   img {
+	    position: absolute;
+	    bottom: 35px;
+	    right: 15px;
+	   }
+	   .imgA1 {
+	    z-index: 1;
+	   }
+        
+ 
+               
+        
+    </style>
+</head>
+<body>
+
+<p><img alt="" height="228" src="https://raw.githubusercontent.com/Adoucett/geojson_ad/master/Other%20Files/PeopleMapLegend.png" style="float: left;" width="287"></p><img class="imgA1" height="228" src="https://raw.githubusercontent.com/Adoucett/geojson_ad/master/Other%20Files/PeopleMapLegend.png" width="287"> 
+
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
+<div id='map'></div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY20zZXZyN20zMGd3MzJycTBxYTFza29iYiJ9.ozrkMII8kTiKtHYTS54P2w';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapeoplemap/cjm9kfqqh6prt2rnyytmajec1',
+    center: [-71.068, 42.364],
+    zoom: 12,
+	minZoom: 9,
+	maxZoom: 18
+});
+
+map.addControl(new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
+
+    // limit results to MA
+    country: 'us',
+
+    // further limit results to the geographic bounds representing the region of
+    //  MA
+    bbox: [-73.54,41.211,-69.609,42.94],
+
+    // apply a client side filter to further limit results to those strictly within
+    // the MA region
+    filter: function (item) {
+        // returns true if item contains MA region
+        return item.context.map(function (i) {
+            // id is in the form {index}.{id} per https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
+            // this example attempts to find the `region` named `MA`
+            return (i.id.split('.').shift() === 'region' && i.text === 'Massachusetts');
+        }).reduce(function (acc, cur) {
+            return acc || cur;
+        });
+    }
+}));
+
+
+ // Nav Controls 
+var nav = new mapboxgl.NavigationControl();
+map.addControl(nav, 'top-left');
+
+
+
+</script>
+
+</body>
+</html>
