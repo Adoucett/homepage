@@ -34,11 +34,11 @@ nav {
 }
 
 .logo {
-    font-family: 'Geologica', sans-serif;
-    font-size: 1.8rem;
+    font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+    font-size: 15pt;
     font-weight: 800; /* Bold for Logo */
     color: #fdf6e3; /* Softer Contrast */
-    letter-spacing: 2px;
+    letter-spacing: 0px;
 }
 
 .nav-links {
