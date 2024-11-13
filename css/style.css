@@ -6,19 +6,23 @@
 }
 
 body {
-    font-family: 'DM Sans', sans-serif;
-    color: #335c67; /* Dark slate gray */
-    background-color: #fff3b0; /* Vanilla */
+    font-family: 'Geologica', sans-serif; /* Updated Font */
+    color: #2c3e50; /* Darker Shade for Better Contrast */
+    background-color: #fdf6e3; /* Softer Background for Modern Look */
     overflow-x: hidden;
     line-height: 1.6;
+    font-weight: 400; /* Base Font Weight */
 }
+
+/* Import Geologica Font */
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&display=swap');
 
 /* Header */
 header {
     position: fixed;
     width: 100%;
-    background: rgba(51, 92, 103, 0.95); /* Dark slate gray with opacity */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: rgba(44, 62, 80, 0.95); /* Darker Slate with Opacity for Modern Feel */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     z-index: 1000;
 }
 
@@ -30,10 +34,10 @@ nav {
 }
 
 .logo {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Geologica', sans-serif;
     font-size: 1.8rem;
-    font-weight: 700;
-    color: #fff3b0; /* Vanilla */
+    font-weight: 800; /* Bold for Logo */
+    color: #fdf6e3; /* Softer Contrast */
     letter-spacing: 2px;
 }
 
@@ -48,15 +52,16 @@ nav {
 
 .nav-links a {
     text-decoration: none;
-    color: #fff3b0; /* Vanilla */
-    font-weight: 500;
+    color: #fdf6e3; /* Softer Contrast */
+    font-weight: 600; /* Increased Font Weight */
     font-size: 1rem;
-    transition: color 0.3s;
+    transition: color 0.3s, transform 0.3s;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-    color: #e09f3e; /* Hunyadi yellow */
+    color: #e67e22; /* Vibrant Accent Color */
+    transform: scale(1.05);
 }
 
 .burger {
@@ -67,7 +72,7 @@ nav {
 .burger div {
     width: 25px;
     height: 3px;
-    background-color: #fff3b0; /* Vanilla */
+    background-color: #fdf6e3; /* Softer Contrast */
     margin: 5px;
     transition: all 0.3s ease;
 }
@@ -79,9 +84,10 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: #2c3e50; /* Darker Text for Contrast */
     text-align: center;
     overflow: hidden;
+    padding: 0 1rem;
 }
 
 .map-container {
@@ -91,6 +97,7 @@ nav {
     width: 100%;
     height: 100%;
     z-index: 1;
+    opacity: 0.7; /* Subtle Map Visibility */
 }
 
 .hero-content {
@@ -101,9 +108,11 @@ nav {
 .hero-content p {
     font-size: 1.5rem;
     margin-bottom: 2rem;
-    color: #e09f3e; /* Hunyadi yellow */
+    color: #e67e22; /* Vibrant Accent Color */
+    font-weight: 500;
 }
 
+/* Text Overlay */
 /* Text Overlay */
 .text-overlay {
     position: absolute;
@@ -112,21 +121,26 @@ nav {
     transform: translate(-50%, -50%);
     z-index: 3;
     text-align: center;
-    padding: 0 1rem;
-    background: rgba(0, 0, 0, 0.4); /* Semi-transparent background for readability */
-    border-radius: 10px;
+    padding: 0; /* Removed padding to eliminate background box */
+    /* Removed background, border-radius, and box-shadow */
 }
 
 .text-overlay h1 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 5rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: #ffffff; /* White */
+    font-family: 'Geologica', sans-serif;
+    font-size: 8rem;
+    position: relative;
+    left: 200px;
+    top: 200px;
+    
+    font-weight: 800; /* Bold for Headings */
+    margin: 0; /* Removed margin to prevent extra space */
+    color: #ffffff; /* White text */
     text-transform: uppercase;
-    letter-spacing: 3px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    animation: fadeInDown 2s ease-out forwards;
+    letter-spacing: 1px; /* Adjusted kerning for modern look */
+    line-height: .8; /* Improved line spacing */
+    text-align: left;
+    /* Removed text-shadow for a cleaner look */
+    animation: fadeInDown 1.5s ease-out forwards;
 }
 
 @media (max-width: 1200px) {
@@ -158,63 +172,40 @@ nav {
     }
 }
 
-.hero h1 {
-    /* Removed to prevent duplication */
-}
-
 /* Button Styling */
 .btn {
     padding: 0.75rem 2rem;
-    background: #e09f3e; /* Hunyadi yellow */
-    color: #335c67; /* Dark slate gray */
+    background: #e67e22; /* Vibrant Accent Color */
+    color: #fdf6e3; /* Softer Contrast */
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700; /* Bold for Buttons */
     border-radius: 50px;
-    transition: background 0.3s, transform 0.3s;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
     font-size: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 .btn:hover {
-    background: #ffda05; /* Vanilla 300 */
+    background: #d35400; /* Darker Accent on Hover */
     transform: scale(1.05);
-}
-
-/* Geometric Overlay (Optional) */
-.geometric-overlay {
-    position: absolute;
-    top: 10%;
-    left: 5%;
-    width: 200px;
-    height: 200px;
-    background: rgba(158, 42, 43, 0.2); /* Auburn with opacity */
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-    z-index: 1;
-    animation: rotate 20s linear infinite;
-}
-
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
 }
 
 /* Featured Work */
 .featured-work {
     padding: 5rem 2rem;
     text-align: center;
-    background-color: #fff3b0; /* Vanilla */
+    background-color: #fdf6e3; /* Softer Background */
 }
 
 .featured-work h2 {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Geologica', sans-serif;
     font-size: 2.5rem;
     margin-bottom: 3rem;
-    color: #9e2a2b; /* Auburn */
+    color: #2c3e50; /* Darker Text */
     text-transform: uppercase;
     letter-spacing: 2px;
+    font-weight: 700;
 }
 
 .gallery {
@@ -222,13 +213,12 @@ nav {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
     padding: 2rem;
-    background-color: #fff3b0; /* Vanilla */
 }
 
 .gallery-item {
     position: relative;
     overflow: hidden;
-    border: 2px solid #335c67; /* Dark slate gray */
+    border: 2px solid #e67e22; /* Accent Border */
     border-radius: 10px;
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
@@ -247,7 +237,7 @@ nav {
 
 .gallery-item:hover {
     transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Lightbox Styles */
@@ -270,7 +260,7 @@ nav {
     max-width: 80%;
     max-height: 80%;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }
 
 #caption {
@@ -282,6 +272,7 @@ nav {
     color: #fff;
     padding: 1rem 0;
     font-size: 1.1rem;
+    font-weight: 500;
 }
 
 .close {
@@ -297,7 +288,7 @@ nav {
 
 .close:hover,
 .close:focus {
-    color: #e09f3e; /* Hunyadi yellow */
+    color: #e67e22; /* Vibrant Accent on Hover */
     text-decoration: none;
     cursor: pointer;
 }
@@ -307,30 +298,37 @@ nav {
     display: flex;
     justify-content: center;
     gap: 1rem;
+    margin-top: 2rem;
 }
 
 .social-btn {
-    padding: 0.5rem 1.5rem;
-    background: #e09f3e; /* Hunyadi yellow */
-    color: #335c67; /* Dark slate gray */
+    padding: 0.75rem 2rem;
+    background: #e67e22; /* Vibrant Accent Color */
+    color: #fdf6e3; /* Softer Contrast */
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     border-radius: 25px;
-    transition: background 0.3s, transform 0.3s;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    font-size: 1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .social-btn:hover {
-    background: #ffda05; /* Vanilla 300 */
+    background: #d35400; /* Darker Accent on Hover */
     transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
 }
 
 /* Footer */
 footer {
     padding: 2rem;
     text-align: center;
-    background-color: #335c67; /* Dark slate gray */
-    color: #fff3b0; /* Vanilla */
+    background-color: #2c3e50; /* Darker Slate */
+    color: #fdf6e3; /* Softer Contrast */
     font-size: 0.9rem;
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
 
 /* Responsive */
@@ -340,7 +338,7 @@ footer {
         right: 0;
         height: 100vh;
         top: 0;
-        background-color: #335c67; /* Dark slate gray */
+        background-color: #2c3e50; /* Darker Slate */
         flex-direction: column;
         align-items: center;
         width: 60%;
@@ -370,10 +368,6 @@ footer {
 
     .burger.toggle .line3 {
         transform: rotate(45deg) translate(-5px, -6px);
-    }
-
-    .geometric-overlay {
-        display: none;
     }
 
     /* Hide Map on small screens */
@@ -432,4 +426,30 @@ footer {
         opacity: 1;
         transform: translateX(0);
     }
+}
+
+/* Accessibility Enhancements */
+a:focus, button:focus {
+    outline: 2px dashed #e67e22; /* Visible focus indicator */
+    outline-offset: 4px;
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Improved Scrollbar for Webkit Browsers */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #fdf6e3;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #e67e22;
+    border-radius: 10px;
+    border: 2px solid #fdf6e3;
 }

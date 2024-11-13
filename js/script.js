@@ -57,15 +57,25 @@ navLinks.forEach(link => {
                 map.flyTo({
                     center: [-71.0589, 42.3601], // Boston, MA [lng, lat]
                     zoom: 12, // Final zoom level
+                    pitch: 75,
                     speed: 0.5, // Adjusted speed for smoother transition
                     curve: 1.5, // Adjusted curve for smoother path
                     essential: true // This animation is considered essential with respect to prefers-reduced-motion
                 });
+                
+                map.setFog({
+                        'range': [-1, 2],
+                        'horizon-blend': 0.5,
+                        'color': '#242B4B',
+                        'high-color': '#161B36',
+                        'space-color': '#0B1026',
+                        'star-intensity': 1 
+                        });
 
                 // Adjust pitch and bearing after the flyTo animation completes
                 map.once('moveend', () => {
                     map.easeTo({
-                        pitch: 45, // Tilt to 45 degrees
+                        pitch: 85, // Tilt to 45 degrees
                         bearing: 0, // Facing north
                         duration: 4000, // Duration in milliseconds
                         easing: (t) => t, // Linear easing
