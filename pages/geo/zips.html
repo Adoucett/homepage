@@ -6,6 +6,8 @@
     <title>Interactive Household Income Map</title>
     <!-- Mapbox GL JS CSS -->
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <!-- Mapbox Geocoder CSS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" rel="stylesheet">
     <!-- Chart.js CSS (Optional for styling) -->
     <style>
         /* Ensure the map fills the entire viewport */
@@ -171,6 +173,28 @@
             width: 100%;
             height: 180px;
         }
+
+        /* Mapbox Geocoder Custom Styling (Optional) */
+        .mapboxgl-ctrl-geocoder {
+            margin-right: 10px; /* Space between Geocoder and Zoom Controls */
+            min-width: 300px; /* Adjust as necessary */
+        }
+
+        /* Arrange Geocoder and Zoom Controls Side by Side */
+        .mapboxgl-ctrl-top-right {
+            display:    flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 10px; /* Adjust to align vertically if needed */
+        }
+
+        /* Ensure Geocoder does not exceed a certain width on smaller screens */
+        @media (max-width: 600px) {
+            .mapboxgl-ctrl-geocoder {
+                min-width: 200px;
+                max-width: 250px;
+            }
+        }
     </style>
 </head>
 
@@ -231,6 +255,8 @@
 
     <!-- Mapbox GL JS -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <!-- Mapbox Geocoder JS -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -244,11 +270,25 @@
             center: [-98.5795, 39.8283], // Center of the US
             zoom: 4,
             minZoom: 5,
-            maxZoom: 12
+            maxZoom: 12.8
+            
         });
 
+
         // Add navigation controls to the map (zoom buttons)
-        map.addControl(new mapboxgl.NavigationControl());
+        // map.addControl(new mapboxgl.NavigationControl());
+
+        // ** New: Initialize and Add Mapbox Geocoder Control **
+        const geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            mapboxgl: mapboxgl,
+            marker: false, // Set to true to add a marker at the search result
+            placeholder: 'Search for places',
+            zoom: 14 // Zoom level after selecting a result
+        });
+
+        // Add the geocoder to the map in the top-right corner
+        map.addControl(geocoder, 'top-right');
 
         // Initial filter values
         let minIncome = 50000; // Minimum Income Threshold (Green Zone)
@@ -286,33 +326,33 @@
             { min: 107001, max: 116000, label: '$107,001 - $116,000' },
             { min: 116001, max: 130000, label: '$116,001 - $130,000' },
             { min: 130001, max: 156000, label: '$130,001 - $156,000' },
-            { min: 156001, max: 200000, label: '$150,001 - $200,000' },
+            { min: 156001, max: 200000, label: '$156,001 - $200,000' },
             { min: 200001, max: 260000, label: '$200,001 - $250,000+' }
         ];
 
         // Define a corresponding color palette for the bins (from red to green)
-const binColors = [
-    "#be0049", // Bin 1: $5,000 - $20,000
-    "#c33357", // Bin 2: $20,001 - $46,000
-    "#c74e66", // Bin 3: $46,001 - $54,000
-    "#cb6576", // Bin 4: $54,001 - $60,000
-    "#ce7a86", // Bin 5: $60,001 - $64,000
-    "#cf8e96", // Bin 6: $64,001 - $68,000
-    "#d0a2a7", // Bin 7: $68,001 - $72,000
-    "#cfb5b8", // Bin 8: $72,001 - $75,000
-    "#cdc8c9", // Bin 9: $75,001 - $79,000
-    "#c9dbdb", // Bin 10: $79,001 - $82,000
-    "#b4cec2", // Bin 11: $82,001 - $86,000
-    "#a0c0aa", // Bin 12: $86,001 - $90,000
-    "#8cb393", // Bin 13: $90,001 - $94,000
-    "#78a57b", // Bin 14: $94,001 - $100,000
-    "#639864", // Bin 15: $100,001 - $107,000
-    "#4e8b4e", // Bin 16: $107,001 - $116,000
-    "#377e37", // Bin 17: $116,001 - $130,000
-    "#1b7120", // Bin 18: $130,001 - $156,000
-    "#006400", // Bin 19: $156,000 - $200,000
-    "#003a1c"  // Bin 20: $200,001 - $250,000 (Duplicated)
-];
+        const binColors = [
+            "#be0049", // Bin 1: $5,000 - $20,000
+            "#c33357", // Bin 2: $20,001 - $46,000
+            "#c74e66", // Bin 3: $46,001 - $54,000
+            "#cb6576", // Bin 4: $54,001 - $60,000
+            "#ce7a86", // Bin 5: $60,001 - $64,000
+            "#cf8e96", // Bin 6: $64,001 - $68,000
+            "#d0a2a7", // Bin 7: $68,001 - $72,000
+            "#cfb5b8", // Bin 8: $72,001 - $75,000
+            "#cdc8c9", // Bin 9: $75,001 - $79,000
+            "#c9dbdb", // Bin 10: $79,001 - $82,000
+            "#b4cec2", // Bin 11: $82,001 - $86,000
+            "#a0c0aa", // Bin 12: $86,001 - $90,000
+            "#8cb393", // Bin 13: $90,001 - $94,000
+            "#78a57b", // Bin 14: $94,001 - $100,000
+            "#639864", // Bin 15: $100,001 - $107,000
+            "#4e8b4e", // Bin 16: $107,001 - $116,000
+            "#377e37", // Bin 17: $116,001 - $130,000
+            "#1b7120", // Bin 18: $130,001 - $156,000
+            "#006400", // Bin 19: $156,001 - $200,000
+            "#003a1c"  // Bin 20: $200,001 - $250,000+
+        ];
 
         // Define neutral color for threshold mode
         const neutralColor = 'rgba(220, 220, 220, 0.2)';
@@ -383,33 +423,33 @@ const binColors = [
                     "case",
                     ["==", ["get", selectedIncomeField], 0],
                     nullColor, // Assign nullColor for income = 0
-[
-    "interpolate",
-    ["linear"],
-    ["get", selectedIncomeField],
-    // Define the breakpoints and corresponding colors
-    5000, "#be0049",    // Bin 1
-    20000, "#c33357",   // Bin 2
-    46000, "#c74e66",   // Bin 3
-    54000, "#cb6576",   // Bin 4
-    60000, "#ce7a86",   // Bin 5
-    64000, "#cf8e96",   // Bin 6
-    68000, "#d0a2a7",   // Bin 7
-    72000, "#cfb5b8",   // Bin 8
-    75000, "#cdc8c9",   // Bin 9
-    79000, "#c9dbdb",   // Bin 10
-    82000, "#b4cec2",   // Bin 11
-    86000, "#a0c0aa",   // Bin 12
-    90000, "#8cb393",   // Bin 13
-    94000, "#78a57b",   // Bin 14
-    100000, "#639864",  // Bin 15
-    107000, "#4e8b4e",  // Bin 16
-    116000, "#377e37",  // Bin 17
-    130000, "#1b7120",  // Bin 18
-    156000, "#006400",  // Bin 19
-    200000, "#005100",  // Bin 20
-    250000, "#003a1c"    // End color (Optional: Ensure it aligns with the last color)
-]
+                    [
+                        "interpolate",
+                        ["linear"],
+                        ["get", selectedIncomeField],
+                        // Define the breakpoints and corresponding colors
+                        5000, "#be0049",    // Bin 1
+                        20000, "#c33357",   // Bin 2
+                        46000, "#c74e66",   // Bin 3
+                        54000, "#cb6576",   // Bin 4
+                        60000, "#ce7a86",   // Bin 5
+                        64000, "#cf8e96",   // Bin 6
+                        68000, "#d0a2a7",   // Bin 7
+                        72000, "#cfb5b8",   // Bin 8
+                        75000, "#cdc8c9",   // Bin 9
+                        79000, "#c9dbdb",   // Bin 10
+                        82000, "#b4cec2",   // Bin 11
+                        86000, "#a0c0aa",   // Bin 12
+                        90000, "#8cb393",   // Bin 13
+                        94000, "#78a57b",   // Bin 14
+                        100000, "#639864",  // Bin 15
+                        107000, "#4e8b4e",  // Bin 16
+                        116000, "#377e37",  // Bin 17
+                        130000, "#1b7120",  // Bin 18
+                        156000, "#006400",  // Bin 19
+                        200000, "#005100",  // Bin 20
+                        250000, "#003a1c"    // End color (Optional: Ensure it aligns with the last color)
+                    ]
                 ];
             }
         }
@@ -696,47 +736,46 @@ const binColors = [
             updateLayer();
         });
 
-// Add a popup to show zip code and income when clicked
-map.on('click', 'zip-demographics-layer', (e) => {
-    const features = map.queryRenderedFeatures(e.point, {
-        layers: ['zip-demographics-layer']
-    });
+        // Add a popup to show zip code and income when clicked
+        map.on('click', 'zip-demographics-layer', (e) => {
+            const features = map.queryRenderedFeatures(e.point, {
+                layers: ['zip-demographics-layer']
+            });
 
-    if (!features.length) {
-        return;
-    }
+            if (!features.length) {
+                return;
+            }
 
-    const feature = features[0];
-    const originalZip = feature.properties.GEOID20 || 'N/A'; // Original ZIP code
-    const zipName = feature.properties.Name || 'N/A'; // Assuming 'Name' is the area name
+            const feature = features[0];
+            const originalZip = feature.properties.GEOID20 || 'N/A'; // Original ZIP code
+            const zipName = feature.properties.Name || 'N/A'; // Assuming 'Name' is the area name
 
-    // Helper function to format ZIP code
-    function formatZip(zipStr) {
-        if (zipStr === 'N/A') {
-            return 'N/A';
-        }
-        // Ensure zipStr is a string
-        const zipString = zipStr.toString();
-        // Remove the first character if length > 1
-        return zipString.length > 1 ? zipString.substring(1) : zipString;
-    }
+            // Helper function to format ZIP code
+            function formatZip(zipStr) {
+                if (zipStr === 'N/A') {
+                    return 'N/A';
+                }
+                // Ensure zipStr is a string
+                const zipString = zipStr.toString();
+                // Remove the first character if length > 1
+                return zipString.length > 1 ? zipString.substring(1) : zipString;
+            }
 
-    const displayZip = formatZip(originalZip);
+            const displayZip = formatZip(originalZip);
 
-    const income = feature.properties[selectedIncomeField] === 0
-        ? 'No Data'
-        : (feature.properties[selectedIncomeField] ? `$${parseInt(feature.properties[selectedIncomeField]).toLocaleString()}` : 'N/A');
+            const income = feature.properties[selectedIncomeField] === 0
+                ? 'No Data'
+                : (feature.properties[selectedIncomeField] ? `$${parseInt(feature.properties[selectedIncomeField]).toLocaleString()}` : 'N/A');
 
-    new mapboxgl.Popup()
-        .setLngLat(e.lngLat)
-        .setHTML(`<div class="popup-content">
-                    <strong>ZIP Code:</strong> ${displayZip}<br>
-                    <strong>Name:</strong> ${zipName}<br>
-                    <strong>Household Income:</strong> ${income}
-                  </div>`)
-        .addTo(map);
-});
-
+            new mapboxgl.Popup()
+                .setLngLat(e.lngLat)
+                .setHTML(`<div class="popup-content">
+                            <strong>ZIP Code:</strong> ${displayZip}<br>
+                            <strong>Name:</strong> ${zipName}<br>
+                            <strong>Household Income:</strong> ${income}
+                          </div>`)
+                .addTo(map);
+        });
 
         // Change the cursor to a pointer when hovering over the layer
         map.on('mouseenter', 'zip-demographics-layer', () => {
