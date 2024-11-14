@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Interactive Household Income Map</title>
@@ -173,7 +172,6 @@
         }
     </style>
 </head>
-
 <body>
 
     <div id="map"></div>
@@ -286,33 +284,31 @@
             { min: 107001, max: 116000, label: '$107,001 - $116,000' },
             { min: 116001, max: 130000, label: '$116,001 - $130,000' },
             { min: 130001, max: 156000, label: '$130,001 - $156,000' },
-            { min: 156001, max: 200000, label: '$150,001 - $200,000' },
-            { min: 200001, max: 260000, label: '$200,001 - $250,000+' }
+            { min: 156001, max: 250000, label: '$156,001 - $250,000' }
         ];
 
         // Define a corresponding color palette for the bins (from red to green)
-const binColors = [
-    "#be0049", // Bin 1: $5,000 - $20,000
-    "#c33357", // Bin 2: $20,001 - $46,000
-    "#c74e66", // Bin 3: $46,001 - $54,000
-    "#cb6576", // Bin 4: $54,001 - $60,000
-    "#ce7a86", // Bin 5: $60,001 - $64,000
-    "#cf8e96", // Bin 6: $64,001 - $68,000
-    "#d0a2a7", // Bin 7: $68,001 - $72,000
-    "#cfb5b8", // Bin 8: $72,001 - $75,000
-    "#cdc8c9", // Bin 9: $75,001 - $79,000
-    "#c9dbdb", // Bin 10: $79,001 - $82,000
-    "#b4cec2", // Bin 11: $82,001 - $86,000
-    "#a0c0aa", // Bin 12: $86,001 - $90,000
-    "#8cb393", // Bin 13: $90,001 - $94,000
-    "#78a57b", // Bin 14: $94,001 - $100,000
-    "#639864", // Bin 15: $100,001 - $107,000
-    "#4e8b4e", // Bin 16: $107,001 - $116,000
-    "#377e37", // Bin 17: $116,001 - $130,000
-    "#1b7120", // Bin 18: $130,001 - $156,000
-    "#006400", // Bin 19: $156,000 - $200,000
-    "#003a1c"  // Bin 20: $200,001 - $250,000 (Duplicated)
-];
+        const binColors = [
+            "#c51a5a", // Bin 1: $5,000 - $20,000
+            "#de425b", // Bin 2: $20,001 - $46,000
+            "#dd6069", // Bin 3: $46,001 - $54,000
+            "#e57e82", // Bin 4: $54,001 - $60,000
+            "#ea9b9c", // Bin 5: $60,001 - $64,000
+            "#eeb7b6", // Bin 6: $64,001 - $68,000
+            "#efd2d2", // Bin 7: $68,001 - $72,000
+            "#eeeeee", // Bin 8: $72,001 - $75,000
+            "#cdddd7", // Bin 9: $75,001 - $79,000
+            "#accbc0", // Bin 10: $79,001 - $82,000
+            "#8bbaab", // Bin 11: $82,001 - $86,000
+            "#69a995", // Bin 12: $86,001 - $90,000
+            "#439880", // Bin 13: $90,001 - $94,000
+            "#3e8f2f", // Bin 14: $94,001 - $100,000
+            "#2c6d26", // Bin 15: $100,001 - $107,000
+            "#2c6d26", // Bin 16: $107,001 - $116,000
+            "#2c6d26", // Bin 17: $116,001 - $130,000
+            "#2c6d26", // Bin 18: $130,001 - $156,000
+            "#2c6d26"  // Bin 19: $156,001 - $250,000
+        ];
 
         // Define neutral color for threshold mode
         const neutralColor = 'rgba(220, 220, 220, 0.2)';
@@ -383,33 +379,32 @@ const binColors = [
                     "case",
                     ["==", ["get", selectedIncomeField], 0],
                     nullColor, // Assign nullColor for income = 0
-[
-    "interpolate",
-    ["linear"],
-    ["get", selectedIncomeField],
-    // Define the breakpoints and corresponding colors
-    5000, "#be0049",    // Bin 1
-    20000, "#c33357",   // Bin 2
-    46000, "#c74e66",   // Bin 3
-    54000, "#cb6576",   // Bin 4
-    60000, "#ce7a86",   // Bin 5
-    64000, "#cf8e96",   // Bin 6
-    68000, "#d0a2a7",   // Bin 7
-    72000, "#cfb5b8",   // Bin 8
-    75000, "#cdc8c9",   // Bin 9
-    79000, "#c9dbdb",   // Bin 10
-    82000, "#b4cec2",   // Bin 11
-    86000, "#a0c0aa",   // Bin 12
-    90000, "#8cb393",   // Bin 13
-    94000, "#78a57b",   // Bin 14
-    100000, "#639864",  // Bin 15
-    107000, "#4e8b4e",  // Bin 16
-    116000, "#377e37",  // Bin 17
-    130000, "#1b7120",  // Bin 18
-    156000, "#006400",  // Bin 19
-    200000, "#005100",  // Bin 20
-    250000, "#003a1c"    // End color (Optional: Ensure it aligns with the last color)
-]
+                    [
+                        "interpolate",
+                        ["linear"],
+                        ["get", selectedIncomeField],
+                        // Define the breakpoints and corresponding colors
+                        5000, "#c51a5a",    // Bin 1
+                        20000, "#de425b",   // Bin 2
+                        46000, "#dd6069",   // Bin 3
+                        54000, "#e57e82",   // Bin 4
+                        60000, "#ea9b9c",   // Bin 5
+                        64000, "#eeb7b6",   // Bin 6
+                        68000, "#efd2d2",   // Bin 7
+                        72000, "#eeeeee",   // Bin 8
+                        75000, "#cdddd7",   // Bin 9
+                        79000, "#accbc0",   // Bin 10
+                        82000, "#8bbaab",   // Bin 11
+                        86000, "#69a995",   // Bin 12
+                        90000, "#439880",   // Bin 13
+                        94000, "#3e8f2f",   // Bin 14
+                        100000, "#2c6d26",  // Bin 15
+                        107000, "#2c6d26",  // Bin 16
+                        116000, "#2c6d26",  // Bin 17
+                        130000, "#2c6d26",  // Bin 18
+                        156000, "#2c6d26",  // Bin 19
+                        250000, "#accbc0"    // End color (you can adjust as needed)
+                    ]
                 ];
             }
         }
@@ -754,5 +749,4 @@ map.on('click', 'zip-demographics-layer', (e) => {
         });
     </script>
 </body>
-
 </html>
