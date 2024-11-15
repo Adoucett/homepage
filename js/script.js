@@ -53,12 +53,16 @@ navLinks.forEach(link => {
 
             // Once the map loads, perform the fly-in animation
             map.on('load', () => {
+
+                // Disable terrain before the animation to ensure smooth height transition
+                map.setTerrain(null);
+
                 // Fly to Boston, MA with smooth transition
                 map.flyTo({
                     center: [-71.0589, 42.3601], // Boston, MA [lng, lat]
                     zoom: 12, // Final zoom level
                     pitch: 75,
-                    speed: 0.5, // Adjusted speed for smoother transition
+                    speed: 0.9, // Adjusted speed for smoother transition
                     curve: 1.5, // Adjusted curve for smoother path
                     essential: true // This animation is considered essential with respect to prefers-reduced-motion
                 });
@@ -77,7 +81,7 @@ navLinks.forEach(link => {
                     map.easeTo({
                         pitch: 85, // Tilt to 45 degrees
                         bearing: 0, // Facing north
-                        duration: 4000, // Duration in milliseconds
+                        duration: 5000, // Duration in milliseconds
                         easing: (t) => t, // Linear easing
                         essential: true // Respect user's prefers-reduced-motion setting
                     });

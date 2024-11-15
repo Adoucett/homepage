@@ -1,4 +1,5 @@
 // Photography Page Specific JavaScript
+// photography.js
 
 /* =========================
    Slideshow Functionality

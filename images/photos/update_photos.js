@@ -1,5 +1,10 @@
 // generate_photos_json.js
 
+// to run, 
+//npm install sharp
+//>>> node generate_photos_json.js
+
+
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');

@@ -101,10 +101,11 @@ nav {
 
 .text-overlay {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 40%;
+    left: 60%;
     transform: translate(-50%, -50%);
     z-index: 3;
+    opacity: 0.8;
     text-align: center;
     padding: 0; /* Removed padding to eliminate background box */
     /* Removed background, border-radius, and box-shadow */
@@ -112,18 +113,19 @@ nav {
 
 .text-overlay h1 {
     font-family: 'Geologica', sans-serif;
-    font-size: 8rem;
+    font-size: 9rem;
     position: relative;
-    left: 200px;
+    left: 300px;
     top: 200px;
     
-    font-weight: 800; /* Bold for Headings */
+    font-weight: 900; /* Bold for Headings */
     margin: 0; /* Removed margin to prevent extra space */
     color: #ffffff; /* White text */
     text-transform: uppercase;
-    letter-spacing: 1px; /* Adjusted kerning for modern look */
-    line-height: 0.8; /* Improved line spacing */
-    text-align: left;
+    letter-spacing: -5px; /* Adjusted kerning for modern look */
+    line-height: 0.9; /* Improved line spacing */
+    text-align: right;
+    -webkit-text-stroke: 2px white;
     /* Removed text-shadow for a cleaner look */
     animation: fadeInDown 1.5s ease-out forwards;
 }
