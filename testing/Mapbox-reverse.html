@@ -1,0 +1,131 @@
+      <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Twinkling Lights Map with FlyTo</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #000; /* Set background to black for night effect */
+        }
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY20zZXZyN20zMGd3MzJycTBxYTFza29iYiJ9.ozrkMII8kTiKtHYTS54P2w';
+
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/adoucett/cl59necov000b15pk1jirufhx',
+            center: [-71.0589, 42.3601], // Boston, MA as the initial center
+            zoom: 12,
+            pitch: 75,
+            antialias: true,
+            interactive: false,
+        });
+
+        const animatedLayers = [
+            'world-hwy2-0za9pc',
+            'road-motorway-trunk copy',
+            'Highway-Lights2',
+            'road-street-residential',
+            'road-secondary-tertiary copy'
+        ];
+
+        // Function to generate a random opacity between min and max
+        function getRandomOpacity(min = 0.5, max = 1) {
+            return Math.random() * (max - min) + min;
+        }
+
+        // Function to animate the twinkling effect for the layers
+        function animateTwinklingLights() {
+            animatedLayers.forEach(layerId => {
+                // Ensure the layer exists before modifying it
+                if (map.getLayer(layerId)) {
+                    // Random opacity value and duration
+                    const targetOpacity = getRandomOpacity(0.4, 1);
+                    const duration = Math.random() * 800 + 200; // Random duration between 200ms and 1000ms
+
+                    // Set the paint property transitions safely
+                    try {
+                        if (map.getPaintProperty(layerId, 'line-opacity') !== undefined) {
+                            map.setPaintProperty(layerId, 'line-opacity-transition', {
+                                duration: duration
+                            });
+                            map.setPaintProperty(layerId, 'line-opacity', targetOpacity);
+                        }
+                        if (map.getPaintProperty(layerId, 'fill-opacity') !== undefined) {
+                            map.setPaintProperty(layerId, 'fill-opacity-transition', {
+                                duration: duration
+                            });
+                            map.setPaintProperty(layerId, 'fill-opacity', targetOpacity);
+                        }
+                        if (map.getPaintProperty(layerId, 'icon-opacity') !== undefined) {
+                            map.setPaintProperty(layerId, 'icon-opacity-transition', {
+                                duration: duration
+                            });
+                            map.setPaintProperty(layerId, 'icon-opacity', targetOpacity);
+                        }
+                        if (map.getPaintProperty(layerId, 'text-opacity') !== undefined) {
+                            map.setPaintProperty(layerId, 'text-opacity-transition', {
+                                duration: duration
+                            });
+                            map.setPaintProperty(layerId, 'text-opacity', targetOpacity);
+                        }
+                    } catch (e) {
+                        console.warn(`Failed to set opacity transition for layer "${layerId}":`, e);
+                    }
+                } else {
+                    console.warn(`Layer "${layerId}" not found.`);
+                }
+            });
+
+            // Call the animation function repeatedly with randomness
+            setTimeout(animateTwinklingLights, Math.random() * 500 + 200); // Random interval between 200ms and 700ms
+        }
+
+        // When the map loads, start the twinkling lights animation
+        map.on('load', () => {
+            // Start the twinkling lights animation
+            animateTwinklingLights();
+
+            // Update the deprecated light property to use new 'lights' definition
+            map.setLights({
+                lights: [
+                    {
+                        type: 'flat',
+                        position: [1.5, 90, 80],
+                        color: 'white',
+                        intensity: 0.7
+                    }
+                ]
+            });
+
+            // Optionally add fog for more atmosphere
+            map.setFog({
+                'range': [-1, 2],
+                'horizon-blend': 0.5,
+                'color': '#242B4B',
+                'high-color': '#161B36',
+                'space-color': '#0B1026',
+                'star-intensity': 1
+            });
+        });
+
+    </script>
+</body>
+</html>
