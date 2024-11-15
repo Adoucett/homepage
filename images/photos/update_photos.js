@@ -1,24 +1,27 @@
 // generate_photos_json.js
 
-// to run, 
-//npm install sharp
-//>>> node generate_photos_json.js
-
+// To run:
+// npm install sharp
+// >>> node generate_photos_json.js
 
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 
 // Define directories
-const fullDir = path.join(__dirname, 'full');
-const thumbDir = path.join(__dirname, 'thumbnails');
-const photosJSONPath = path.join(__dirname, 'photos.json');
+const fullDir = path.join(__dirname, 'full'); // Directory for full-sized images
+const thumbDir = path.join(__dirname, 'thumbnails'); // Directory for thumbnails
+const photosJSONPath = path.join(__dirname, 'photos.json'); // Output JSON file path
 
 // Define allowed image extensions
 const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
 
 // Define thumbnail size
 const thumbnailWidth = 300; // pixels
+
+// Define base URL paths for thumbnails and full-sized images
+const baseThumbURL = '/images/photos/thumbnails/';
+const baseFullURL = '/images/photos/full/';
 
 // Ensure the thumbnails directory exists
 if (!fs.existsSync(thumbDir)) {
@@ -63,10 +66,10 @@ function generatePhotosJSON() {
                 .then(() => {
                     console.log(`Thumbnail created for ${file}`);
 
-                    // Add photo entry to photos array
+                    // Add photo entry to photos array with correct URL paths
                     photos.push({
-                        thumbnail: path.relative(__dirname, thumbnailImagePath).replace(/\\/g, '/'),
-                        full: path.relative(__dirname, fullImagePath).replace(/\\/g, '/'),
+                        thumbnail: path.join(baseThumbURL, file).replace(/\\/g, '/'),
+                        full: path.join(baseFullURL, file).replace(/\\/g, '/'),
                         alt: path.basename(file, path.extname(file)).replace(/_/g, ' ')
                     });
 
