@@ -433,7 +433,7 @@ footer {
 /* Animated Text Section Styles */
 .animated-text-section {
     text-align: center;
-    margin-top: 2rem;
+    margin-top: 3rem;
 }
 
 .animated-text-section h2 {
@@ -442,11 +442,12 @@ footer {
     color: #fff;
     display: flex;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 15px
+   
 }
 
 #dynamic-word {
-    font-weight: 800;
+    font-weight: 700;
     transition: opacity 0.5s ease;
 }
 
@@ -454,7 +455,7 @@ footer {
 
 /* Cartographer: Classic geometric sans-serif with earthy orange color */
 .font-cartographer {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Courier New', sans-serif;
     color: #d97706; /* Earthy orange */
 }
 
@@ -490,8 +491,8 @@ footer {
 
 /* IKEA Fan: Geometric sans-serif with IKEA’s signature yellow */
 .font-ikea-fan {
-    font-family: 'Bebas Neue', sans-serif;
-    color: #ffcc00; /* IKEA yellow */
+    font-family: 'Nunito Sans', sans-serif;
+    color: #FBD915; /* IKEA yellow */
 }
 
 /* Nordic Skier: Clean, Nordic-style sans-serif with icy blue color */
@@ -520,7 +521,7 @@ footer {
 
 /* Cursor effect */
 #dynamic-word::after {
-    content: "|";
+    content: " |";
     display: inline-block;
     animation: blink 0.8s infinite;
 }

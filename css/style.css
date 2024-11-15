@@ -99,69 +99,135 @@ nav {
     position: relative; /* Establish positioning context for text-overlay */
 }
 
+.mobile-hero {
+    display: none; /* Hidden by default */
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/uploads/mobilehero.png');
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
 .text-overlay {
     position: absolute;
-    top: 40%;
-    left: 60%;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     z-index: 3;
-    opacity: 0.8;
+    opacity: 0.9;
     text-align: center;
-    padding: 0; /* Removed padding to eliminate background box */
-    /* Removed background, border-radius, and box-shadow */
+    padding: 1rem; /* Added padding for better spacing */
 }
 
 .text-overlay h1 {
     font-family: 'Geologica', sans-serif;
-    font-size: 9rem;
-    position: relative;
-    left: 300px;
-    top: 200px;
-    
+    font-size: 4rem; /* Default size for larger screens */
     font-weight: 900; /* Bold for Headings */
     margin: 0; /* Removed margin to prevent extra space */
     color: #ffffff; /* White text */
     text-transform: uppercase;
-    letter-spacing: -5px; /* Adjusted kerning for modern look */
-    line-height: 0.9; /* Improved line spacing */
-    text-align: right;
-    -webkit-text-stroke: 2px white;
-    /* Removed text-shadow for a cleaner look */
+    letter-spacing: -2px; /* Adjusted kerning for modern look */
+    line-height: 1.2; /* Improved line spacing */
+    text-align: center;
+    -webkit-text-stroke: 1px white;
     animation: fadeInDown 1.5s ease-out forwards;
+}
+
+.buttons {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.buttons .btn {
+    padding: 0.75rem 2rem;
+    background: #e67e22; /* Vibrant Accent Color */
+    color: #fdf6e3; /* Softer Contrast */
+    text-decoration: none;
+    font-weight: 700; /* Bold for Buttons */
+    border-radius: 50px;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    font-size: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.buttons .btn:hover {
+    background: #d35400; /* Darker Accent on Hover */
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
 }
 
 @media (max-width: 1200px) {
     .text-overlay h1 {
-        font-size: 4rem;
-        left: 150px; /* Adjusted for smaller screens */
-        top: 150px;
+        font-size: 3rem;
     }
 }
 
 @media (max-width: 768px) {
+    .hero {
+        flex-direction: column; /* Stack vertically */
+        height: auto; /* Adjust height to content */
+    }
+
+    .map-container {
+        display: none; /* Hide map on small screens */
+    }
+
+    .mobile-hero {
+        display: block; /* Show mobile hero image */
+        height: 60vh; /* Adjust height as needed */
+    }
+
+    .text-overlay {
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none;
+        background: rgba(0, 0, 0, 0.4); /* Optional: Add semi-transparent background for better text visibility */
+        width: 100%;
+        padding: 2rem 1rem;
+    }
+
     .text-overlay h1 {
-        font-size: 3rem;
-        left: 100px; /* Further adjustments */
-        top: 100px;
+        font-size: 2.5rem;
+        letter-spacing: -1px;
+    }
+
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .buttons .btn {
+        width: 80%;
+        text-align: center;
     }
 }
 
 @media (max-width: 480px) {
     .text-overlay h1 {
-        font-size: 2.5rem;
-        left: 50px; /* Further adjustments */
-        top: 50px;
+        font-size: 2rem;
+    }
+
+    .buttons .btn {
+        padding: 0.5rem 1.5rem;
+        font-size: 0.9rem;
     }
 }
 
 @keyframes fadeInDown {
     0% {
         opacity: 0;
-        transform: translate(-50%, -60%);
+        transform: translateY(-20px);
     }
     100% {
         opacity: 1;
-        transform: translate(-50%, -50%);
+        transform: translateY(0);
     }
 }
 
@@ -175,38 +241,11 @@ nav {
     justify-content: center;
 }
 
-.content h1 {
-    /* Removed as .text-overlay handles the main heading */
-}
-
 .content p {
     font-size: 1.5rem;
     margin-bottom: 2rem;
     color: #e67e22; /* Vibrant Accent Color */
     font-weight: 500;
-}
-
-.content .btn {
-    /* Inherit styles from .btn */
-}
-
-/* Button Styling */
-.btn {
-    padding: 0.75rem 2rem;
-    background: #e67e22; /* Vibrant Accent Color */
-    color: #fdf6e3; /* Softer Contrast */
-    text-decoration: none;
-    font-weight: 700; /* Bold for Buttons */
-    border-radius: 50px;
-    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
-    font-size: 1rem;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-
-.btn:hover {
-    background: #d35400; /* Darker Accent on Hover */
-    transform: scale(1.05);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
 }
 
 /* Featured Work */
@@ -349,34 +388,51 @@ footer {
     width: 100%;
 }
 
-/* Responsive */
+/* Responsive Adjustments */
 @media (max-width: 768px) {
-    .hero {
-        flex-direction: column; /* Stack vertically */
-        justify-content: center;
-    }
-
+    /* Hide map and show mobile hero */
     .map-container {
-        width: 100%;
-        height: 50vh; /* Adjust height as needed */
+        display: none;
     }
 
-    .content {
+    .mobile-hero {
+        display: block;
+        height: 60vh; /* Adjust as needed */
+    }
+
+    /* Adjust text overlay for mobile */
+    .text-overlay {
+        background: rgba(0, 0, 0, 0.5); /* Optional: Semi-transparent background */
+        padding: 2rem 1rem;
         width: 100%;
-        padding: 1rem;
-        text-align: center;
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none;
     }
 
     .text-overlay h1 {
         font-size: 2.5rem;
-        left: 50px; /* Adjusted for smaller screens */
-        top: 50px;
+        letter-spacing: -1px;
     }
 
-    .content p {
-        font-size: 1rem;
+    /* Stack buttons vertically on mobile */
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
     }
 
+    .buttons .btn {
+        width: 80%;
+    }
+
+    /* Adjust hero section height */
+    .hero {
+        height: auto;
+    }
+
+    /* Adjust navigation for mobile */
     .nav-links {
         position: absolute;
         right: 0;
@@ -414,16 +470,7 @@ footer {
         transform: rotate(45deg) translate(-5px, -6px);
     }
 
-    .social-links {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .social-btn {
-        width: 150px;
-        text-align: center;
-    }
-
+    /* Adjust gallery and lightbox for mobile */
     .gallery {
         padding: 1rem;
         gap: 1rem;
@@ -441,15 +488,26 @@ footer {
     }
 }
 
-/* Keyframes for nav links */
-@keyframes navLinkFade {
-    from {
-        opacity: 0;
-        transform: translateX(50px);
+@media (max-width: 480px) {
+    .text-overlay h1 {
+        font-size: 2rem;
     }
-    to {
+
+    .buttons .btn {
+        padding: 0.5rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Keyframes */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(0);
     }
 }
 
@@ -479,20 +537,7 @@ html {
     border: 2px solid #fdf6e3;
 }
 
-/* Animation */
-@keyframes fadeInDown {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-    100% {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}
-
 /* Geospatial Specific Styles */
-
 .geospatial-hero {
     position: relative;
     height: 60vh;
@@ -563,21 +608,6 @@ html {
     font-size: 1rem;
     color: #666;
     margin-bottom: 1rem;
-}
-
-.btn {
-    padding: 0.75rem 2rem;
-    background: #e67e22;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 700;
-    border-radius: 50px;
-    transition: background 0.3s, transform 0.3s;
-}
-
-.btn:hover {
-    background: #d35400;
-    transform: scale(1.05);
 }
 
 /* Carousel Navigation */
