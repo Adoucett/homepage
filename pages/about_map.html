@@ -7,111 +7,104 @@
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
     <!-- Scrollama.js CSS (optional, for styling steps) -->
     <style>
-
-    /* Import Geologica Font */
-    @import url('https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&display=swap');
-    
-    @font-face {
-        font-family: 'dinpro_bold';
-        src: url('../data/fonts/dinpro_bold.woff2') format('woff2'),
-            url('../data/fonts/dinpro_bold.woff') format('woff');
-        font-weight: 100;
-        font-style: normal;
-        font-display: swap;
-    }
-            
-    body, html {
-        margin: 0;
-        padding: 0;
-        margin-right:2rem;
-        height: 100%;
-        font-family: 'dinpro_bold', sans-serif; /* Modern bold sans-serif font */
-        overflow: hidden;
-        font-weight: 800;
-    }
-    /* Map Container */
-    #map {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-        z-index: 1;
-    }
-    /* Scroll Container */
-    .scroll-container {
-        position: relative;
-        height: 100vh;
-        width: 100%;
-        overflow-y: scroll;
-        z-index: 2;
-
-        /* Hide scrollbar for WebKit browsers */
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none;  /* IE and Edge */
-    }
-
-    /* Hide scrollbar for WebKit browsers */
-    .scroll-container::-webkit-scrollbar {
-        display: none;
-    }
-    /* Steps */
-    .step {
-        position: relative;
-        min-height: 100vh;
-        padding: 20vh 10%;
-        box-sizing: border-box;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .step.active .caption {
-        opacity: 1;
-        font-size: 4rem;
-        transform: translateY(0);
-    }
-    .step .caption {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) translateY(50px);
-        color: white;
-        text-align: left;
-        font-size: 3em; /* Larger text */
-        font-weight: 900; /* More bold */
-        text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
-        opacity: 0;
-        transition: opacity 1s ease-out, transform 1s ease-out;
-        pointer-events: none;
-        width: 80%;
-        max-width: 90%; /* Prevent text from overflowing */
-        padding: 0 1rem; /* Add horizontal padding */
-        box-sizing: border-box; /* Include padding in width */
-    }
-    /* Progress Bar */
-    .progress-container {
-        position: fixed;
-        opacity: 0.8;
-        top: 10px;
-        left: 10%;
-        width: 80%;
-        height: 5px;
-        background-color: rgba(255, 255, 255, 0.3);
-        border-radius: 2.5px;
-        z-index: 3;
-    }
-    .progress-bar {
-        height: 100%;
-        width: 0%;
-        background-color: #ff5722;
-        border-radius: 2.5px;
-        transition: width 0.5s ease-out;
-    }
-    @media (max-width: 768px) {
-        .step .caption {
-            font-size: 2em;
-            max-width: 95%; /* Adjust max-width for smaller screens */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Arial', sans-serif; /* Modern bold sans-serif font */
+            overflow: hidden;
         }
-    }
+        /* Map Container */
+        #map {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            z-index: 1;
+        }
+        /* Scroll Container */
+        .scroll-container {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow-y: scroll;
+            z-index: 2;
+        }
+        /* Steps */
+        .step {
+            position: relative;
+            min-height: 100vh;
+            padding: 20vh 10%;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .step.active .caption {
+            opacity: 1;
+            transform: translate(-50%, -50%) translateY(0);
+        }
+        .step .caption {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(50px);
+            color: white;
+            text-align: center;
+            font-size: 3em; /* Larger text */
+            font-weight: 900; /* More bold */
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            opacity: 0;
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            pointer-events: none;
+            width: 80%;
+        }
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 10px;
+            left: 10%;
+            width: 80%;
+            height: 5px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 2.5px;
+            z-index: 3;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #ff5722;
+            border-radius: 2.5px;
+            transition: width 0.5s ease-out;
+        }
+        @media (max-width: 768px) {
+            .step .caption {
+                font-size: 2em;
+            }
+        }
+        /* Laser Tip Styling */
+        .laser-tip {
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #00f, #005);
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00f, 0 0 20px #00f, 0 0 30px #00f;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -146,7 +139,7 @@
         <div class="step" data-step="4">
             <div class="caption">Then lived here</div>
         </div>
-        <!-- Step 6 -->
+        <!-- Step 6: St. Louis Scene with Run Animation -->
         <div class="step" data-step="5">
             <div class="caption">I've traveled here...</div>
         </div>
@@ -169,18 +162,10 @@
             container: 'map',
             style: 'mapbox://styles/adoucett/cm3kgcgjr000y01qn6xn20cvq',
             center: [-72.85696, 42.40966], // Initial center [lng, lat]
-            zoom: 11.18,
+            zoom: 12.18,
             bearing: -8.8,
             pitch: 5,
             interactive: false, // Disable all interactive controls
-            // Alternatively, you can disable specific interactions:
-            // scrollZoom: false,
-            // boxZoom: false,
-            // dragRotate: false,
-            // dragPan: false,
-            // keyboard: false,
-            // doubleClickZoom: false,
-            // touchZoomRotate: false,
         });
 
         // Define waypoints
@@ -251,6 +236,13 @@
                 flyToWaypoint(index);
                 updateProgressBar(index);
                 setActiveStep(index);
+
+                // Trigger run animation on Step 6 (index 5)
+                if(index === 5){
+                    startRunAnimation();
+                } else {
+                    stopRunAnimation();
+                }
             });
 
         // Define waypoints index
@@ -264,7 +256,7 @@
                 zoom: wp.zoom,
                 bearing: wp.bearing,
                 pitch: wp.pitch,
-                speed: 0.8, // Reduced speed for slower animation
+                speed: 1.2, // Adjust for animation speed
                 essential: true
             });
         }
@@ -296,6 +288,174 @@
 
         // Handle window resize
         window.addEventListener('resize', scroller.resize);
+
+        /* ------------------- Run Animation Feature ------------------- */
+
+        // Variables for Run Animation
+        let runData = null; // To store fetched GeoJSON
+        let groupedRuns = []; // Array of runs grouped by day
+        let currentDayIndex = 0;
+        let animationFrameId = null;
+        let runLayerId = 'runs-animation-layer';
+        let runSourceId = 'runs-animation-source';
+        let laserMarker = null;
+        let laserAnimationStep = 0;
+        let laserAnimationSpeed = 50; // Adjust for animation speed (milliseconds)
+
+        // Fetch and prepare the GeoJSON data
+        async function fetchRunData() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/Adoucett/homepage/refs/heads/main/data/json/runs_animation.json');
+                runData = await response.json();
+
+                // Preprocess data: group coordinates by day
+                groupedRuns = groupRunsByDate(runData.features[0]);
+            } catch (error) {
+                console.error('Error fetching run data:', error);
+            }
+        }
+
+        // Group runs by date based on the 'times' array
+        function groupRunsByDate(feature) {
+            const times = feature.properties.times; // Array of timestamp strings
+            const coordinates = feature.geometry.coordinates; // Array of [lng, lat]
+
+            if(times.length !== coordinates.length){
+                console.error('Mismatch between times and coordinates lengths.');
+                return [];
+            }
+
+            const runsByDate = {};
+            for(let i = 0; i < times.length; i++){
+                const date = new Date(times[i]).toISOString().split('T')[0]; // Extract YYYY-MM-DD
+                if(!runsByDate[date]){
+                    runsByDate[date] = [];
+                }
+                runsByDate[date].push(coordinates[i]);
+            }
+
+            // Convert to sorted array
+            const sortedDates = Object.keys(runsByDate).sort((a, b) => new Date(a) - new Date(b));
+            return sortedDates.map(date => ({
+                date: date,
+                coordinates: runsByDate[date]
+            }));
+        }
+
+        // Start the run animation
+        async function startRunAnimation(){
+            if(!runData){
+                await fetchRunData();
+                addRunLayer();
+            }
+            currentDayIndex = 0;
+            animateRun();
+        }
+
+        // Stop the run animation
+        function stopRunAnimation(){
+            cancelAnimationFrame(animationFrameId);
+            // Remove run layers and markers
+            if(map.getLayer(runLayerId)){
+                map.removeLayer(runLayerId);
+            }
+            if(map.getSource(runSourceId)){
+                map.removeSource(runSourceId);
+            }
+            if(laserMarker){
+                laserMarker.remove();
+                laserMarker = null;
+            }
+        }
+
+        // Add run layer to the map
+        function addRunLayer(){
+            if(map.getSource(runSourceId)) return;
+
+            map.addSource(runSourceId, {
+                type: 'geojson',
+                data: {
+                    type: 'FeatureCollection',
+                    features: []
+                }
+            });
+
+            map.addLayer({
+                id: runLayerId,
+                type: 'line',
+                source: runSourceId,
+                layout: {
+                    'line-cap': 'round',
+                    'line-join': 'round'
+                },
+                paint: {
+                    'line-color': '#00f',
+                    'line-width': 4
+                }
+            });
+        }
+
+        // Animate the run
+        function animateRun(){
+            if(currentDayIndex >= groupedRuns.length){
+                currentDayIndex = 0; // Loop the animation
+            }
+            const dayRun = groupedRuns[currentDayIndex];
+            const dayCoordinates = dayRun.coordinates;
+
+            // Update the source with the day's run
+            map.getSource(runSourceId).setData({
+                type: 'FeatureCollection',
+                features: [{
+                    type: 'Feature',
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: dayCoordinates
+                    }
+                }]
+            });
+
+            // Add or update the laser marker
+            const firstCoord = dayCoordinates[0];
+            if(!laserMarker){
+                laserMarker = new mapboxgl.Marker({
+                    element: createLaserElement(),
+                    anchor: 'bottom'
+                })
+                .setLngLat(firstCoord)
+                .addTo(map);
+            } else {
+                laserMarker.setLngLat(firstCoord);
+            }
+
+            // Reset animation step
+            laserAnimationStep = 0;
+
+            // Start moving the laser marker along the day's path
+            function moveLaser(){
+                if(laserAnimationStep < dayCoordinates.length){
+                    laserMarker.setLngLat(dayCoordinates[laserAnimationStep]);
+                    laserAnimationStep++;
+                    animationFrameId = setTimeout(moveLaser, laserAnimationSpeed);
+                } else {
+                    currentDayIndex++;
+                    animationFrameId = requestAnimationFrame(animateRun);
+                }
+            }
+
+            moveLaser();
+        }
+
+        // Create the laser marker element
+        function createLaserElement(){
+            const el = document.createElement('div');
+            el.className = 'laser-tip';
+            return el;
+        }
+
+        // Initialize the run data
+        fetchRunData();
+
     </script>
 </body>
 </html>
