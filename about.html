@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doucett.net - About</title>
     <!-- Shared CSS -->
-<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Bangers&family=Caveat&family=Indie+Flower&family=Fredoka+One&family=Lobster&family=Montserrat&family=Oswald&family=Pacifico&family=Raleway&family=Roboto+Slab&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Space+Grotesk:wght@400;600&family=Poppins:wght@400;700&family=IBM+Plex+Serif:wght@400;600&family=Rubik:wght@400;700&family=Mulish:wght@400;700&family=Bebas+Neue&family=Lexend:wght@400;600&family=Carter+One&family=Playfair+Display:wght@400;600&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
-
-
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Bangers&family=Caveat&family=Indie+Flower&family=Fredoka+One&family=Lobster&family=Montserrat&family=Oswald&family=Pacifico&family=Raleway&family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Space+Grotesk:wght@400;600&family=Poppins:wght@400;700&family=IBM+Plex+Serif:wght@400;600&family=Rubik:wght@400;700&family=Mulish:wght@400;700&family=Bebas+Neue&family=Lexend:wght@400;600&family=Carter+One&family=Playfair+Display:wght@400;600&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/style.css">
     <!-- About Page Specific CSS -->
     <link rel="stylesheet" href="css/about.css">
@@ -17,17 +16,19 @@
     <!-- Favicon (optional) -->
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Learn more about Your Name, a passionate photographer and creative professional.">
-    <meta name="keywords" content="About, Your Name, Photography, Portfolio, Creative">
-    <meta name="author" content="Your Name">
+    <meta name="description" content="Learn more about Aaron Doucett, a passionate geospatial professional and creative problem solver.">
+    <meta name="keywords" content="About, Aaron Doucett, Geospatial, GIS, Photography, Portfolio, Creative">
+    <meta name="author" content="Aaron Doucett">
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
     <style type="text/css">
-    body,td,th {
-    font-family: Geologica, sans-serif;
-}
-body {
-    background-color: #333333;
-}
+        body, td, th {
+            font-family: 'Geologica', sans-serif;
+        }
+        body {
+            background-color: #333333;
+            margin: 0;
+            padding: 0;
+        }
     </style>
 </head>
 <body>
@@ -42,11 +43,11 @@ body {
                 <li><a href="media.html">Media</a></li>
                 <li><a href="resume.html">Resume</a></li>
             </ul>
-            <div class="burger" aria-label="Toggle Navigation Menu">
-                <div class="line1"></div>
-                <div class="line2"></div>
-                <div class="line3"></div>
-            </div>
+            <button class="burger" aria-label="Toggle Navigation Menu" aria-expanded="false">
+                <span class="line1"></span>
+                <span class="line2"></span>
+                <span class="line3"></span>
+            </button>
         </nav>
     </header>
 
@@ -56,76 +57,59 @@ body {
             <div class="overlay"></div>
             <!-- Text Overlay on Hero -->
             <div class="text-overlay">
-                <h1>Welcome to My Website</h1>
+                <h1>Welcome</h1>
+                <h2>I like to create things</h2>
             </div>
+        </section>
 
-            <!-- Content Section -->
-
+        <!-- Animated Text Display -->
+        <section class="animated-text-section">
+            <h2>
+                I AM A <span id="dynamic-word"></span>
+            </h2>
         </section>
 
         <!-- Section 1: Introduction with Parallax Background -->
         <section class="section introduction" id="introduction">
             <div class="container_intro">
-
-<!-- Animated Text Display -->
-<section class="animated-text-section">
-    <h2>
-        I AM A <span id="dynamic-word"></span>
-    </h2>
-</section>
-
-                <h2><br>Introduction</h2>
-              <p> 
-
-I'm Aaron Doucett, a geospatial professional and creative problem solver with a background in GIS, earth observation, and data-driven storytelling. Over the past decade, I've worked on everything from climate research and urban planning to developing marketing strategies for cutting-edge geospatial tech. 
-
-When I'm not exploring new ways to visualize complex data, you can find me logging miles on the roads training for marathons, cooking up something delicious in the kitchen, or capturing moments behind the camera. I’ve built this site to share my work, passions, and the projects that keep me inspired. Thanks for visiting—take a look around, and feel free to connect!</p>
-                <p><br>
-                  <br>
-                  <br>
-                  <br>
-                  &nbsp;</p>
+                <h2>Introduction</h2>
+                <p> 
+                    I'm Aaron Doucett, a geospatial professional and creative problem solver with a background in GIS, earth observation, and data-driven storytelling. Over the past decade, I've worked on everything from climate research and urban planning to developing marketing strategies for cutting-edge geospatial tech. 
+                    
+                    When I'm not exploring new ways to visualize complex data, you can find me logging miles on the roads training for marathons, cooking up something delicious in the kitchen, or capturing moments behind the camera. I’ve built this site to share my work, passions, and the projects that keep me inspired. Thanks for visiting—take a look around, and feel free to connect!
+                    <br>
+                    
+                </p> 
             </div>
         </section>
 
-<!-- Section 2: Biography with Banded Colors -->
-<section class="section biography" id="biography">
-    <div class="banded-color"></div>
-    <div class="container">
-        <h2>Biography</h2>
-        <div class="biography-content">
-            <p class="biography-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vehicula ex eu massa efficitur, ut tempor magna interdum. Integer nec magna vitae sapien aliquam placerat. Maecenas euismod, massa non tempus elementum, nisl nisi ultricies urna, vitae commodo nisl justo nec justo.
-            </p>
-            <div class="content-image">
-                <img src="images/content-image.jpg" alt="Photography and Cartography">
-            </div>
-        </div>
-    </div>
-</section>
-
+        <!-- Section 2: Biography with Banded Colors -->
+        <section class="section biography" id="biography">
+            <div class="banded-color"></div>
+            <div class="container">
+                <h2>Biography</h2>
+                <div class="biography-content">
+                    <p class="biography-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vehicula ex eu massa efficitur, ut tempor magna interdum. Integer nec magna vitae sapien aliquam placerat. Maecenas euismod, massa non tempus elementum, nisl nisi ultricies urna, vitae commodo nisl justo nec justo.
+                    </p>
+                    <div class="content-image">
+                        <img src="images/content-image.jpg" alt="Photography and Cartography">
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Section 3: Skills with Parallax Background -->
         <section class="section skills" id="skills">
             <div class="container">
-                <h2><br>
-                  <br>
-                Skills</h2>
-                <div>Paragraph Text&nbsp;<br>
-                  <br>
-                  <br>
-                  <br>
-                </div>
+                <h2>Skills</h2>
+                <p>Paragraph Text</p>
                 <ul class="skills-list">
                     <li>Photography</li>
                     <li>Image Editing</li>
                     <li>Graphic Design</li>
                     <li>Web Development</li>
-                  <li>Creative Direction</li>
-                  <li>&nbsp;</li>
-                    <li>&nbsp;</li>
+                    <li>Creative Direction</li>
                 </ul>
             </div>
         </section>
@@ -133,14 +117,10 @@ When I'm not exploring new ways to visualize complex data, you can find me loggi
         <!-- Section 4: Interactive Map -->
         <section id="map-section">
             <div class="container">
-              <h2><strong><br>
-                  <br>
-                  <br>
-                  <br>
-              My Work Locations</strong></h2>
-<div id="about-map" class="mapbox-map"></div>
-          </div>
-</section>
+                <h2>My Work Locations</h2>
+                <div id="about-map" class="mapbox-map"></div>
+            </div>
+        </section>
 
         <!-- Section 5: Contact with Banded Colors -->
         <section class="section contact" id="contact">
@@ -158,10 +138,9 @@ When I'm not exploring new ways to visualize complex data, you can find me loggi
     </main>
 
     <footer>
-        <p>&copy; 2024 Your Name. All rights reserved.</p>
+        <p>&copy; 2024 Aaron Doucett. All rights reserved.</p>
     </footer>
 
-   
     <!-- Mapbox GL JS -->
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
     <!-- Shared JS -->
@@ -169,33 +148,27 @@ When I'm not exploring new ways to visualize complex data, you can find me loggi
     <!-- About Page Specific JS -->
     <script src="js/about.js"></script>
 
-<script>
-    const fonts = [
-        'DM+Sans',
-        'Space+Grotesk',
-        'Poppins',
-        'IBM+Plex+Serif',
-        'Rubik',
-        'Mulish',
-        'Bebas+Neue',
-        'Lexend',
-        'Carter+One',
-        'Playfair+Display',
-        'Work+Sans'
-    ];
+    <script>
+        const fonts = [
+            'DM+Sans',
+            'Space+Grotesk',
+            'Poppins',
+            'IBM+Plex+Serif',
+            'Rubik',
+            'Mulish',
+            'Bebas+Neue',
+            'Lexend',
+            'Carter+One',
+            'Playfair+Display',
+            'Work+Sans'
+        ];
 
-    fonts.forEach((font) => {
-        const link = document.createElement('link');
-        link.href = `https://fonts.googleapis.com/css2?family=${font.replace(' ', '+')}:wght@400;700&display=swap`;
-        link.rel = 'stylesheet';
-        document.head.appendChild(link);
-    });
-</script>
-
-
+        fonts.forEach((font) => {
+            const link = document.createElement('link');
+            link.href = `https://fonts.googleapis.com/css2?family=${font.replace(' ', '+')}:wght@400;700&display=swap`;
+            link.rel = 'stylesheet';
+            document.head.appendChild(link);
+        });
+    </script>
 </body>
-
-
-
-
 </html>

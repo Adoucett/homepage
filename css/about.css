@@ -5,6 +5,116 @@ body {
     font-family: 'Geologica', sans-serif;
 }
 
+/*/// Fonts ///*/
+
+@font-face {
+    font-family: 'Cera Pro';
+    src: url('../data/fonts/FONTSPRINGDEMO-CeraProMediumRegular.woff2') format('woff2'),
+         url('../data/fonts/FONTSPRINGDEMO-CeraProMediumRegular.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cera Pro';
+    src: url('../data/fonts/FONTSPRINGDEMO-CeraProBoldItalic.woff2') format('woff2'),
+         url('../data/fonts/FONTSPRINGDEMO-CeraProBoldItalic.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cera Pro';
+    src: url('../data/fonts/FONTSPRINGDEMO-CeraProLightItalic.woff2') format('woff2'),
+         url('../data/fonts/FONTSPRINGDEMO-CeraProLightItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cera Pro';
+    src: url('../data/fonts/FONTSPRINGDEMO-CeraProBold.woff2') format('woff2'),
+         url('../data/fonts/FONTSPRINGDEMO-CeraProBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cera Pro';
+    src: url('../data/fonts/FONTSPRINGDEMO-CeraProBlackItalic.woff2') format('woff2'),
+         url('../data/fonts/FONTSPRINGDEMO-CeraProBlackItalic.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cera Pro';
+    src: url('../data/fonts/FONTSPRINGDEMO-CeraProBlackRegular.woff2') format('woff2'),
+         url('../data/fonts/FONTSPRINGDEMO-CeraProBlackRegular.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cera Pro';
+    src: url('../data/fonts/FONTSPRINGDEMO-CeraProLightRegular.woff2') format('woff2'),
+         url('../data/fonts/FONTSPRINGDEMO-CeraProLightRegular.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cera Pro';
+    src: url('../data/fonts/FONTSPRINGDEMO-CeraProMediumItalic.woff2') format('woff2'),
+         url('../data/fonts/FONTSPRINGDEMO-CeraProMediumItalic.woff') format('woff');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cera Pro';
+    src: url('../data/fonts/FONTSPRINGDEMO-CeraProItalic.woff2') format('woff2'),
+         url('../data/fonts/FONTSPRINGDEMO-CeraProItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cera Pro';
+    src: url('../data/fonts/FONTSPRINGDEMO-CeraProThinRegular.woff2') format('woff2'),
+         url('../data/fonts/FONTSPRINGDEMO-CeraProThinRegular.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cera Pro';
+    src: url('../data/fonts/FONTSPRINGDEMO-CeraProRegular.woff2') format('woff2'),
+         url('../data/fonts/FONTSPRINGDEMO-CeraProRegular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cera Pro';
+    src: url('../data/fonts/FONTSPRINGDEMO-CeraProThinItalic.woff2') format('woff2'),
+         url('../data/fonts/FONTSPRINGDEMO-CeraProThinItalic.woff') format('woff');
+    font-weight: 100;
+    font-style: italic;
+    font-display: swap;
+}
+
 /* Hero Section Styling */
 .hero {
     position: relative;
@@ -15,7 +125,7 @@ body {
     background-attachment: fixed; /* For parallax effect */
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     color: #fff;
     overflow: hidden;
 }
@@ -31,25 +141,33 @@ body {
 }
 
 .hero .text-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    text-align: center;
+    position: relative;
+    z-index: 5;
     padding: 0;
+    margin-bottom: 2rem;
+    font-family: 'Cera Pro', sans-serif;
+    text-align: center;
 }
 
 .hero .text-overlay h1 {
-    font-size: 4rem;
+    font-size: 7rem;
     font-weight: 800;
     margin: 0;
     color: #ffffff;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    text-transform: lowercase;
+    letter-spacing: 5px;
     line-height: 1;
-    text-align: center;
-    animation: fadeInDown 1.5s ease-out forwards;
+    animation: fadeInDown 2.5s ease-out forwards;
+}
+
+.hero .text-overlay h2 {
+    font-size: 3rem;
+    font-weight: 500;
+    margin: 0;
+    color: #ffffff;
+    letter-spacing: 2px;
+    line-height: 0.9;
+    animation: fadeInUp 2.5s ease-out forwards;
 }
 
 .hero .content {
@@ -87,25 +205,14 @@ body {
     z-index: 0;
 }
 
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
 /* Full-Page Image Sections */
-.section.introduction,
-.section.skills {
-    position: relative;
-    color: #fff; /* White text over images */
-}
+
 
 .section.introduction .full-page-image,
 .section.skills .full-page-image {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    left: 0;    width: 100%;
     height: 100%;
     background-size: cover;
     background-position: center;
@@ -114,7 +221,15 @@ body {
 }
 
 .section.introduction {
-    background-color: #000; /* Fallback background color */
+        background-color: #000; /* Fallback background color */
+        position: relative;
+
+}
+
+.section.introduction,
+.section.skills {
+    position: relative;
+    color: #fff; /* White text over images */
 }
 
 .section.skills {
@@ -161,7 +276,6 @@ body {
     text-align: left;
     z-index: 1;
 }
-
 
 /* Section Headings */
 .section h2 {
@@ -287,17 +401,40 @@ footer {
     .hero {
         flex-direction: column;
         justify-content: center;
-        height: 60vh;
+        height: auto;
+        padding: 2rem 1rem;
     }
 
-    .map-container {
+    .hero .text-overlay {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         width: 100%;
-        height: 40vh;
     }
 
-    .text-overlay h1 {
+    .hero .text-overlay h1 {
         font-size: 2.5rem;
-        /* Removed left and top offsets for better centering */
+        text-align: center;
+        letter-spacing: 2px;
+    }
+
+    .hero .text-overlay h2 {
+        font-size: 1.5rem;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+
+    .animated-text-section {
+        margin-top: 1.5rem;
+    }
+
+    .animated-text-section h2 {
+        font-size: 1.5rem;
+        gap: 10px;
+    }
+
+    .animated-text-section #dynamic-word {
+        font-size: 1.5rem;
     }
 
     .hero .content {
@@ -339,17 +476,49 @@ footer {
     .mapbox-map {
         height: 300px;
     }
+
+    /* Adjust biography section for mobile */
+    .biography-content {
+        align-items: center;
+        text-align: center;
+    }
+
+    .biography-text,
+    .content-image {
+        max-width: 100%;
+    }
+
+    .biography-text {
+        margin-bottom: 1rem;
+    }
 }
 
 /* Animation Keyframes */
 @keyframes fadeInDown {
     0% {
         opacity: 0;
-        transform: translate(-50%, -60%);
+        transform: translateY(-20px);
     }
     100% {
         opacity: 1;
-        transform: translate(-50%, -50%);
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -442,8 +611,8 @@ footer {
     color: #fff;
     display: flex;
     justify-content: center;
-    gap: 15px
-   
+    align-items: center;
+    gap: 15px;
 }
 
 #dynamic-word {
@@ -453,67 +622,56 @@ footer {
 
 /* Define custom font styles for each word */
 
-/* Cartographer: Classic geometric sans-serif with earthy orange color */
 .font-cartographer {
     font-family: 'Courier New', sans-serif;
     color: #d97706; /* Earthy orange */
 }
 
-/* Cyclist: Sleek and modern sans-serif, green for nature */
 .font-cyclist {
     font-family: 'Space Grotesk', sans-serif;
     color: #4caf50; /* Vibrant green */
 }
 
-/* Runner: Bold, dynamic sans-serif with an energetic blue */
 .font-runner {
     font-family: 'Poppins', sans-serif;
     color: #0077b6; /* Ocean blue */
 }
 
-/* Geospatial Marketer: Professional and modern serif with tech-focused green */
 .font-geospatial-marketer {
     font-family: 'IBM Plex Serif', serif;
     color: #2d6a4f; /* Tech green */
 }
 
-/* Coffee Lover: Playful, rounded font with a coffee brown color */
 .font-coffee-lover {
     font-family: 'Rubik', sans-serif;
     color: #6f4e37; /* Coffee brown */
 }
 
-/* Strava Aficionado: Clean, bold sans-serif with Strava’s iconic red-orange */
 .font-strava-aficionado {
     font-family: 'Mulish', sans-serif;
     color: #fc4c02; /* Strava red-orange */
 }
 
-/* IKEA Fan: Geometric sans-serif with IKEA’s signature yellow */
 .font-ikea-fan {
     font-family: 'Nunito Sans', sans-serif;
     color: #FBD915; /* IKEA yellow */
 }
 
-/* Nordic Skier: Clean, Nordic-style sans-serif with icy blue color */
 .font-nordic-skier {
     font-family: 'Lexend', sans-serif;
     color: #00a8e8; /* Icy blue */
 }
 
-/* Hot Sauce Lover: Playful serif with a spicy red color */
 .font-hot-sauce-lover {
     font-family: 'Carter One', cursive;
     color: #e63946; /* Spicy red */
 }
 
-/* Jazz Pianist: Elegant, flowing serif with a deep purple color */
 .font-jazz-pianist {
     font-family: 'Playfair Display', serif;
     color: #5a189a; /* Deep purple */
 }
 
-/* Sales Engineer: Modern sans-serif with a sleek tech-focused teal */
 .font-sales-engineer {
     font-family: 'Work Sans', sans-serif;
     color: #009688; /* Tech teal */

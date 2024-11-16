@@ -1,83 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aaron Doucett - Portfolio</title>
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Google Fonts: Geologica -->
-    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Mapbox GL JS CSS -->
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
-    <!-- Favicon (optional) -->
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-</head>
-<body>
-    <header>
-        <nav aria-label="Main Navigation">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Aaron Doucett - Portfolio</title>
+      <link rel="stylesheet" href="css/style.css">
+      <!-- Google Fonts: Geologica -->
+      <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+      <!-- Mapbox GL JS CSS -->
+      <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+      <!-- Favicon (optional) -->
+      <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+   </head>
+   <body>
+      <header>
+         <nav aria-label="Main Navigation">
             <div class="logo">Doucett.net</div>
             <ul class="nav-links">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="photography.html">Photography</a></li>
-                <li><a href="geospatial.html">Geospatial</a></li>
-                <li><a href="media.html">Media</a></li>
-                <li><a href="resume.html">Resume</a></li>
+               <li>
+                  <a href="index.html" class="active">Home</a>
+               </li>
+               <li>
+                  <a href="about.html">About</a>
+               </li>
+               <li>
+                  <a href="photography.html">Photography</a>
+               </li>
+               <li>
+                  <a href="geospatial.html">Geospatial</a>
+               </li>
+               <li>
+                  <a href="media.html">Media</a>
+               </li>
+               <li>
+                  <a href="resume.html">Resume</a>
+               </li>
             </ul>
             <div class="burger" aria-label="Toggle Navigation Menu">
-                <div></div>
-                <div></div>
-                <div></div>
+               <div></div>
+               <div></div>
+               <div></div>
             </div>
-        </nav>
-    </header>
-
-    <main>
-        <section class="hero">
+         </nav>
+      </header>
+      <main>
+         <section class="hero">
             <!-- Interactive Map (Desktop) -->
             <div id="map" class="map-container">
-                <!-- Map Embed Code Goes Here -->
+               <!-- Map Embed Code Goes Here -->
             </div>
-
             <!-- Static Hero Image (Mobile) -->
             <div class="mobile-hero"></div>
-
             <!-- Text Overlay -->
             <div class="text-overlay">
-                <h1>Welcome to My World</h1>
-                <!-- Buttons (Moved inside text-overlay for mobile alignment) -->
-                <div class="buttons">
-                    <a href="geospatial.html" class="btn">Map Gallery</a>
-                    <a href="photography.html" class="btn">Photography</a>
-                </div>
+               <h1>Welcome to my world</h1>
             </div>
-        </section>
 
-        <section class="featured-work">
+<div id="intro-text">
+    <h5>About Me</h5>
+    <p1>
+        Hi, I'm Aaron Doucett. Welcome to my portfolio! I'm a geospatial expert, photographer, and runner, passionate about mapping the world, capturing moments, and exploring new ideas. This site showcases my projects and creative work.
+    </p1>
+  <p2>
+<br> <br>    
+ This site was built from scratch with HTML, css, js, and is hosted on GitHub.
+    </p2>
+</div>
+           
+         </section>
+
+         <section class="featured-work">
+
             <h2>Featured Projects</h2>
-            <div class="gallery">
-                <div class="gallery-item">
-                    <img src="images/uploads/placeholder.jpg" alt="A stunning landscape capturing the essence of nature.">
-                </div>
-                <div class="gallery-item">
-                    <img src="images/uploads/placeholder.jpg" alt="Urban photography showcasing city life dynamics.">
-                </div>
-                <div class="gallery-item">
-                    <img src="images/uploads/placeholder.jpg" alt="Night photography with vibrant city lights.">
-                </div>
-                <div class="gallery-item">
-                    <img src="images/uploads/placeholder.jpg" alt="Aerial shots highlighting geographical features.">
-                </div>
+ <div class="buttons">
+               <a href="geospatial.html" class="btn">Map Gallery</a>
+               <a href="photography.html" class="btn">Photography</a>
             </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 Aaron Doucett. All rights reserved.</p>
-    </footer>
-
-    <!-- Mapbox GL JS -->
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
-    <script src="js/script.js"></script>
-</body>
+            <div class="gallery">
+               <div class="gallery-item">
+                  <img src="images/uploads/placeholder.jpg" alt="A stunning landscape capturing the essence of nature.">
+               </div>
+               <div class="gallery-item">
+                  <img src="images/uploads/placeholder.jpg" alt="Urban photography showcasing city life dynamics.">
+               </div>
+               <div class="gallery-item">
+                  <img src="images/uploads/placeholder.jpg" alt="Night photography with vibrant city lights.">
+               </div>
+               <div class="gallery-item">
+                  <img src="images/uploads/placeholder.jpg" alt="Aerial shots highlighting geographical features.">
+               </div>
+            </div>
+         </section>
+      </main>
+      <footer>
+         <p>&copy; 2024 Aaron Doucett. All rights reserved.</p>
+      </footer>
+      <!-- Mapbox GL JS -->
+      <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+      <script src="js/script.js"></script>
+   </body>
 </html>
