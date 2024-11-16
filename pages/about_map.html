@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Life Story Map Tour</title>
+    <!-- Mapbox GL JS CSS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <!-- Scrollama.js CSS (optional, for styling steps) -->
+    <style>
+
+    /* Import Geologica Font */
+    @import url('https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&display=swap');
+    
+    @font-face {
+        font-family: 'dinpro_bold';
+        src: url('../data/fonts/dinpro_bold.woff2') format('woff2'),
+            url('../data/fonts/dinpro_bold.woff') format('woff');
+        font-weight: 100;
+        font-style: normal;
+        font-display: swap;
+    }
+            
+    body, html {
+        margin: 0;
+        padding: 0;
+        margin-right:2rem;
+        height: 100%;
+        font-family: 'dinpro_bold', sans-serif; /* Modern bold sans-serif font */
+        overflow: hidden;
+        font-weight: 800;
+    }
+    /* Map Container */
+    #map {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 1;
+    }
+    /* Scroll Container */
+    .scroll-container {
+        position: relative;
+        height: 100vh;
+        width: 100%;
+        overflow-y: scroll;
+        z-index: 2;
+
+        /* Hide scrollbar for WebKit browsers */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;  /* IE and Edge */
+    }
+
+    /* Hide scrollbar for WebKit browsers */
+    .scroll-container::-webkit-scrollbar {
+        display: none;
+    }
+    /* Steps */
+    .step {
+        position: relative;
+        min-height: 100vh;
+        padding: 20vh 10%;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .step.active .caption {
+        opacity: 1;
+        font-size: 4rem;
+        transform: translateY(0);
+    }
+    .step .caption {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) translateY(50px);
+        color: white;
+        text-align: left;
+        font-size: 3em; /* Larger text */
+        font-weight: 900; /* More bold */
+        text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+        opacity: 0;
+        transition: opacity 1s ease-out, transform 1s ease-out;
+        pointer-events: none;
+        width: 80%;
+        max-width: 90%; /* Prevent text from overflowing */
+        padding: 0 1rem; /* Add horizontal padding */
+        box-sizing: border-box; /* Include padding in width */
+    }
+    /* Progress Bar */
+    .progress-container {
+        position: fixed;
+        opacity: 0.8;
+        top: 10px;
+        left: 10%;
+        width: 80%;
+        height: 5px;
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 2.5px;
+        z-index: 3;
+    }
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background-color: #ff5722;
+        border-radius: 2.5px;
+        transition: width 0.5s ease-out;
+    }
+    @media (max-width: 768px) {
+        .step .caption {
+            font-size: 2em;
+            max-width: 95%; /* Adjust max-width for smaller screens */
+        }
+    }
+    </style>
+</head>
+<body>
+
+    <!-- Map Container -->
+    <div id="map"></div>
+    
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <!-- Scroll Container -->
+    <div class="scroll-container" id="scroll">
+        <!-- Step 1 -->
+        <div class="step" data-step="0">
+            <div class="caption">I was born here</div>
+        </div>
+        <!-- Step 2 -->
+        <div class="step" data-step="1">
+            <div class="caption">I grew up here</div>
+        </div>
+        <!-- Step 3 -->
+        <div class="step" data-step="2">
+            <div class="caption">I started college here</div>
+        </div>
+        <!-- Step 4 -->
+        <div class="step" data-step="3">
+            <div class="caption">I finished college here</div>
+        </div>
+        <!-- Step 5 -->
+        <div class="step" data-step="4">
+            <div class="caption">Then lived here</div>
+        </div>
+        <!-- Step 6 -->
+        <div class="step" data-step="5">
+            <div class="caption">I've traveled here...</div>
+        </div>
+        <!-- Step 7 -->
+        <div class="step" data-step="6">
+            <div class="caption">Currently living here</div>
+        </div>
+    </div>
+
+    <!-- Mapbox GL JS -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <!-- Scrollama.js -->
+    <script src="https://unpkg.com/scrollama"></script>
+    <script>
+        // Mapbox Access Token
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY2lvZDFsc2lwMDRnd3Zha2pneWpxcHh6biJ9.sbWgw2zPGyScsp-r4CYQnA';
+
+        // Initialize the map
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/adoucett/cm3kgcgjr000y01qn6xn20cvq',
+            center: [-72.85696, 42.40966], // Initial center [lng, lat]
+            zoom: 11.18,
+            bearing: -8.8,
+            pitch: 5,
+            interactive: false, // Disable all interactive controls
+            // Alternatively, you can disable specific interactions:
+            // scrollZoom: false,
+            // boxZoom: false,
+            // dragRotate: false,
+            // dragPan: false,
+            // keyboard: false,
+            // doubleClickZoom: false,
+            // touchZoomRotate: false,
+        });
+
+        // Define waypoints
+        const waypoints = [
+            {
+                zoom: 12.18,
+                center: [-72.85696, 42.40966],
+                bearing: -8.8,
+                pitch: 5,
+                caption: "I was born here"
+            },
+            {
+                zoom: 13.03,
+                center: [-72.66772, 42.3134],
+                bearing: -8.8,
+                pitch: 5,
+                caption: "I grew up here"
+            },
+            {
+                zoom: 15.05,
+                center: [-73.12195, 40.9195],
+                bearing: 131.3,
+                pitch: 51,
+                caption: "I started college here"
+            },
+            {
+                zoom: 15.52,
+                center: [-72.52871, 42.389237],
+                bearing: -8.8,
+                pitch: 49,
+                caption: "I finished college here"
+            },
+            {
+                zoom: 12.81,
+                center: [-71.09952, 42.36705],
+                bearing: 16.5,
+                pitch: 31,
+                caption: "Then lived here"
+            },
+            {
+                zoom: 4.06,
+                center: [-88.47, 39.62],
+                bearing: 0,
+                pitch: 0,
+                caption: "I've traveled here..."
+            },
+            {
+                zoom: 12.15,
+                center: [-90.26756, 38.62457],
+                bearing: 8.8,
+                pitch: 0,
+                caption: "Currently living here"
+            }
+        ];
+
+        // Initialize Scrollama
+        const scroller = scrollama();
+
+        // Setup Scrollama
+        scroller
+            .setup({
+                step: '.step',
+                offset: 0.5, // Trigger when the step is in the middle of the viewport
+                debug: false
+            })
+            .onStepEnter(response => {
+                const index = parseInt(response.element.getAttribute('data-step'));
+                flyToWaypoint(index);
+                updateProgressBar(index);
+                setActiveStep(index);
+            });
+
+        // Define waypoints index
+        let currentIndex = 0;
+
+        // Fly to the current waypoint
+        function flyToWaypoint(index) {
+            const wp = waypoints[index];
+            map.flyTo({
+                center: wp.center,
+                zoom: wp.zoom,
+                bearing: wp.bearing,
+                pitch: wp.pitch,
+                speed: 0.8, // Reduced speed for slower animation
+                essential: true
+            });
+        }
+
+        // Update Progress Bar
+        function updateProgressBar(index) {
+            const progress = ((index + 1) / waypoints.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // Set Active Step for Caption Animation
+        function setActiveStep(index) {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((step, i) => {
+                if (i === index) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize the first waypoint when the map is loaded
+        map.on('load', () => {
+            flyToWaypoint(currentIndex);
+            updateProgressBar(currentIndex);
+            setActiveStep(currentIndex);
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', scroller.resize);
+    </script>
+</body>
+</html>
