@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>My Life Story Map Tour</title>
     <!-- Mapbox GL JS CSS -->
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet">
     <!-- Scrollama.js CSS (optional, for styling steps) -->
     <style>
         body, html {
@@ -139,11 +139,11 @@
         <div class="step" data-step="4">
             <div class="caption">Then lived here</div>
         </div>
-        <!-- Step 6: St. Louis Scene with Run Animation -->
+        <!-- Step 6 -->
         <div class="step" data-step="5">
             <div class="caption">I've traveled here...</div>
         </div>
-        <!-- Step 7 -->
+        <!-- Step 7: Currently Living Here with Run Animation -->
         <div class="step" data-step="6">
             <div class="caption">Currently living here</div>
         </div>
@@ -237,8 +237,8 @@
                 updateProgressBar(index);
                 setActiveStep(index);
 
-                // Trigger run animation on Step 6 (index 5)
-                if(index === 5){
+                // Trigger run animation on Step 7 (index 6)
+                if(index === 6){
                     startRunAnimation();
                 } else {
                     stopRunAnimation();
@@ -293,68 +293,71 @@
 
         // Variables for Run Animation
         let runData = null; // To store fetched GeoJSON
-        let groupedRuns = []; // Array of runs grouped by day
         let currentDayIndex = 0;
-        let animationFrameId = null;
         let runLayerId = 'runs-animation-layer';
         let runSourceId = 'runs-animation-source';
         let laserMarker = null;
-        let laserAnimationStep = 0;
-        let laserAnimationSpeed = 50; // Adjust for animation speed (milliseconds)
+        let animationInterval = null; // To control the animation
 
         // Fetch and prepare the GeoJSON data
         async function fetchRunData() {
             try {
-                const response = await fetch('https://raw.githubusercontent.com/Adoucett/homepage/refs/heads/main/data/json/runs_animation.json');
-                runData = await response.json();
+                console.log('Fetching run data...');
+                const response = await fetch('https://doucett.net/data/json/runs_animation.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const rawData = await response.json();
 
-                // Preprocess data: group coordinates by day
-                groupedRuns = groupRunsByDate(runData.features[0]);
+                // Preprocess data: group by date
+                runData = groupRunsByDate(rawData.features);
+                console.log('Run data fetched and grouped by date:', runData);
             } catch (error) {
                 console.error('Error fetching run data:', error);
             }
         }
 
-        // Group runs by date based on the 'times' array
-        function groupRunsByDate(feature) {
-            const times = feature.properties.times; // Array of timestamp strings
-            const coordinates = feature.geometry.coordinates; // Array of [lng, lat]
-
-            if(times.length !== coordinates.length){
-                console.error('Mismatch between times and coordinates lengths.');
-                return [];
-            }
-
-            const runsByDate = {};
-            for(let i = 0; i < times.length; i++){
-                const date = new Date(times[i]).toISOString().split('T')[0]; // Extract YYYY-MM-DD
-                if(!runsByDate[date]){
-                    runsByDate[date] = [];
+        // Group runs by date (ignoring time)
+        function groupRunsByDate(features) {
+            const grouped = {};
+            features.forEach(feature => {
+                const runStartTime = feature.properties.run_start_time;
+                const date = new Date(runStartTime).toISOString().split('T')[0]; // Extract date part
+                if(!grouped[date]){
+                    grouped[date] = [];
                 }
-                runsByDate[date].push(coordinates[i]);
-            }
-
+                grouped[date].push(feature);
+            });
             // Convert to sorted array
-            const sortedDates = Object.keys(runsByDate).sort((a, b) => new Date(a) - new Date(b));
+            const sortedDates = Object.keys(grouped).sort((a, b) => new Date(a) - new Date(b));
             return sortedDates.map(date => ({
                 date: date,
-                coordinates: runsByDate[date]
+                features: grouped[date]
             }));
         }
 
         // Start the run animation
         async function startRunAnimation(){
+            console.log('Starting run animation...');
             if(!runData){
                 await fetchRunData();
-                addRunLayer();
+                if(!runData || runData.length === 0){
+                    console.error('No run data available to animate.');
+                    return;
+                }
+                addRunLayers();
             }
             currentDayIndex = 0;
-            animateRun();
+            animateDayRun();
         }
 
         // Stop the run animation
         function stopRunAnimation(){
-            cancelAnimationFrame(animationFrameId);
+            console.log('Stopping run animation...');
+            if(animationInterval){
+                clearInterval(animationInterval);
+                animationInterval = null;
+            }
             // Remove run layers and markers
             if(map.getLayer(runLayerId)){
                 map.removeLayer(runLayerId);
@@ -366,10 +369,11 @@
                 laserMarker.remove();
                 laserMarker = null;
             }
+            runData = null; // Reset run data
         }
 
-        // Add run layer to the map
-        function addRunLayer(){
+        // Add run layers to the map
+        function addRunLayers(){
             if(map.getSource(runSourceId)) return;
 
             map.addSource(runSourceId, {
@@ -389,61 +393,100 @@
                     'line-join': 'round'
                 },
                 paint: {
-                    'line-color': '#00f',
-                    'line-width': 4
+                    'line-color': '#36F7E9',
+                    'line-width': 8,
+                    'line-opacity': .8,
+                    'line-blur' : .2
+                
                 }
             });
         }
 
-        // Animate the run
-        function animateRun(){
-            if(currentDayIndex >= groupedRuns.length){
+        // Animate runs day by day
+        function animateDayRun(){
+            if(currentDayIndex >= runData.length){
                 currentDayIndex = 0; // Loop the animation
             }
-            const dayRun = groupedRuns[currentDayIndex];
-            const dayCoordinates = dayRun.coordinates;
+            const dayRun = runData[currentDayIndex];
+            const dayFeatures = dayRun.features;
+            console.log(`Animating runs for date: ${dayRun.date}, number of runs: ${dayFeatures.length}`);
 
-            // Update the source with the day's run
-            map.getSource(runSourceId).setData({
-                type: 'FeatureCollection',
-                features: [{
-                    type: 'Feature',
-                    geometry: {
-                        type: 'LineString',
-                        coordinates: dayCoordinates
-                    }
-                }]
-            });
+            // Iterate through each run of the day sequentially
+            let runIndex = 0;
 
-            // Add or update the laser marker
-            const firstCoord = dayCoordinates[0];
-            if(!laserMarker){
-                laserMarker = new mapboxgl.Marker({
-                    element: createLaserElement(),
-                    anchor: 'bottom'
-                })
-                .setLngLat(firstCoord)
-                .addTo(map);
-            } else {
-                laserMarker.setLngLat(firstCoord);
-            }
-
-            // Reset animation step
-            laserAnimationStep = 0;
-
-            // Start moving the laser marker along the day's path
-            function moveLaser(){
-                if(laserAnimationStep < dayCoordinates.length){
-                    laserMarker.setLngLat(dayCoordinates[laserAnimationStep]);
-                    laserAnimationStep++;
-                    animationFrameId = setTimeout(moveLaser, laserAnimationSpeed);
-                } else {
+            function animateSingleRun(){
+                if(runIndex >= dayFeatures.length){
+                    // Proceed to next day after all runs of the day are animated
                     currentDayIndex++;
-                    animationFrameId = requestAnimationFrame(animateRun);
+                    animateDayRun(); // Recursive call for the next day
+                    return;
                 }
+
+                const runFeature = dayFeatures[runIndex];
+                animateRunFeature(runFeature).then(() => {
+                    runIndex++;
+                    animateSingleRun(); // Animate the next run
+                });
             }
 
-            moveLaser();
+            animateSingleRun();
+        }
+
+        // Animate a single run feature
+        function animateRunFeature(feature){
+            return new Promise((resolve) => {
+                const coordinates = feature.geometry.coordinates;
+                if(coordinates.length < 2){
+                    console.warn('Run feature has insufficient coordinates:', feature);
+                    resolve();
+                    return;
+                }
+
+                // Initialize animation parameters
+                let step = 0;
+                const totalSteps = coordinates.length;
+                const animationSpeed = 10; // Adjust speed (ms per step)
+
+                // Function to update the run line and move the marker
+                function animateStep(){
+                    // Update the run line with coordinates up to current step
+                    const slicedCoords = coordinates.slice(0, step + 1);
+                    map.getSource(runSourceId).setData({
+                        type: 'FeatureCollection',
+                        features: [{
+                            type: 'Feature',
+                            geometry: {
+                                type: 'LineString',
+                                coordinates: slicedCoords
+                            },
+                            properties: {}
+                        }]
+                    });
+
+                    // Move the laser marker to the current coordinate
+                    if(!laserMarker){
+                        laserMarker = new mapboxgl.Marker({
+                            element: createLaserElement(),
+                            anchor: 'bottom'
+                        })
+                        .setLngLat(slicedCoords[step])
+                        .addTo(map);
+                    } else {
+                        laserMarker.setLngLat(slicedCoords[step]);
+                    }
+
+                    step++;
+
+                    if(step < totalSteps){
+                        animationInterval = setTimeout(animateStep, animationSpeed);
+                    } else {
+                        // Brief pause before resolving to ensure the last point is visible
+                        animationInterval = setTimeout(resolve, animationSpeed);
+                    }
+                }
+
+                animateStep();
+            });
         }
 
         // Create the laser marker element
@@ -453,7 +496,7 @@
             return el;
         }
 
-        // Initialize the run data
+        // Initial fetch of run data
         fetchRunData();
 
     </script>
