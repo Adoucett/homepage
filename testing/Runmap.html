@@ -348,7 +348,7 @@
 
         // Function to simplify coordinates using Simplify.js
         function simplifyCoordinates(coordinates) {
-            const tolerance = 0.0001; // Reduced tolerance for less simplification
+            const tolerance = 0.00005; // Reduced tolerance for less simplification
             const highQuality = true; // Keep the shape
             const points = coordinates.map(coord => ({x: coord[1], y: coord[0]})); // Swap if necessary
             const simplified = simplify(points, tolerance, highQuality);
