@@ -475,9 +475,9 @@
             });
 
             // Add tile layer
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png', {
                 maxZoom: 18,
-                attribution: '© OpenStreetMap'
+                attribution: '©'
             }).addTo(map);
 
             // Simplify coordinates
