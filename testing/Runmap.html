@@ -398,9 +398,9 @@
             });
 
             // Add tile layer
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}.png', {
                 maxZoom: 18,
-                attribution: '© OpenStreetMap'
+                attribution: '©'
             }).addTo(modalMapInstance);
 
             // Simplify coordinates
