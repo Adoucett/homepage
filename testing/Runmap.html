@@ -56,7 +56,7 @@
         /* Runs Grid Container */
         #runs-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
             padding: 20px;
             flex: 1;
@@ -86,6 +86,26 @@
             left: 0;
             width: 100%;
             height: 100%;
+        }
+
+        /* Overlay for Hover */
+        .run-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 10px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .run-card:hover .run-overlay {
+            opacity: 1;
         }
 
         /* Modal Styles */
@@ -142,7 +162,7 @@
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             #runs-container {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
                 gap: 15px;
                 padding: 15px;
             }
@@ -184,41 +204,278 @@
 
     <!-- Custom JavaScript -->
     <script>
-        // URLs of GeoJSON files
-        const geojsonUrls = [
-            'https://doucett.net/data/json/strava/smashrun__part1.geojson',
-            'https://doucett.net/data/json/strava/smashrun__part2.geojson',
-            'https://doucett.net/data/json/strava/smashrun__part3.geojson',
-            'https://doucett.net/data/json/strava/smashrun__part4.geojson',
-            'https://doucett.net/data/json/strava/smashrun__part5.geojson',
-            'https://doucett.net/data/json/strava/smashrun__part6.geojson'
-        ];
+        // URLs of GeoJSON files (38 files)
+        const geojsonUrls = Array.from({ length: 38 }, (_, i) => 
+            `https://doucett.net/data/json/strava/smashrun_part${i + 1}.geojson` // Ensure single underscore
+        );
 
         let allRuns = [];
         let mapCounter = 0; // To ensure unique map IDs
 
-        // Utility function to fetch all GeoJSON data
-        async function fetchAllGeoJSON(urls) {
-            const allFeatures = [];
-            for (const url of urls) {
+
+        // Define the simplifyCoordinates function
+        function simplifyCoordinates(coordinates) {
+            const tolerance = 0.00005; // Adjust tolerance as needed
+            const highQuality = true; // Keep the shape
+            const points = coordinates.map(coord => ({x: coord[1], y: coord[0]})); // Swap to [lat, lng]
+            const simplified = simplify(points, tolerance, highQuality);
+            return simplified.map(pt => [pt.x, pt.y]);
+        }
+
+
+        // Function to compute the centroid of a set of coordinates
+        function getCentroid(coordinates) {
+            let sumLat = 0, sumLng = 0;
+            coordinates.forEach(coord => {
+                sumLat += coord[1];
+                sumLng += coord[0];
+            });
+            return [sumLat / coordinates.length, sumLng / coordinates.length];
+        }
+
+        // Initialize the modal elements
+        const modal = document.getElementById('run-modal');
+        const closeButton = document.querySelector('.close-button');
+        const modalMapDiv = document.getElementById('modal-map');
+        const modalInfoDiv = document.getElementById('modal-info');
+        let modalMapInstance = null; // To keep track of the modal map instance
+
+        // Function to open modal with run details
+        function openModal(run, bounds) {
+            // Display run information
+            const runDate = new Date(run.properties.run_start_time);
+            const formattedDate = runDate.toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+
+            modalInfoDiv.innerHTML = `
+                <h2>Run on ${formattedDate}</h2>
+                <p>File: ${run.properties.file_name}</p>
+            `;
+
+            // Show modal first to ensure it's visible before initializing the map
+            modal.style.display = 'flex';
+
+            // Remove existing map instance if any
+            if (modalMapInstance) {
+                modalMapInstance.remove();
+                modalMapInstance = null;
+            }
+
+            // Initialize Leaflet map in modal after a short delay to ensure the modal is rendered
+            setTimeout(() => {
                 try {
-                    const response = await fetch(url);
-                    if (!response.ok) {
-                        console.error(`Failed to fetch ${url}: ${response.statusText}`);
-                        continue;
+                    modalMapInstance = L.map('modal-map', {
+                        center: [0, 0],
+                        zoom: 13, // Adjusted initial zoom for better visibility
+                        dragging: true,
+                        scrollWheelZoom: true,
+                        doubleClickZoom: true,
+                        zoomControl: true,
+                        attributionControl: true,
+                        interactive: true
+                    });
+
+                    // Changed Tile Layer to OpenStreetMap for Better Performance
+
+
+                    L.tileLayer('https://api.mapbox.com/styles/v1/adoucett/cm3l0sy0v00fa01r2g3rrbioy/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY2lvZDFsc2lwMDRnd3Zha2pneWpxcHh6biJ9.sbWgw2zPGyScsp-r4CYQnA', { maxZoom: 18, attribution: '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>' }).addTo(modalMapInstance);
+
+
+                    // Simplify coordinates
+                    const simplifiedCoords = simplifyCoordinates(run.geometry.coordinates);
+
+                    if (simplifiedCoords.length < 2) {
+                        // Not enough points to draw a line
+                        modalInfoDiv.innerHTML += '<p style="color: #888;">Insufficient data to display route.</p>';
+                        return;
                     }
-                    const data = await response.json();
-                    if (data.type === 'FeatureCollection' && Array.isArray(data.features)) {
-                        allFeatures.push(...data.features);
-                        console.log(`Loaded ${data.features.length} features from ${url}`);
+
+                    // Create a polyline
+                    const polyline = L.polyline(simplifiedCoords, {color: '#FF5733', weight: 3}).addTo(modalMapInstance);
+
+                    // Fit map to polyline bounds with some padding
+                    modalMapInstance.fitBounds(polyline.getBounds(), { padding: [50, 50] });
+
+                    // Invalidate Size to Ensure Proper Rendering
+                    modalMapInstance.invalidateSize();
+                } catch (error) {
+                    console.error(`Error initializing modal map: ${error}`);
+                }
+            }, 100); // 100ms delay
+        }
+
+        // Function to close modal
+        function closeModal() {
+            modal.style.display = 'none';
+            modalMapDiv.innerHTML = ''; // Clear previous map container content
+
+            // Remove the modal map instance if it exists
+            if (modalMapInstance) {
+                modalMapInstance.remove();
+                modalMapInstance = null;
+            }
+
+            modalInfoDiv.innerHTML = ''; // Clear previous info
+        }
+
+        // Event listener for close button
+        closeButton.addEventListener('click', closeModal);
+
+        // Event listener for clicks outside the modal content to close modal
+        window.addEventListener('click', (event) => {
+            if (event.target == modal) {
+                closeModal();
+            }
+        });
+
+        // Utility function to fetch all GeoJSON data in parallel
+        async function fetchAllGeoJSON(urls) {
+            const fetchPromises = urls.map(url => fetch(url).then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
+                }
+                return response.json();
+            }));
+            try {
+                const geojsonDataArray = await Promise.all(fetchPromises);
+                return geojsonDataArray.flatMap(data => data.features || []);
+            } catch (error) {
+                console.error('Error fetching GeoJSON data:', error);
+                return [];
+            }
+        }
+
+        // Function to create a run card with hover and click events
+        function createRunCard(run) {
+            const mapId = `map-${mapCounter++}`;
+            const mapDiv = document.createElement('div');
+            mapDiv.id = mapId;
+            mapDiv.className = 'run-map';
+
+            const overlayDiv = document.createElement('div');
+            overlayDiv.className = 'run-overlay';
+            const runDate = new Date(run.properties.run_start_time);
+            const formattedDate = runDate.toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+            overlayDiv.textContent = formattedDate;
+
+            const card = document.createElement('div');
+            card.className = 'run-card';
+            card.appendChild(mapDiv);
+            card.appendChild(overlayDiv);
+
+            // Initialize a Leaflet map inside the card after the div is appended to the DOM
+            // Use requestAnimationFrame to ensure the div is rendered
+            requestAnimationFrame(() => {
+                try {
+                    const map = L.map(mapId, {
+                        center: [0, 0],
+                        zoom: 13,
+                        dragging: false,
+                        scrollWheelZoom: false,
+                        doubleClickZoom: false,
+                        zoomControl: false,
+                        attributionControl: false,
+                        interactive: false
+                    });
+
+                    // Changed Tile Layer to CartoDB Positron for Lightweight Tiles
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                        maxZoom: 18,
+                        attribution: '&copy; <a href="https://carto.com/">CartoDB</a>'
+                    }).addTo(map);
+
+                    // Simplify and draw the polyline
+                    const simplifiedCoords = simplifyCoordinates(run.geometry.coordinates);
+                    if (simplifiedCoords.length > 1) {
+                        const polyline = L.polyline(simplifiedCoords, { color: '#FF5733', weight: 2 }).addTo(map);
+                        map.fitBounds(polyline.getBounds());
+
+                        // Click event to open modal with zoomed view
+                        card.addEventListener('click', () => {
+                            // Compute centroid for centering the modal map
+                            const centroid = getCentroid(run.geometry.coordinates);
+                            openModal(run, polyline.getBounds());
+                        });
                     } else {
-                        console.warn(`Invalid GeoJSON format in ${url}`);
+                        const noDataMessage = document.createElement('p');
+                        noDataMessage.textContent = 'No route data available.';
+                        noDataMessage.style.textAlign = 'center';
+                        noDataMessage.style.color = '#888';
+                        card.appendChild(noDataMessage);
                     }
                 } catch (error) {
-                    console.error(`Error fetching ${url}:`, error);
+                    console.error(`Error initializing map for run: ${error}`);
                 }
+            });
+
+            return card;
+        }
+
+        // Function to display runs
+        function displayRuns(runs) {
+            const container = document.getElementById('runs-container');
+            container.innerHTML = '';
+
+            if (runs.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: red;">No runs available.</p>';
+                return;
             }
-            return allFeatures;
+
+            runs.forEach(run => {
+                const card = createRunCard(run);
+                container.appendChild(card);
+            });
+        }
+
+        // Function to count runs per month/year
+        function countRunsPerMonth(runs) {
+            const counts = {};
+            runs.forEach(run => {
+                const date = new Date(run.properties.run_start_time);
+                const month = date.getMonth(); // 0-11
+                const year = date.getFullYear();
+                const key = `${month} ${year}`;
+                counts[key] = (counts[key] || 0) + 1;
+            });
+
+            // Convert counts to array and sort by year and month descending
+            const countsArray = Object.keys(counts).map(key => {
+                const [month, year] = key.split(' ');
+                return {
+                    month: parseInt(month),
+                    year: parseInt(year),
+                    count: counts[key]
+                };
+            });
+
+            countsArray.sort((a, b) => {
+                if (a.year !== b.year) return b.year - a.year;
+                return b.month - a.month;
+            });
+
+            // Format labels as "Month Year"
+            const formatted = countsArray.map(item => ({
+                label: `${getMonthName(item.month)} ${item.year}`,
+                count: item.count
+            }));
+
+            return formatted;
+        }
+
+        // Function to get month name from month index
+        function getMonthName(monthIndex) {
+            const monthNames = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+            return monthNames[monthIndex];
         }
 
         // Function to initialize the timeline chart
@@ -267,11 +524,11 @@
                         if (elements.length > 0) {
                             const index = elements[0].index;
                             const selectedLabel = labels[index];
-                            const [monthName, year] = selectedLabel.split(' ');
-                            const month = monthIndex(monthName);
-                            const yearInt = parseInt(year);
-                            if (month !== -1 && !isNaN(yearInt)) {
-                                filterAndDisplayRuns(month, yearInt);
+                            const [monthName, yearStr] = selectedLabel.split(' ');
+                            const month = getMonthIndex(monthName);
+                            const year = parseInt(yearStr);
+                            if (month !== -1 && !isNaN(year)) {
+                                filterAndDisplayRuns(month, year);
                             }
                         }
                     }
@@ -280,56 +537,12 @@
         }
 
         // Function to get month index from month name
-        function monthIndex(monthName) {
+        function getMonthIndex(monthName) {
             const monthNames = [
                 'January', 'February', 'March', 'April', 'May', 'June',
                 'July', 'August', 'September', 'October', 'November', 'December'
             ];
             return monthNames.indexOf(monthName);
-        }
-
-        // Function to count runs per month/year
-        function countRunsPerMonth(runs) {
-            const counts = {};
-            runs.forEach(run => {
-                const date = new Date(run.properties.run_start_time);
-                const month = date.getMonth(); // 0-11
-                const year = date.getFullYear();
-                const key = `${month} ${year}`;
-                counts[key] = (counts[key] || 0) + 1;
-            });
-
-            // Convert counts to array and sort by year and month descending
-            const countsArray = Object.keys(counts).map(key => {
-                const [month, year] = key.split(' ');
-                return {
-                    month: parseInt(month),
-                    year: parseInt(year),
-                    count: counts[key]
-                };
-            });
-
-            countsArray.sort((a, b) => {
-                if (a.year !== b.year) return b.year - a.year;
-                return b.month - a.month;
-            });
-
-            // Format labels as "Month Year"
-            const formatted = countsArray.map(item => ({
-                label: `${getMonthName(item.month)} ${item.year}`,
-                count: item.count
-            }));
-
-            return formatted;
-        }
-
-        // Function to get month name from month index
-        function getMonthName(monthIndex) {
-            const monthNames = [
-                'January', 'February', 'March', 'April', 'May', 'June',
-                'July', 'August', 'September', 'October', 'November', 'December'
-            ];
-            return monthNames[monthIndex];
         }
 
         // Function to initialize the timeline selector
@@ -346,209 +559,28 @@
             displayRuns(filteredRuns);
         }
 
-        // Function to simplify coordinates using Simplify.js
-        function simplifyCoordinates(coordinates) {
-            const tolerance = 0.00005; // Reduced tolerance for less simplification
-            const highQuality = true; // Keep the shape
-            const points = coordinates.map(coord => ({x: coord[1], y: coord[0]})); // Swap if necessary
-            const simplified = simplify(points, tolerance, highQuality);
-            return simplified.map(pt => [pt.x, pt.y]);
-        }
-
-        // Modal Elements
-        const modal = document.getElementById('run-modal');
-        const closeButton = document.querySelector('.close-button');
-        const modalMapDiv = document.getElementById('modal-map');
-        const modalInfoDiv = document.getElementById('modal-info');
-        let modalMapInstance = null; // To keep track of the modal map instance
-
-        // Function to open modal with run details
-        function openModal(run) {
-            // Display run information
-            const runDate = new Date(run.properties.run_start_time);
-            const formattedDate = runDate.toLocaleDateString(undefined, {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-
-            modalInfoDiv.innerHTML = `
-                <h2>Run on ${formattedDate}</h2>
-                <p>File: ${run.properties.file_name}</p>
-            `;
-
-            // If a map instance already exists in the modal, remove it
-            if (modalMapInstance) {
-                modalMapInstance.remove();
-                modalMapInstance = null;
-            }
-
-            // Initialize Leaflet map in modal
-            modalMapInstance = L.map('modal-map', {
-                center: [0, 0],
-                zoom: 13,
-                dragging: false,
-                scrollWheelZoom: false,
-                doubleClickZoom: false,
-                zoomControl: false,
-                attributionControl: false,
-                interactive: false
-            });
-
-            // Add tile layer
-            L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-                attribution: '©'
-            }).addTo(modalMapInstance);
-
-            // Simplify coordinates
-            const simplifiedCoords = simplifyCoordinates(run.geometry.coordinates);
-
-            if (simplifiedCoords.length < 2) {
-                // Not enough points to draw a line
-                modalInfoDiv.innerHTML += '<p style="color: #888;">Insufficient data to display route.</p>';
-                return;
-            }
-
-            // Create a polyline
-            const polyline = L.polyline(simplifiedCoords, {color: '#FF5733', weight: 2}).addTo(modalMapInstance);
-
-            // Fit map to polyline bounds
-            modalMapInstance.fitBounds(polyline.getBounds());
-
-            // Show modal
-            modal.style.display = 'flex';
-        }
-
-        // Function to close modal
-        function closeModal() {
-            modal.style.display = 'none';
-            modalMapDiv.innerHTML = ''; // Clear previous map container content
-
-            // Remove the modal map instance if it exists
-            if (modalMapInstance) {
-                modalMapInstance.remove();
-                modalMapInstance = null;
-            }
-
-            modalInfoDiv.innerHTML = ''; // Clear previous info
-        }
-
-        // Event listener for close button
-        closeButton.addEventListener('click', closeModal);
-
-        // Event listener for clicks outside the modal content to close modal
-        window.addEventListener('click', (event) => {
-            if (event.target == modal) {
-                closeModal();
-            }
-        });
-
-        // Function to create and render a Leaflet map for a run
-        function createRunMap(run) {
-            const mapId = `map-${mapCounter++}`; // Ensure unique ID
-            const mapDiv = document.createElement('div');
-            mapDiv.id = mapId;
-            mapDiv.className = 'run-map';
-
-            // Create the run card
-            const card = document.createElement('div');
-            card.className = 'run-card';
-            card.appendChild(mapDiv);
-
-            // Append the card to the DOM first
-            const container = document.getElementById('runs-container');
-            container.appendChild(card);
-
-            // Initialize Leaflet map after the card is in the DOM
-            const map = L.map(mapId, {
-                center: [0, 0],
-                zoom: 13,
-                dragging: false,
-                scrollWheelZoom: false,
-                doubleClickZoom: false,
-                zoomControl: false,
-                attributionControl: false,
-                interactive: false
-            });
-
-            // Add tile layer
-            L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-                attribution: '©'
-            }).addTo(map);
-
-            // Simplify coordinates
-            const simplifiedCoords = simplifyCoordinates(run.geometry.coordinates);
-
-            if (simplifiedCoords.length < 2) {
-                // Not enough points to draw a line
-                const noDataMessage = document.createElement('p');
-                noDataMessage.textContent = 'Insufficient data to display route.';
-                noDataMessage.style.textAlign = 'center';
-                noDataMessage.style.color = '#888';
-                card.appendChild(noDataMessage);
-                return card;
-            }
-
-            // Create a polyline
-            const polyline = L.polyline(simplifiedCoords, {color: '#FF5733', weight: 2}).addTo(map);
-
-            // Fit map to polyline bounds
-            map.fitBounds(polyline.getBounds());
-
-            // Add click event to open modal
-            card.addEventListener('click', () => {
-                openModal(run);
-            });
-
-            return card;
-        }
-
-        // Function to create run cards
-        function createRunCard(run) {
-            return createRunMap(run);
-        }
-
-        // Function to display runs
-        function displayRuns(runs) {
-            const container = document.getElementById('runs-container');
-            container.innerHTML = ''; // Clear previous runs
-
-            if (runs.length === 0) {
-                container.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #888;">No runs found for the selected month and year.</p>';
-                return;
-            }
-
-            runs.forEach(run => {
-                const card = createRunCard(run);
-                if (card) {
-                    container.appendChild(card);
-                }
-            });
-        }
-
-        // Initialize the app
+        // Function to initialize the app
         async function initializeApp() {
             allRuns = await fetchAllGeoJSON(geojsonUrls);
             if (allRuns.length === 0) {
-                document.getElementById('runs-container').innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: red;">Failed to load running data. Please check the GeoJSON URLs.</p>';
+                document.getElementById('runs-container').innerHTML = '<p style="text-align: center; color: red;">Failed to load running data. Please check the GeoJSON URLs.</p>';
                 return;
             }
 
             // Sort runs by date descending
             allRuns.sort((a, b) => new Date(b.properties.run_start_time) - new Date(a.properties.run_start_time));
 
-            // Count runs per month/year
+            // Keep only the first 50 runs for initial display
+            const displayedRuns = allRuns.slice(0, 50);
+
+            // Count runs per month/year from all runs
             const runCounts = countRunsPerMonth(allRuns);
 
             // Initialize timeline
             initializeTimeline(runCounts);
 
-            // Initially display all runs
-            displayRuns(allRuns);
+            // Initially display the latest 50 runs
+            displayRuns(displayedRuns);
         }
 
         // Start the app once DOM is fully loaded
@@ -556,5 +588,6 @@
             initializeApp();
         });
     </script>
+
 </body>
 </html>
