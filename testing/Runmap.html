@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Running Routes Visualization</title>
+    <!-- Google Fonts for Clean Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS from local -->
+    <link rel="stylesheet" href="leaflet.css" />
+    <!-- Custom CSS -->
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header, footer {
+            background-color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        footer {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        /* Timeline Container */
+        #timeline-container {
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px;
+            border-radius: 8px;
+        }
+
+        /* Runs Grid Container */
+        #runs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            flex: 1;
+        }
+
+        /* Run Card Styles */
+        .run-card {
+            position: relative;
+            width: 100%;
+            padding-top: 100%; /* 1:1 Aspect Ratio */
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .run-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .run-map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 800px;
+            width: 90%;
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-button:hover {
+            color: #000;
+        }
+
+        #modal-map {
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        #modal-info {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            #runs-container {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 15px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Running Routes</h1>
+    </header>
+    
+    <div id="timeline-container">
+        <canvas id="timeline-chart" width="400" height="150"></canvas>
+    </div>
+    
+    <div id="runs-container">
+        <!-- Run cards will be dynamically inserted here -->
+    </div>
+    
+    <footer>
+        Created with ❤️ using Leaflet and Chart.js
+    </footer>
+
+    <!-- Modal Structure -->
+    <div id="run-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div id="modal-map" style="width: 100%; height: 400px;"></div>
+            <div id="modal-info"></div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS from local -->
+    <script src="leaflet.js"></script>
+
+    <!-- Chart.js and Simplify.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simplify-js@1.2.4/simplify.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        // URLs of GeoJSON files
+        const geojsonUrls = [
+            'https://doucett.net/data/json/strava/smashrun__part1.geojson',
+            'https://doucett.net/data/json/strava/smashrun__part2.geojson',
+            'https://doucett.net/data/json/strava/smashrun__part3.geojson',
+            'https://doucett.net/data/json/strava/smashrun__part4.geojson',
+            'https://doucett.net/data/json/strava/smashrun__part5.geojson',
+            'https://doucett.net/data/json/strava/smashrun__part6.geojson'
+        ];
+
+        let allRuns = [];
+        let mapCounter = 0; // To ensure unique map IDs
+
+        // Utility function to fetch all GeoJSON data
+        async function fetchAllGeoJSON(urls) {
+            const allFeatures = [];
+            for (const url of urls) {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        console.error(`Failed to fetch ${url}: ${response.statusText}`);
+                        continue;
+                    }
+                    const data = await response.json();
+                    if (data.type === 'FeatureCollection' && Array.isArray(data.features)) {
+                        allFeatures.push(...data.features);
+                        console.log(`Loaded ${data.features.length} features from ${url}`);
+                    } else {
+                        console.warn(`Invalid GeoJSON format in ${url}`);
+                    }
+                } catch (error) {
+                    console.error(`Error fetching ${url}:`, error);
+                }
+            }
+            return allFeatures;
+        }
+
+        // Function to initialize the timeline chart
+        function initializeTimelineChart(runCounts) {
+            const ctx = document.getElementById('timeline-chart').getContext('2d');
+            const labels = runCounts.map(item => item.label);
+            const data = runCounts.map(item => item.count);
+
+            const timelineChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Number of Runs',
+                        data: data,
+                        backgroundColor: '#FF5733',
+                        borderColor: '#FF5733',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Runs: ${context.parsed.y}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                maxRotation: 90,
+                                minRotation: 45
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            precision:0
+                        }
+                    },
+                    onClick: (evt, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const selectedLabel = labels[index];
+                            const [monthName, year] = selectedLabel.split(' ');
+                            const month = monthIndex(monthName);
+                            const yearInt = parseInt(year);
+                            if (month !== -1 && !isNaN(yearInt)) {
+                                filterAndDisplayRuns(month, yearInt);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to get month index from month name
+        function monthIndex(monthName) {
+            const monthNames = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+            return monthNames.indexOf(monthName);
+        }
+
+        // Function to count runs per month/year
+        function countRunsPerMonth(runs) {
+            const counts = {};
+            runs.forEach(run => {
+                const date = new Date(run.properties.run_start_time);
+                const month = date.getMonth(); // 0-11
+                const year = date.getFullYear();
+                const key = `${month} ${year}`;
+                counts[key] = (counts[key] || 0) + 1;
+            });
+
+            // Convert counts to array and sort by year and month descending
+            const countsArray = Object.keys(counts).map(key => {
+                const [month, year] = key.split(' ');
+                return {
+                    month: parseInt(month),
+                    year: parseInt(year),
+                    count: counts[key]
+                };
+            });
+
+            countsArray.sort((a, b) => {
+                if (a.year !== b.year) return b.year - a.year;
+                return b.month - a.month;
+            });
+
+            // Format labels as "Month Year"
+            const formatted = countsArray.map(item => ({
+                label: `${getMonthName(item.month)} ${item.year}`,
+                count: item.count
+            }));
+
+            return formatted;
+        }
+
+        // Function to get month name from month index
+        function getMonthName(monthIndex) {
+            const monthNames = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+            return monthNames[monthIndex];
+        }
+
+        // Function to initialize the timeline selector
+        function initializeTimeline(runCounts) {
+            initializeTimelineChart(runCounts);
+        }
+
+        // Function to filter and display runs based on month and year
+        function filterAndDisplayRuns(month, year) {
+            const filteredRuns = allRuns.filter(run => {
+                const date = new Date(run.properties.run_start_time);
+                return date.getMonth() === month && date.getFullYear() === year;
+            });
+            displayRuns(filteredRuns);
+        }
+
+        // Function to simplify coordinates using Simplify.js
+        function simplifyCoordinates(coordinates) {
+            const tolerance = 0.0001; // Reduced tolerance for less simplification
+            const highQuality = true; // Keep the shape
+            const points = coordinates.map(coord => ({x: coord[1], y: coord[0]})); // Swap if necessary
+            const simplified = simplify(points, tolerance, highQuality);
+            return simplified.map(pt => [pt.x, pt.y]);
+        }
+
+        // Modal Elements
+        const modal = document.getElementById('run-modal');
+        const closeButton = document.querySelector('.close-button');
+        const modalMapDiv = document.getElementById('modal-map');
+        const modalInfoDiv = document.getElementById('modal-info');
+        let modalMapInstance = null; // To keep track of the modal map instance
+
+        // Function to open modal with run details
+        function openModal(run) {
+            // Display run information
+            const runDate = new Date(run.properties.run_start_time);
+            const formattedDate = runDate.toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            modalInfoDiv.innerHTML = `
+                <h2>Run on ${formattedDate}</h2>
+                <p>File: ${run.properties.file_name}</p>
+            `;
+
+            // If a map instance already exists in the modal, remove it
+            if (modalMapInstance) {
+                modalMapInstance.remove();
+                modalMapInstance = null;
+            }
+
+            // Initialize Leaflet map in modal
+            modalMapInstance = L.map('modal-map', {
+                center: [0, 0],
+                zoom: 13,
+                dragging: false,
+                scrollWheelZoom: false,
+                doubleClickZoom: false,
+                zoomControl: false,
+                attributionControl: false,
+                interactive: false
+            });
+
+            // Add tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '© OpenStreetMap'
+            }).addTo(modalMapInstance);
+
+            // Simplify coordinates
+            const simplifiedCoords = simplifyCoordinates(run.geometry.coordinates);
+
+            if (simplifiedCoords.length < 2) {
+                // Not enough points to draw a line
+                modalInfoDiv.innerHTML += '<p style="color: #888;">Insufficient data to display route.</p>';
+                return;
+            }
+
+            // Create a polyline
+            const polyline = L.polyline(simplifiedCoords, {color: '#FF5733', weight: 2}).addTo(modalMapInstance);
+
+            // Fit map to polyline bounds
+            modalMapInstance.fitBounds(polyline.getBounds());
+
+            // Show modal
+            modal.style.display = 'flex';
+        }
+
+        // Function to close modal
+        function closeModal() {
+            modal.style.display = 'none';
+            modalMapDiv.innerHTML = ''; // Clear previous map container content
+
+            // Remove the modal map instance if it exists
+            if (modalMapInstance) {
+                modalMapInstance.remove();
+                modalMapInstance = null;
+            }
+
+            modalInfoDiv.innerHTML = ''; // Clear previous info
+        }
+
+        // Event listener for close button
+        closeButton.addEventListener('click', closeModal);
+
+        // Event listener for clicks outside the modal content to close modal
+        window.addEventListener('click', (event) => {
+            if (event.target == modal) {
+                closeModal();
+            }
+        });
+
+        // Function to create and render a Leaflet map for a run
+        function createRunMap(run) {
+            const mapId = `map-${mapCounter++}`; // Ensure unique ID
+            const mapDiv = document.createElement('div');
+            mapDiv.id = mapId;
+            mapDiv.className = 'run-map';
+
+            // Create the run card
+            const card = document.createElement('div');
+            card.className = 'run-card';
+            card.appendChild(mapDiv);
+
+            // Append the card to the DOM first
+            const container = document.getElementById('runs-container');
+            container.appendChild(card);
+
+            // Initialize Leaflet map after the card is in the DOM
+            const map = L.map(mapId, {
+                center: [0, 0],
+                zoom: 13,
+                dragging: false,
+                scrollWheelZoom: false,
+                doubleClickZoom: false,
+                zoomControl: false,
+                attributionControl: false,
+                interactive: false
+            });
+
+            // Add tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            // Simplify coordinates
+            const simplifiedCoords = simplifyCoordinates(run.geometry.coordinates);
+
+            if (simplifiedCoords.length < 2) {
+                // Not enough points to draw a line
+                const noDataMessage = document.createElement('p');
+                noDataMessage.textContent = 'Insufficient data to display route.';
+                noDataMessage.style.textAlign = 'center';
+                noDataMessage.style.color = '#888';
+                card.appendChild(noDataMessage);
+                return card;
+            }
+
+            // Create a polyline
+            const polyline = L.polyline(simplifiedCoords, {color: '#FF5733', weight: 2}).addTo(map);
+
+            // Fit map to polyline bounds
+            map.fitBounds(polyline.getBounds());
+
+            // Add click event to open modal
+            card.addEventListener('click', () => {
+                openModal(run);
+            });
+
+            return card;
+        }
+
+        // Function to create run cards
+        function createRunCard(run) {
+            return createRunMap(run);
+        }
+
+        // Function to display runs
+        function displayRuns(runs) {
+            const container = document.getElementById('runs-container');
+            container.innerHTML = ''; // Clear previous runs
+
+            if (runs.length === 0) {
+                container.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #888;">No runs found for the selected month and year.</p>';
+                return;
+            }
+
+            runs.forEach(run => {
+                const card = createRunCard(run);
+                if (card) {
+                    container.appendChild(card);
+                }
+            });
+        }
+
+        // Initialize the app
+        async function initializeApp() {
+            allRuns = await fetchAllGeoJSON(geojsonUrls);
+            if (allRuns.length === 0) {
+                document.getElementById('runs-container').innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: red;">Failed to load running data. Please check the GeoJSON URLs.</p>';
+                return;
+            }
+
+            // Sort runs by date descending
+            allRuns.sort((a, b) => new Date(b.properties.run_start_time) - new Date(a.properties.run_start_time));
+
+            // Count runs per month/year
+            const runCounts = countRunsPerMonth(allRuns);
+
+            // Initialize timeline
+            initializeTimeline(runCounts);
+
+            // Initially display all runs
+            displayRuns(allRuns);
+        }
+
+        // Start the app once DOM is fully loaded
+        document.addEventListener("DOMContentLoaded", () => {
+            initializeApp();
+        });
+    </script>
+</body>
+</html>
