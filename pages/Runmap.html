@@ -7,7 +7,7 @@
     <!-- Google Fonts for Clean Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- Leaflet CSS from local -->
-    <link rel="stylesheet" href="leaflet.css" />
+    <link rel="stylesheet" href="../css/leaflet.css" />
     <!-- Custom CSS -->
     <style>
         /* Reset and Base Styles */
@@ -35,7 +35,7 @@
 
         header h1 {
             font-size: 2rem;
-            font-weight: 700;
+            font-weight: 800;
             color: #333;
         }
 
@@ -171,7 +171,7 @@
 </head>
 <body>
     <header>
-        <h1>My Running Routes</h1>
+        <h1>Running Routes from STRAVA</h1>
     </header>
     
     <div id="timeline-container">
@@ -183,7 +183,7 @@
     </div>
     
     <footer>
-        Created with ❤️ using Leaflet and Chart.js
+        Created using Leaflet and Chart.js
     </footer>
 
     <!-- Modal Structure -->
@@ -196,7 +196,7 @@
     </div>
 
     <!-- Leaflet JS from local -->
-    <script src="leaflet.js"></script>
+    <script src="../js/leaflet.js"></script>
 
     <!-- Chart.js and Simplify.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -252,7 +252,6 @@
 
             modalInfoDiv.innerHTML = `
                 <h2>Run on ${formattedDate}</h2>
-                <p>File: ${run.properties.file_name}</p>
             `;
 
             // Show modal first to ensure it's visible before initializing the map
@@ -294,10 +293,10 @@
                     }
 
                     // Create a polyline
-                    const polyline = L.polyline(simplifiedCoords, {color: '#FF5733', weight: 3}).addTo(modalMapInstance);
+                    const polyline = L.polyline(simplifiedCoords, {color: '#FC5200', weight: 3}).addTo(modalMapInstance);
 
                     // Fit map to polyline bounds with some padding
-                    modalMapInstance.fitBounds(polyline.getBounds(), { padding: [50, 50] });
+                    modalMapInstance.fitBounds(polyline.getBounds(), { padding: [25, 25] });
 
                     // Invalidate Size to Ensure Proper Rendering
                     modalMapInstance.invalidateSize();
@@ -492,7 +491,7 @@
                         label: 'Number of Runs',
                         data: data,
                         backgroundColor: '#FF5733',
-                        borderColor: '#FF5733',
+                        borderColor: '#FC5200',
                         borderWidth: 1
                     }]
                 },
