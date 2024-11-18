@@ -9,7 +9,7 @@
     <!-- Leaflet CSS from local -->
     <link rel="stylesheet" href="../css/leaflet.css" />
    
- <!-- Custom CSS -->
+    <!-- Custom CSS -->
     <style>
         /* Reset and Base Styles */
         * {
@@ -45,7 +45,7 @@
             color: #777;
         }
 
-/*         Timeline Container */
+        /* Timeline Container */
         #timeline-container {
             padding: 20px;
             background-color: #ffffff;
@@ -77,36 +77,45 @@
         }
 
         .run-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-6px);  
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
+        } 
 
+
+        /* Map Container */
         .run-map {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 1;
+/*            pointer-events: none; */
         }
 
         /* Overlay for Hover */
         .run-overlay {
             position: absolute;
-            bottom: 0;
+            top: 0; /* Cover from the top */
             left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            padding: 10px;
+            height: 100%; /* Cover the full height */
+            background: transparent; /* No background color */
+            color: rgba(255, 255, 255, 0.6); /* 60% opacity white */
+            font-weight: bold; /* Bold text */
+            font-size: 2rem; /* Adjust font size as needed */
             text-align: center;
             opacity: 0;
             transition: opacity 0.3s;
-            font-weight: bold;
-            font-size: 1.2rem;
+            display: flex; /* Use flexbox for centering */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            z-index: 10; /* Ensure overlay is above the map */
+            pointer-events: none; /* Allow events to pass through */
         }
 
         .run-card:hover .run-overlay {
-            opacity: 1;
+            opacity: 1; /* Show overlay on hover */
         }
 
         /* Modal Styles */
@@ -176,7 +185,7 @@
     </header>
     
     <div id="timeline-container">
-        <canvas id="timeline-chart" width="400" height="150"></canvas>
+        <canvas id="timeline-chart" width="1000" height="200"></canvas>
     </div>
     
     <div id="runs-container">
@@ -199,9 +208,10 @@
     <!-- Leaflet JS from local -->
     <script src="../js/leaflet.js"></script>
 
-    <!-- Chart.js and Simplify.js -->
+    <!-- Chart.js, Simplify.js, and Turf.js via CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simplify-js@1.2.4/simplify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 
     <!-- Custom JavaScript -->
     <script>
@@ -213,6 +223,32 @@
         let allRuns = [];
         let mapCounter = 0; // To ensure unique map IDs
 
+        // Function to compute the distance of a run in miles using Turf.js
+        function computeRunDistance(run) {
+            // Ensure the geometry is a LineString or MultiLineString
+            if (!run.geometry || 
+                (run.geometry.type !== 'LineString' && run.geometry.type !== 'MultiLineString')) {
+                return 0;
+            }
+
+            // Ensure there are enough coordinates to calculate distance
+            const coordinates = run.geometry.coordinates;
+            if (!coordinates || coordinates.length < 2) {
+                return 0;
+            }
+
+            try {
+                // Calculate the length using Turf.js
+                const lengthInKilometers = turf.length(run, { units: 'kilometers' });
+                const lengthInMiles = lengthInKilometers * 0.621371; // Convert km to miles
+
+                // Round to two decimal places
+                return Math.round(lengthInMiles * 100) / 100;
+            } catch (error) {
+                console.error(`Error computing distance for run: ${error}`);
+                return 0;
+            }
+        }
 
         // Define the simplifyCoordinates function
         function simplifyCoordinates(coordinates) {
@@ -222,7 +258,6 @@
             const simplified = simplify(points, tolerance, highQuality);
             return simplified.map(pt => [pt.x, pt.y]);
         }
-
 
         // Function to compute the centroid of a set of coordinates
         function getCentroid(coordinates) {
@@ -250,9 +285,11 @@
                 month: '2-digit',
                 day: '2-digit'
             });
+            const runDistance = run.properties.length_miles || 'N/A';
 
             modalInfoDiv.innerHTML = `
                 <h2>Run on ${formattedDate}</h2>
+                <p>Distance: ${runDistance} miles</p>
             `;
 
             // Show modal first to ensure it's visible before initializing the map
@@ -278,11 +315,11 @@
                         interactive: true
                     });
 
-                    // Changed Tile Layer to OpenStreetMap for Better Performance
-
-
-                    L.tileLayer('https://api.mapbox.com/styles/v1/adoucett/cm3l0sy0v00fa01r2g3rrbioy/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY2lvZDFsc2lwMDRnd3Zha2pneWpxcHh6biJ9.sbWgw2zPGyScsp-r4CYQnA', { maxZoom: 18, attribution: '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>' }).addTo(modalMapInstance);
-
+                    // Changed Tile Layer to your existing basemap
+                    L.tileLayer('https://api.mapbox.com/styles/v1/adoucett/cm3l0sy0v00fa01r2g3rrbioy/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY2lvZDFsc2lwMDRnd3Zha2pneWpxcHh6biJ9.sbWgw2zPGyScsp-r4CYQnA', { 
+                        maxZoom: 18, 
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' 
+                    }).addTo(modalMapInstance);
 
                     // Simplify coordinates
                     const simplifiedCoords = simplifyCoordinates(run.geometry.coordinates);
@@ -341,7 +378,11 @@
             }));
             try {
                 const geojsonDataArray = await Promise.all(fetchPromises);
-                return geojsonDataArray.flatMap(data => data.features || []);
+                // Flatten the array and compute distance for each run
+                return geojsonDataArray.flatMap(data => data.features || []).map(run => {
+                    run.properties.length_miles = computeRunDistance(run);
+                    return run;
+                });
             } catch (error) {
                 console.error('Error fetching GeoJSON data:', error);
                 return [];
@@ -357,13 +398,8 @@
 
             const overlayDiv = document.createElement('div');
             overlayDiv.className = 'run-overlay';
-            const runDate = new Date(run.properties.run_start_time);
-            const formattedDate = runDate.toLocaleDateString(undefined, {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            });
-            overlayDiv.textContent = formattedDate;
+            const runDistance = run.properties.length_miles || 'N/A';
+            overlayDiv.innerHTML = `<div>${runDistance} mi</div>`; // Only display mileage
 
             const card = document.createElement('div');
             card.className = 'run-card';
@@ -385,7 +421,7 @@
                         interactive: false
                     });
 
-                    // Changed Tile Layer to CartoDB Positron for Lightweight Tiles
+                    // Ensure basemap styles are unchanged
                     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                         maxZoom: 18,
                         attribution: '&copy; <a href="https://carto.com/">CartoDB</a>'
@@ -480,10 +516,23 @@
 
         // Function to initialize the timeline chart
         function initializeTimelineChart(runCounts) {
-            const ctx = document.getElementById('timeline-chart').getContext('2d');
+            const canvas = document.getElementById('timeline-chart');
+            const ctx = canvas.getContext('2d');
             const labels = runCounts.map(item => item.label);
             const data = runCounts.map(item => item.count);
 
+            const monthsPerYear = 12;
+            const visibleYears = 3;
+            const visibleMonths = monthsPerYear * visibleYears;
+            const monthWidth = 50; // pixels per month
+            const totalMonths = labels.length;
+            const canvasWidth = totalMonths * monthWidth;
+
+            // Set canvas dimensions before initializing Chart.js
+            canvas.width = canvasWidth;
+            canvas.height = 200; // Set desired height to 200px
+
+           // Initialize Chart.js
             const timelineChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -493,7 +542,8 @@
                         data: data,
                         backgroundColor: '#FF5733',
                         borderColor: '#FC5200',
-                        borderWidth: 1
+                        borderWidth: 2,
+                        barThickness: monthWidth * 0.5 // Set bar width relative to monthWidth
                     }]
                 },
                 options: {
