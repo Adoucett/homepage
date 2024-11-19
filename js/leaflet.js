@@ -1968,7 +1968,7 @@
         Ke = B.extend({
             options: {
                 position: "bottomright",
-                prefix: '<a href="https://leafletjs.com" title=" Strava">' + (b.inlineSvg ? '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><rect width="12" height="8" fill="#005BAC" /><rect x="4" width="1" height="16" fill="#FFCC00" /><rect y="3" width="24" height="1" fill="#FFCC00" /></svg> ' : "") + "Strava</a>"
+                prefix: '<a href="https://leafletjs.com" title=" Strava">' + (b.inlineSvg ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 12 8"><rect width="12" height="8" fill="#005BAC" /><rect x="4" width="1.5" height="16" fill="#FFCC00" /><rect y="3.25" width="24" height="1.5" fill="#FFCC00" /></svg> ' : "") + "Strava</a>"
 
             },
             initialize: function(t) {
