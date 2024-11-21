@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Massachusetts Residential Housing Assessed Values</title>
+    <!-- Mapbox GL JS CSS -->
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <!-- Mapbox Geocoder CSS -->
+    <link href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css' rel='stylesheet' />
+    <style>
+        /* Set the map to full screen */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        /* Description box styling */
+        .description-box {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            max-width: 300px;
+            z-index: 1;
+        }
+        /* Legend styling */
+        .legend {
+            position: absolute;
+            bottom: 30px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            line-height: 18px;
+            color: #333;
+            z-index: 1;
+        }
+        .legend h4 {
+            margin: 0 0 5px 0;
+        }
+        .legend div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .legend div:last-child {
+            margin-bottom: 0;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            border: 1px solid #ccc;
+        }
+        /* Geocoder positioning */
+        .mapboxgl-ctrl-geocoder {
+            min-width: 300px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Description Box -->
+    <div class="description-box">
+        <h3>Massachusetts Residential Housing Assessed Values</h3>
+        <p>This map displays residential housing assessed values across Massachusetts using combined town assessor data.</p>
+    </div>
+
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <!-- Legend -->
+    <div class="legend">
+        <h4>Assessed Value (USD)</h4>
+        <div><div class="legend-color" style="background-color: hsla(0, 81%, 57%, 0.9);"></div>Up to $150,000</div>
+        <div><div class="legend-color" style="background-color: #fee090;"></div>$150,000 - $240,000</div>
+        <div><div class="legend-color" style="background-color: hsl(129, 62%, 57%);"></div>$240,000 - $350,000</div>
+        <div><div class="legend-color" style="background-color: hsl(194, 75%, 44%);"></div>$350,000 - $520,000</div>
+        <div><div class="legend-color" style="background-color: hsl(229, 88%, 24%);"></div>$520,000 - $1,000,000</div>
+        <div><div class="legend-color" style="background-color: hsl(285, 88%, 24%);"></div>Over $1,000,000</div>
+    </div>
+
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <!-- Mapbox Geocoder JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js'></script>
+    <script>
+        // Set your Mapbox access token
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY2lvZDFsc2lwMDRnd3Zha2pneWpxcHh6biJ9.sbWgw2zPGyScsp-r4CYQnA';
+
+        // Initialize the map
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mavalues2024/cm3ruesiq002401s23z251xfj',
+            center: [-71.5, 42.3], // Centered on Massachusetts
+            zoom: 7
+        });
+
+        // Add zoom and rotation controls to the map.
+        map.addControl(new mapboxgl.NavigationControl());
+
+        // Add the geocoder (search bar) to the map
+        const geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            mapboxgl: mapboxgl,
+            marker: false,
+            placeholder: 'Search for places in Massachusetts',
+            bbox: [-73.508142, 41.237964, -69.928393, 42.886589], // Bounding box for Massachusetts
+            proximity: {
+                longitude: -71.5,
+                latitude: 42.3
+            }
+        });
+        map.addControl(geocoder, 'top-right');
+
+        // Adjust map when loaded
+        map.on('load', () => {
+            // If you need to add any additional layers or sources, do it here
+        });
+    </script>
+</body>
+</html>
