@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doucett.net - Media</title>
+    <!-- Shared CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Bangers&family=Caveat&family=Indie+Flower&family=Fredoka+One&family=Lobster&family=Montserrat&family=Oswald&family=Pacifico&family=Raleway&family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Space+Grotesk:wght@400;600&family=Poppins:wght@400;700&family=IBM+Plex+Serif:wght@400;600&family=Rubik:wght@400;700&family=Mulish:wght@400;700&family=Bebas+Neue&family=Lexend:wght@400;600&family=Carter+One&family=Playfair+Display:wght@400;600&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Media Page Specific CSS -->
+    <link rel="stylesheet" href="css/media.css">
+    <!-- Google Fonts: Geologica (consistent with style.css) -->
+    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Favicon (optional) -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Discover Aaron Doucett's media appearances, including news articles, podcast interviews, and video features.">
+    <meta name="keywords" content="Media, Aaron Doucett, News Articles, Podcasts, Videos, Interviews">
+    <meta name="author" content="Aaron Doucett">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css' rel='stylesheet' />
+    <style type="text/css">
+        body, td, th {
+            font-family: 'Geologica', sans-serif;
+        }
+        body {
+            background-color: #333333;
+            margin: 0;
+            padding: 0;
+        }
+        /* Header Styles */
+        header {
+            position: fixed;
+            width: 100%;
+            background: rgba(44, 62, 80, 0.95);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+        
+        .logo {
+            font-family: 'Cera Pro', sans-serif;
+            font-size: 15pt;
+            font-weight: 700;
+            color: #fdf6e3;
+            letter-spacing: 0px;
+        }
+        
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #fdf6e3;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #e67e22;
+            transform: scale(1.05);
+        }
+        
+        .burger {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .burger div {
+            width: 25px;
+            height: 3px;
+            background-color: #fdf6e3;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Hero Section with Background Image */
+        .hero {
+            background-image: url('/images/aboutme-background.jpg'); /* Replace with your background image path */
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+            z-index: 1;
+        }
+        
+        .hero .text-overlay {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #fdf6e3;
+            padding: 2rem;
+        }
+        
+        .hero .text-overlay h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #e67e22;
+        }
+        
+        .hero .text-overlay h2 {
+            font-size: 2rem;
+            color: #fdf6e3;
+        }
+        
+        /* Media Section Styles */
+        .media-section {
+            padding: 4rem 2rem;
+            background-color: #161A1D;
+            color: #fdf6e3;
+        }
+        .media-section h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            color: #e67e22;
+        }
+        .media-list {
+            max-width: 800px;
+            margin: 0 auto;
+            list-style: none;
+            padding: 0;
+        }
+        .media-item {
+            background-color: #2c3e50;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        .media-item:hover {
+            background-color: #34495e;
+        }
+        .media-item a {
+            color: #e67e22;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .media-item a:hover {
+            text-decoration: underline;
+        }
+        .media-description {
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            color: #bdc3c7;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .hero .text-overlay h1 {
+                font-size: 2.5rem;
+            }
+            .hero .text-overlay h2 {
+                font-size: 1.5rem;
+            }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background-color: #2c3e50;
+                position: absolute;
+                top: 60px;
+                right: 0;
+                width: 200px;
+                padding: 1rem;
+                border-radius: 0 0 0 8px;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links li {
+                margin: 1rem 0;
+            }
+            .burger {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero .text-overlay h1 {
+                font-size: 2rem;
+            }
+            .hero .text-overlay h2 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav aria-label="Main Navigation">
+            <div class="logo">Doucett.net</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="geospatial.html">Projects</a></li>                
+                <li><a href="photography.html">Photography</a></li>      
+                <li><a href="media.html" class="active">Media</a></li>
+                <li><a href="resume.html">Resume</a></li>
+            </ul>
+            <button class="burger" aria-label="Toggle Navigation Menu" aria-expanded="false">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section with Background Image -->
+        <section class="hero" id="hero">
+            <div class="overlay"></div>
+            <!-- Text Overlay on Hero -->
+            <div class="text-overlay">
+                <h1>Media</h1>
+                <h2>Featuring my latest appearances and mentions</h2>
+            </div>
+        </section>
+
+        <!-- Media Sections -->
+        <section class="media-section">
+            <h2>News Articles</h2>
+            <ul class="media-list">
+                <li class="media-item">
+                    <a href="https://www.boston.com/real-estate/real-estate-news/2016/05/23/map-shows-property-values-massachusetts/" target="_blank">Boston Glove - Land Parcel Mapping</a>
+                    <p class="media-description">Published in Tech Today, May 2016.</p>
+                </li>
+                <li class="media-item">
+                    <a href="https://www.boston.com/real-estate/real-estate-news/2016/05/23/map-shows-property-values-massachusetts/" target="_blank">MBTA Walking Map Feature</a>
+                    <p class="media-description">Featured in The Boston Globe, January 2015.</p>
+                </li>
+                <!-- Add more news articles as needed -->
+            </ul>
+        </section>
+
+        <section class="media-section">
+            <h2>Podcast Appearances</h2>
+            <ul class="media-list">
+                <li class="media-item">
+                    <a href="https://joshtweeterson.substack.com/p/71-aaron-doucett" target="_blank">Chasing 3 Hours Podcast</a>
+                    <p class="media-description">Episode 45, April 2024.</p>
+                </li>
+
+                <li class="media-item">
+                    <a href="https://youtu.be/v0bkpodQ2-k?si=wEZaoY0PTOA0hmkh" target="_blank">CRW Time Trial Clinic: A Conversation with Aaron Doucett</a>
+                    <p class="media-description">CRW Coaching Series.</p>
+                </li>
+
+                <!-- Add more podcast appearances as needed -->
+            </ul>
+        </section>
+
+        <section class="media-section">
+            <h2>Video Features</h2>
+            <ul class="media-list">
+                <li class="media-item">
+                    <a href="https://www.youtube.com/watch?v=fXayFWSBO1w" target="_blank">Aaron Doucett on Google Maps Data Driven Styling</a>
+                    <p class="media-description">Published on The Mapping Channel - YouTube, March 2023.</p>
+                </li>
+<!--
+                <li class="media-item">
+                    <a href="https://vimeo.com/example-video-2" target="_blank">Innovating with GIS: Insights from Aaron Doucett</a>
+                    <p class="media-description">Featured on Vimeo, January 2024.</p>
+                </li>
+-->
+                <!-- Add more video features as needed -->
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Aaron Doucett. All rights reserved.</p>
+    </footer>
+
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js'></script>
+    <!-- Shared JS -->
+    <script src="js/script.js"></script>
+    <!-- Media Page Specific JS -->
+    <script src="js/media.js"></script>
+
+    <script>
+        const fonts = [
+            'DM+Sans',
+            'Space+Grotesk',
+            'Poppins',
+            'IBM+Plex+Serif',
+            'Rubik',
+            'Mulish',
+            'Bebas+Neue',
+            'Lexend',
+            'Carter+One',
+            'Playfair+Display',
+            'Work+Sans'
+        ];
+
+        fonts.forEach((font) => {
+            const link = document.createElement('link');
+            link.href = `https://fonts.googleapis.com/css2?family=${font.replace(' ', '+')}:wght@400;700&display=swap`;
+            link.rel = 'stylesheet';
+            document.head.appendChild(link);
+        });
+
+        // Burger Menu Toggle
+        const burger = document.querySelector('.burger');
+        const navLinks = document.querySelector('.nav-links');
+
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            burger.classList.toggle('toggle');
+        });
+    </script>
+</body>
+</html>

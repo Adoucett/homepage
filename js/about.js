@@ -9,7 +9,7 @@ const map = new mapboxgl.Map({
     container: 'about-map',
     style: 'mapbox://styles/adoucett/cjeg655wt0i482spoj9gsr10l',
     center: [-74.0060, 40.7128], // Example: New York City coordinates
-    zoom: 9,
+    zoom: 5,
     maxZoom: 12,
     minZoom: 4
 });
