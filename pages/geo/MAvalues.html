@@ -27,7 +27,9 @@
             top: 10px;
             left: 10px;
             background-color: rgba(255, 255, 255, 0.9);
+            opacity: .9;
             padding: 10px;
+            font-size: 0.86rem;
             border-radius: 5px;
             font-family: Arial, sans-serif;
             max-width: 300px;
@@ -52,7 +54,7 @@
         .legend div {
             display: flex;
             align-items: center;
-            margin-bottom: 5px;
+            margin-bottom: 9px;
         }
         .legend div:last-child {
             margin-bottom: 0;
@@ -73,8 +75,12 @@
 
     <!-- Description Box -->
     <div class="description-box">
-        <h3>Massachusetts Residential Housing Assessed Values</h3>
-        <p>This map displays residential housing assessed values across Massachusetts using combined town assessor data.</p>
+        <h3>Massachusetts Residential Housing Values</h3>
+        <p>This map displays over 1 million datapoints representing residential housing values across MA using the latest combined town assessor data.   <br>
+        <span style="font-size: 0.85em; display: block; margin-top: 0.5em;">
+            Price dispalyed is the greataer of either <b>Last Sold </b>or <b>Assessed Value</b>
+        </span>
+</p>
     </div>
 
     <!-- Map Container -->
@@ -104,7 +110,7 @@
             container: 'map',
             style: 'mapbox://styles/mavalues2024/cm3ruesiq002401s23z251xfj',
             center: [-71.5, 42.3], // Centered on Massachusetts
-            zoom: 7
+            zoom: 8
         });
 
         // Add zoom and rotation controls to the map.
