@@ -103,7 +103,7 @@ function setupSlideshow() {
             showSlides(slideIndex);
 
             // Start automatic slideshow
-            slideshowInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+            slideshowInterval = setInterval(nextSlide, 10000); // Change slide every 5 seconds
         })
         .catch(error => console.error('Error loading photos.json for slideshow:', error));
 
