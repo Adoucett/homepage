@@ -5,9 +5,9 @@
     <title>Google Maps Timeline Viewer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Mapbox GL JS CSS -->
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
-    <!-- Flatpickr CSS for Date Picker -->
-    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet">
+    <!-- noUiSlider CSS for Timeline Slider -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css" rel="stylesheet">
     <!-- Mapbox Geocoder CSS -->
     <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" rel="stylesheet">
     <style>
@@ -20,7 +20,7 @@
         }
         #map {
             position: absolute;
-            top: 80px;
+            top: 80px; /* Adjusted to make space for the controls */
             bottom: 0;
             width: 100%;
         }
@@ -40,27 +40,6 @@
             justify-content: space-between;
             z-index: 2;
             flex-wrap: wrap;
-        }
-        #filters {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .filter-group {
-            margin: 5px 10px;
-        }
-        .filter-group label {
-            margin-right: 5px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-        .filter-group input {
-            padding: 5px 10px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            background-color: #333333;
-            color: #ffffff;
-            width: 150px;
         }
         #reset {
             padding: 6px 12px;
@@ -90,17 +69,40 @@
             margin: 0;
             color: #ecf0f1;
         }
+        /* Timeline Slider Styles */
+        #timeline-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(26, 26, 26, 0.95);
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+            z-index: 2;
+        }
+        #timeline-slider {
+            margin: 0 auto;
+            width: 100%;
+        }
+        #current-date {
+            text-align: center;
+            margin-top: 10px;
+            color: #ffffff;
+            font-size: 16px;
+        }
         @media (max-width: 600px) {
             #controls {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            #filters {
-                width: 100%;
-                justify-content: space-between;
+            #reset {
+                margin: 10px 0 0 0;
             }
-            .filter-group {
-                margin: 5px 0;
+            #timeline-container {
+                width: 95%;
             }
         }
     </style>
@@ -108,79 +110,44 @@
 <body>
 
 <div id="controls">
-    <div id="filters">
-        <div class="filter-group">
-            <label for="start-date">Start Date:</label>
-            <input type="text" id="start-date" placeholder="Select start date">
-        </div>
-        <div class="filter-group">
-            <label for="end-date">End Date:</label>
-            <input type="text" id="end-date" placeholder="Select end date">
-        </div>
-    </div>
     <button id="reset">Reset</button>
 </div>
 <div id="map"></div>
+<div id="timeline-container">
+    <div id="timeline-slider"></div>
+    <div id="current-date">Loading...</div>
+</div>
 
 <!-- Mapbox GL JS -->
-<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
-<!-- Flatpickr JS for Date Picker -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js"></script>
+<!-- noUiSlider JS for Timeline Slider -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
 <!-- Mapbox Geocoder Plugin -->
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+
 <script>
     (() => {
         'use strict';
 
         // Mapbox Access Token
-        mapboxgl.accessToken = 'pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY2lvZDFsc2lwMDRnd3Zha2pneWpxcHh6biJ9.sbWgw2zPGyScsp-r4CYQnA'; // Replace with your Mapbox access token
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY2lvZDFsc2lwMDRnd3Zha2pneWpxcHh6biJ9.sbWgw2zPGyScsp-r4CYQnA';
 
         // Elements
-        const startDateInput = document.getElementById('start-date');
-        const endDateInput = document.getElementById('end-date');
         const resetButton = document.getElementById('reset');
-
-        // Default Date Range (one year ago to today)
-        const today = new Date();
-        const oneYearAgo = new Date();
-        oneYearAgo.setFullYear(today.getFullYear() - 1);
+        const timelineSlider = document.getElementById('timeline-slider');
+        const currentDateDisplay = document.getElementById('current-date');
 
         // Data Variables
-        let timelineData = []; // Array to hold all timeline locations
-        let filteredData = []; // Array to hold filtered locations
-
-        // Define updateFilters before using it
-        const updateFilters = () => {
-            const startDate = startDateInput.value ? new Date(startDateInput.value).getTime() : oneYearAgo.getTime();
-            const endDate = endDateInput.value ? new Date(endDateInput.value).getTime() : today.getTime();
-
-            filteredData = timelineData.filter(loc => {
-                return loc.timestamp >= startDate && loc.timestamp <= endDate;
-            });
-
-            addMarkers(filteredData);
-            fitMapToData(filteredData);
-        };
-
-        // Initialize Flatpickr with default dates after defining updateFilters
-        flatpickr(startDateInput, {
-            enableTime: false,
-            dateFormat: "Y-m-d",
-            defaultDate: oneYearAgo,
-            onChange: updateFilters
-        });
-        flatpickr(endDateInput, {
-            enableTime: false,
-            dateFormat: "Y-m-d",
-            defaultDate: today,
-            onChange: updateFilters
-        });
+        let timelineData = [];
+        let sortedData = [];
+        let currentIndex = 0;
+        let movingMarker = null;
 
         // Initialize Map
         const map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/dark-v11', // Dark style
-            center: [-71.5724, 43.2043], // New England center
+            style: 'mapbox://styles/adoucett/cl63y9nt8000415pl43o808a7',
+            center: [-71.5724, 43.2043],
             zoom: 6
         });
 
@@ -193,130 +160,16 @@
         });
         map.addControl(geocoder, 'top-left');
 
-        // Add GeoJSON source for the locations
-        map.on('load', () => {
-            map.addSource('locations', {
-                type: 'geojson',
-                data: {
-                    type: 'FeatureCollection',
-                    features: []
-                },
-                cluster: true,
-                clusterMaxZoom: 14,
-                clusterRadius: 50
-            });
-
-            // Add cluster circles
-            map.addLayer({
-                id: 'clusters',
-                type: 'circle',
-                source: 'locations',
-                filter: ['has', 'point_count'],
-                paint: {
-                    'circle-color': [
-                        'step',
-                        ['get', 'point_count'],
-                        '#51bbd6',   // 1-99 points
-                        100,
-                        '#f1f075',   // 100-749 points
-                        750,
-                        '#f28cb1'    // 750+ points
-                    ],
-                    'circle-radius': [
-                        'step',
-                        ['get', 'point_count'],
-                        15,  // radius for 1-99 points
-                        100,
-                        20,  // radius for 100-749 points
-                        750,
-                        25   // radius for 750+ points
-                    ],
-                    'circle-opacity': 0.75
-                }
-            });
-
-            // Add cluster count labels
-            map.addLayer({
-                id: 'cluster-count',
-                type: 'symbol',
-                source: 'locations',
-                filter: ['has', 'point_count'],
-                layout: {
-                    'text-field': '{point_count_abbreviated}',
-                    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-                    'text-size': 12
-                },
-                paint: {
-                    'text-color': '#000000'
-                }
-            });
-
-            // Add unclustered points
-            map.addLayer({
-                id: 'unclustered-point',
-                type: 'circle',
-                source: 'locations',
-                filter: ['!', ['has', 'point_count']],
-                paint: {
-                    'circle-color': '#2ecc71',
-                    'circle-radius': 6,
-                    'circle-stroke-width': 1,
-                    'circle-stroke-color': '#ffffff'
-                }
-            });
-
-            // Fetch data and initialize map
-            fetchData();
-
-            // Cluster click event to zoom in
-            map.on('click', 'clusters', (e) => {
-                const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
-                const clusterId = features[0].properties.cluster_id;
-                map.getSource('locations').getClusterExpansionZoom(clusterId, (err, zoom) => {
-                    if (err) return;
-                    map.easeTo({
-                        center: features[0].geometry.coordinates,
-                        zoom: zoom
-                    });
-                });
-            });
-
-            // Show popup when an unclustered point is clicked
-            map.on('click', 'unclustered-point', (e) => {
-                const coordinates = e.features[0].geometry.coordinates.slice();
-                const { name, address, timestamp } = e.features[0].properties;
-                const date = new Date(parseInt(timestamp)).toLocaleString();
-
-                new mapboxgl.Popup()
-                    .setLngLat(coordinates)
-                    .setHTML(`<h3>${name}</h3><p>${address}</p><p>${date}</p>`)
-                    .addTo(map);
-            });
-
-            // Change cursor to pointer on hover
-            map.on('mouseenter', 'clusters', () => {
-                map.getCanvas().style.cursor = 'pointer';
-            });
-            map.on('mouseleave', 'clusters', () => {
-                map.getCanvas().style.cursor = '';
-            });
-            map.on('mouseenter', 'unclustered-point', () => {
-                map.getCanvas().style.cursor = 'pointer';
-            });
-            map.on('mouseleave', 'unclustered-point', () => {
-                map.getCanvas().style.cursor = '';
-            });
-        });
-
         // Fetch Timeline Data
         const fetchData = async () => {
             try {
-                const response = await fetch('https://doucett.net/pages/geo/timeline/timeline2.geojson'); // Replace with your GeoJSON file path
+                const response = await fetch('https://doucett.net/pages/geo/timeline/timeline2.geojson');
                 if (!response.ok) throw new Error(`Failed to fetch data: ${response.statusText}`);
                 const data = await response.json();
                 processData(data);
             } catch (error) {
                 console.error('Error fetching timeline data:', error);
+                currentDateDisplay.textContent = 'Failed to load data.';
             }
         };
 
@@ -328,48 +181,154 @@
                     return {
                         latitude: feature.geometry.coordinates[1],
                         longitude: feature.geometry.coordinates[0],
-                        timestamp: loc.timestamp ? parseInt(loc.timestamp) : null,
-                        name: loc.name || 'Unnamed Location',
-                        address: loc.address || 'No address available'
+                        timestamp: new Date(loc.timestamp).getTime()
                     };
-                }).filter(loc => loc.timestamp);
+                });
 
-                // Apply default date filters
-                updateFilters();
+                sortedData = timelineData.sort((a, b) => a.timestamp - b.timestamp);
+                updatePath();
+                initializeSlider();
+            } else {
+                currentDateDisplay.textContent = 'No data available.';
             }
         };
 
-        // Add Markers to the Map
-        const addMarkers = (data) => {
-            const geojson = {
-                type: 'FeatureCollection',
-                features: data.map(loc => ({
-                    type: 'Feature',
-                    geometry: { type: 'Point', coordinates: [loc.longitude, loc.latitude] },
-                    properties: { name: loc.name, address: loc.address, timestamp: loc.timestamp }
-                }))
+        // Update Full Path Layer
+        const updatePath = () => {
+            const coordinates = sortedData.map(loc => [loc.longitude, loc.latitude]);
+            const pathGeoJSON = {
+                type: 'Feature',
+                geometry: {
+                    type: 'LineString',
+                    coordinates
+                }
             };
-            map.getSource('locations').setData(geojson);
+            map.getSource('path').setData(pathGeoJSON);
         };
 
-        // Fit Map to Data Bounds
-        const fitMapToData = (data) => {
-            if (!data.length) return;
-            const bounds = new mapboxgl.LngLatBounds();
-            data.forEach(loc => bounds.extend([loc.longitude, loc.latitude]));
-            map.fitBounds(bounds, { padding: 50 });
-        };
-
-        // Reset Button
-        resetButton.addEventListener('click', () => {
-            if (timelineData.length) {
-                // Reset date pickers to default dates
-                startDateInput._flatpickr.setDate(oneYearAgo, true);
-                endDateInput._flatpickr.setDate(today, true);
-                updateFilters();
+        // Initialize noUiSlider
+        const initializeSlider = () => {
+            if (!sortedData.length) {
+                currentDateDisplay.textContent = 'No data available.';
+                return;
             }
+
+            const defaultDate = new Date('2024-01-01').getTime();
+            const minTimestamp = sortedData[0].timestamp;
+            const maxTimestamp = sortedData[sortedData.length - 1].timestamp;
+
+            noUiSlider.create(timelineSlider, {
+                start: [defaultDate],
+                connect: [true, false],
+                range: {
+                    'min': minTimestamp,
+                    'max': maxTimestamp
+                },
+                step: 24 * 60 * 60 * 1000,
+                tooltips: false,
+                format: {
+                    to: (value) => parseInt(value),
+                    from: (value) => Number(value)
+                }
+            });
+
+            timelineSlider.noUiSlider.on('update', (values, handle) => {
+                const currentTimestamp = Number(values[handle]);
+                updateCurrentPosition(currentTimestamp);
+                updateDateDisplay(currentTimestamp);
+            });
+
+            updateCurrentPosition(defaultDate);
+            updateDateDisplay(defaultDate);
+        };
+
+        // Update Marker and Trail
+        const updateCurrentPosition = (timestamp) => {
+            const currentData = sortedData.filter(loc => loc.timestamp <= timestamp);
+            if (currentData.length === 0) return;
+
+            const latestLoc = currentData[currentData.length - 1];
+            const lngLat = [latestLoc.longitude, latestLoc.latitude];
+            movingMarker.setLngLat(lngLat);
+            map.flyTo({ center: lngLat, zoom: 10 });
+            updateTrail(timestamp);
+        };
+
+        // Update Trail Layer (Last 5 Days)
+        const updateTrail = (timestamp) => {
+            const FIVE_DAYS_MS = 5 * 24 * 60 * 60 * 1000;
+            const trailStartTime = timestamp - FIVE_DAYS_MS;
+            const trailData = sortedData.filter(loc => loc.timestamp >= trailStartTime && loc.timestamp <= timestamp);
+
+            const trailCoordinates = trailData.map(loc => [loc.longitude, loc.latitude]);
+            const trailGeoJSON = {
+                type: 'Feature',
+                geometry: {
+                    type: 'LineString',
+                    coordinates: trailCoordinates
+                }
+            };
+            map.getSource('trail').setData(trailGeoJSON);
+        };
+
+        // Update Date Display
+        const updateDateDisplay = (timestamp) => {
+            currentDateDisplay.textContent = timestamp ? new Date(timestamp).toLocaleDateString() : 'Select a date';
+        };
+
+        // Reset Button Functionality
+        resetButton.addEventListener('click', () => {
+            if (!sortedData.length) return;
+            const minTimestamp = sortedData[0].timestamp;
+            timelineSlider.noUiSlider.set(minTimestamp);
+        });
+
+        // Add Sources and Layers
+        map.on('load', () => {
+            map.addSource('path', {
+                type: 'geojson',
+                data: {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: []
+                    }
+                }
+            });
+
+//            map.addLayer({
+//                id: 'path-line',
+//                type: 'line',
+//                source: 'path',
+//                layout: { 'line-join': 'round', 'line-cap': 'round' },
+//                paint: { 'line-color': '#1abc9c', 'line-width': 4 }
+//            });
+
+            map.addSource('trail', {
+                type: 'geojson',
+                data: {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: []
+                    }
+                }
+            });
+
+            map.addLayer({
+                id: 'trail-line',
+                type: 'line',
+                source: 'trail',
+                layout: { 'line-join': 'round', 'line-cap': 'round' },
+                paint: { 'line-color': 'rgba(231, 76, 60, 0.35)', 'line-width': 12 }
+            });
+
+            movingMarker = new mapboxgl.Marker({ color: '#e74c3c' }).setLngLat([0, 0]).addTo(map);
+            fetchData();
         });
     })();
 </script>
+
+
 </body>
 </html>
