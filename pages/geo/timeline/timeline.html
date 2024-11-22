@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Animated Travel Timeline with Mapbox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Mapbox GL JS CSS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        #map {
+            position: absolute;
+            top: 100px;
+            bottom: 0;
+            width: 100%;
+        }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 2;
+        }
+        #controls > * {
+            margin: 0 10px;
+        }
+        #slider {
+            flex-grow: 1;
+            margin: 0 15px;
+        }
+        #timestamp {
+            font-weight: bold;
+            min-width: 200px;
+            text-align: center;
+        }
+        #play-pause {
+            padding: 8px 16px;
+            background-color: #0078A8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        #play-pause:hover {
+            background-color: #005f80;
+        }
+        #speed-control {
+            display: flex;
+            align-items: center;
+        }
+        #speed-control label {
+            margin-right: 5px;
+            font-weight: bold;
+        }
+        #speed-select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            background-color: #fff;
+        }
+        .mapboxgl-popup {
+            max-width: 250px;
+        }
+        .animated-marker {
+            background-color: rgba(255, 0, 0, 0.8);
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+            transition: transform 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+
+<div id="controls">
+    <button id="play-pause">Play</button>
+    <input type="range" id="slider" min="0" max="100" value="0">
+    <span id="timestamp">Loading...</span>
+    <div id="speed-control">
+        <label for="speed-select">Speed:</label>
+        <select id="speed-select">
+            <option value="1" selected>Normal</option>
+            <option value="2">2x</option>
+            <option value="4">4x</option>
+            <option value="8">8x</option>
+        </select>
+    </div>
+</div>
+<div id="map"></div>
+
+<!-- Mapbox GL JS -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+<script>
+    (() => {
+        'use strict';
+
+        // Mapbox Access Token
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY2lvZDFsc2lwMDRnd3Zha2pneWpxcHh6biJ9.sbWgw2zPGyScsp-r4CYQnA'; // Replace with your Mapbox access token
+
+        // Constants
+        const COLOR_NEW = '#FF0000';
+        const COLOR_OLD = '#FFA500';
+        const FADE_DURATION = 3 * 30 * 24 * 60 * 60 * 1000;
+
+        // Initialize Map
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/dark-v11',
+            center: [-72.5221944, 42.3979614],
+            zoom: 5
+        });
+
+        // Variables for animation
+        let heatmapData = null;
+        let sortedPoints = [];
+        let animationIndex = 0;
+        let animationId = null;
+        let isPlaying = false;
+        let frameInterval = 100;
+        let timeScalingFactor = 1;
+
+        const VISIBLE_TIME_WINDOW = FADE_DURATION;
+        const travelLineGeoJSON = {
+            type: 'FeatureCollection',
+            features: []
+        };
+
+        const slider = document.getElementById('slider');
+        const timestampDisplay = document.getElementById('timestamp');
+        const playPauseButton = document.getElementById('play-pause');
+        const speedSelect = document.getElementById('speed-select');
+
+        const animatedMarkerElement = document.createElement('div');
+        animatedMarkerElement.className = 'animated-marker';
+
+        const animatedMarker = new mapboxgl.Marker({
+            element: animatedMarkerElement,
+            draggable: false
+        });
+
+        // Fetch GeoJSON Data
+        const fetchData = async () => {
+            try {
+                const [pointsResponse, lineResponse] = await Promise.all([
+                    fetch('https://adoucett.github.io/json/timeline2.geojson'),
+                    fetch('https://adoucett.github.io/json/timeline_line.geojson')
+                ]);
+
+                if (!pointsResponse.ok) {
+                    throw new Error(`Failed to fetch timeline2.geojson: ${pointsResponse.statusText}`);
+                }
+                if (!lineResponse.ok) {
+                    throw new Error(`Failed to fetch timeline_line.geojson: ${lineResponse.statusText}`);
+                }
+
+                const points = await pointsResponse.json();
+                const line = await lineResponse.json();
+
+                processData(points, line);
+            } catch (error) {
+                console.error('Error fetching GeoJSON data:', error);
+                timestampDisplay.textContent = 'Failed to load data';
+            }
+        };
+
+        const processData = (points, line) => {
+            heatmapData = points;
+
+            const lineFeatures = line.features;
+            const tempPoints = [];
+
+            lineFeatures.forEach(feature => {
+                const coords = feature.geometry.coordinates;
+                const numCoords = coords.length;
+
+                const startTime = new Date(feature.properties.start_timestamp);
+                const endTime = new Date(feature.properties.end_timestamp);
+                const timeDiff = endTime - startTime;
+                const timeStep = timeDiff / (numCoords - 1);
+
+                for (let i = 0; i < coords.length; i++) {
+                    const coord = coords[i];
+                    const timestamp = new Date(startTime.getTime() + timeStep * i);
+                    tempPoints.push({ coordinates: coord, timestamp: timestamp.getTime() });
+                }
+            });
+
+            sortedPoints = tempPoints.sort((a, b) => a.timestamp - b.timestamp);
+            initializeSlider();
+            map.on('load', () => {
+                addMapLayers();
+                adjustInitialView();
+                addMapInteractivity();
+            });
+        };
+
+        const initializeSlider = () => {
+            const firstTimestamp = sortedPoints[0].timestamp;
+            const lastTimestamp = sortedPoints[sortedPoints.length - 1].timestamp;
+
+            slider.min = firstTimestamp;
+            slider.max = lastTimestamp;
+            slider.value = firstTimestamp;
+
+            const numMonths = Math.ceil((lastTimestamp - firstTimestamp) / (30 * 24 * 60 * 60 * 1000));
+            const interval = (lastTimestamp - firstTimestamp) / numMonths;
+
+            slider.setAttribute('step', interval);
+
+            timestampDisplay.textContent = formatTimestamp(sortedPoints[0].timestamp);
+            animatedMarker.setLngLat(sortedPoints[0].coordinates).addTo(map);
+        };
+
+        const adjustInitialView = () => {
+            const bounds = new mapboxgl.LngLatBounds();
+            sortedPoints.forEach(point => bounds.extend(point.coordinates));
+
+            if (!bounds.isEmpty()) {
+                map.fitBounds(bounds, { padding: 50 });
+            }
+        };
+
+        const formatTimestamp = (timestamp) => {
+            const date = new Date(timestamp);
+            return date.toLocaleString();
+        };
+
+        const flyToLatestMonth = () => {
+            const latestMonthPoints = sortedPoints.filter(point => {
+                const latestTimestamp = sortedPoints[animationIndex].timestamp;
+                return point.timestamp >= latestTimestamp - (30 * 24 * 60 * 60 * 1000);
+            });
+
+            if (latestMonthPoints.length) {
+                const bounds = new mapboxgl.LngLatBounds();
+                latestMonthPoints.forEach(point => bounds.extend(point.coordinates));
+                map.fitBounds(bounds, { padding: 50, duration: 1000 });
+            }
+        };
+
+        const addMapLayers = () => {
+            if (!heatmapData) return;
+
+            map.addSource('heatmap-source', {
+                type: 'geojson',
+                data: heatmapData
+            });
+
+            map.addLayer({
+                id: 'heatmap-layer',
+                type: 'heatmap',
+                source: 'heatmap-source',
+                maxzoom: 15,
+                paint: {
+                    'heatmap-weight': 1,
+                    'heatmap-intensity': 0.6,
+                    'heatmap-color': [
+                        'interpolate', ['linear'], ['heatmap-density'],
+                        0, 'rgba(33,102,172,0)',
+                        0.2, 'rgb(103,169,207)',
+                        0.4, 'rgb(209,229,240)',
+                        0.6, 'rgb(253,219,199)',
+                        0.8, 'rgb(239,138,98)',
+                        1, 'rgb(178,24,43)'
+                    ],
+                    'heatmap-radius': [
+                        'interpolate', ['linear'], ['zoom'],
+                        0, 2, 9, 15
+                    ],
+                    'heatmap-opacity': [
+                        'interpolate', ['linear'], ['zoom'],
+                        7, 0.4, 9, 0.1
+                    ],
+                }
+            });
+
+            map.addSource('travel-line', {
+                type: 'geojson',
+                data: travelLineGeoJSON
+            });
+
+            map.addLayer({
+                id: 'travel-line-layer',
+                type: 'line',
+                source: 'travel-line',
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                paint: {
+                    'line-color': [
+                        'interpolate', ['linear'], ['get', 'ageRatio'],
+                        0, COLOR_NEW, 1, COLOR_OLD
+                    ],
+                    'line-width': 3,
+                    'line-opacity': [
+                        'interpolate', ['linear'], ['get', 'ageRatio'],
+                        0, 1, 1, 0
+                    ]
+                }
+            });
+
+            if (sortedPoints.length > 0) {
+                animatedMarker.setLngLat(sortedPoints[0].coordinates).addTo(map);
+            }
+        };
+
+        const animate = () => {
+            if (animationIndex >= sortedPoints.length) {
+                togglePlayPause(false);
+                return;
+            }
+
+            const currentPoint = sortedPoints[animationIndex];
+            animatedMarker.setLngLat(currentPoint.coordinates);
+
+            flyToLatestMonth();
+            updateTimestampDisplay(currentPoint.timestamp);
+            slider.value = currentPoint.timestamp;
+
+            animationIndex++;
+            animationId = setTimeout(() => {
+                if (isPlaying) {
+                    requestAnimationFrame(animate);
+                }
+            }, frameInterval / timeScalingFactor);
+        };
+
+        const togglePlayPause = (forceState) => {
+            isPlaying = forceState !== undefined ? forceState : !isPlaying;
+            playPauseButton.textContent = isPlaying ? 'Pause' : 'Play';
+
+            if (isPlaying) {
+                animate();
+            } else {
+                clearTimeout(animationId);
+            }
+        };
+
+        playPauseButton.addEventListener('click', () => {
+            togglePlayPause();
+        });
+
+        speedSelect.addEventListener('change', () => {
+            const speedMultiplier = parseFloat(speedSelect.value);
+            timeScalingFactor = !isNaN(speedMultiplier) && speedMultiplier > 0 ? speedMultiplier : 1;
+        });
+
+        const updateTimestampDisplay = (timestamp) => {
+            timestampDisplay.textContent = formatTimestamp(timestamp);
+        };
+
+        fetchData();
+
+    })();
+</script>
+
+</body>
+</html>
