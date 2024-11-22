@@ -9,6 +9,7 @@
     <!-- Mapbox Geocoder CSS -->
     <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" rel="stylesheet">
     <!-- Chart.js CSS (Optional for styling) -->
+
     <style>
         /* Ensure the map fills the entire viewport */
         body, html {
@@ -36,10 +37,11 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            max-width: 320px;
+            max-width: 260px;
             z-index: 2;
             overflow-y: auto;
             max-height: 90%;
+            font-size: .9rem;
             transition: background 0.3s ease;
         }
 
@@ -195,6 +197,23 @@
                 max-width: 250px;
             }
         }
+
+.visualization-mode {
+    margin: 10px 0;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 8px; /* Adds space between the radio button and the label text */
+}
+
+
     </style>
 </head>
 
@@ -216,13 +235,19 @@
             </select>
         </div>
 
-        <div class="visualization-mode">
-            <label>Visualization Mode:</label>
-            <input type="radio" id="thresholdMode" name="vizMode" value="threshold" checked>
-            <label for="thresholdMode">Threshold</label>
-            <input type="radio" id="gradientMode" name="vizMode" value="gradient">
-            <label for="gradientMode">Gradient</label>
-        </div>
+<div class="visualization-mode">
+    <label>Visualization Mode:</label>
+    <div class="radio-group">
+        <label for="thresholdMode">
+            <input type="radio" id="thresholdMode" name="vizMode" value="threshold">
+            Threshold
+        </label>
+        <label for="gradientMode">
+            <input type="radio" id="gradientMode" name="vizMode" value="gradient" checked>
+            Gradient
+        </label>
+    </div>
+</div>
 
         <div class="control-group" id="thresholdControls">
             <label for="minIncome">Minimum Income (Red): <span id="minIncomeValue">$50,000</span></label>
@@ -293,7 +318,7 @@
         // Initial filter values
         let minIncome = 50000; // Minimum Income Threshold (Green Zone)
         let maxIncome = 100000; // Maximum Income Threshold (Red Zone)
-        let visualizationMode = 'threshold'; // 'threshold' or 'gradient'
+        let visualizationMode = 'gradient'; // 'threshold' or 'gradient'
 
         // ** New: Selected Income Field **
         let selectedIncomeField = 'med_income'; // Default field
