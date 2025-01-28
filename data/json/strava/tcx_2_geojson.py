@@ -25,10 +25,12 @@ def parse_time(time_str):
     Raises:
         ValueError: If the time string does not match any known format.
     """
-    # Define possible time formats
+    # Define possible time formats, both with and without 'Z'
     time_formats = [
-        "%Y-%m-%dT%H:%M:%S.%fZ",  # With fractional seconds
-        "%Y-%m-%dT%H:%M:%SZ"      # Without fractional seconds
+        "%Y-%m-%dT%H:%M:%S.%fZ",  # With fractional seconds and 'Z'
+        "%Y-%m-%dT%H:%M:%SZ",     # Without fractional seconds but with 'Z'
+        "%Y-%m-%dT%H:%M:%S.%f",   # With fractional seconds, no 'Z'
+        "%Y-%m-%dT%H:%M:%S"       # Without fractional seconds and no 'Z'
     ]
 
     for fmt in time_formats:
@@ -58,7 +60,7 @@ def parse_tcx(file_path):
         tree = ET.parse(file_path)
         root = tree.getroot()
 
-        # Extract run metadata (e.g., StartTime)
+        # Extract run metadata (e.g., StartTime from <Id>)
         activity = root.find('.//tcx:Activity', namespaces)
         if activity is not None:
             start_time_elem = activity.find('tcx:Id', namespaces)
@@ -101,7 +103,7 @@ def parse_tcx(file_path):
         # Extract coordinates
         coordinates = [[point['longitude'], point['latitude']] for point in data_points]
 
-        # Extract run start time for properties
+        # Extract run start time for properties (from the first data point)
         run_start_time = data_points[0]['time'] if data_points else "Unknown"
 
         # Create run metadata
@@ -147,9 +149,17 @@ def get_file_size_in_mb(data):
 def sort_features_by_date(features):
     """Sort GeoJSON features by 'run_start_time' field if present."""
     try:
-        features.sort(key=lambda x: datetime.fromisoformat(x['properties'].get('run_start_time')), reverse=False)
+        # Replace 'Z' with '+00:00' to make it ISO compliant for datetime.fromisoformat
+        features.sort(
+            key=lambda x: datetime.fromisoformat(
+                x['properties'].get('run_start_time').replace('Z', '+00:00')
+                if x['properties'].get('run_start_time') else ''
+            ),
+            reverse=False
+        )
         print("Sorted features by 'run_start_time' field.")
-    except Exception:
+    except Exception as e:
+        print(f"Error sorting features by 'run_start_time': {e}")
         print("No valid 'run_start_time' field found or unable to sort by date. Skipping sorting.")
 
 def split_geojson(features, max_size_mb):
