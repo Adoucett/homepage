@@ -1,0 +1,417 @@
+/* Reset and Base Styles */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Controls Container */
+#controls {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Basemap Toggle */
+#basemap-toggle {
+  background: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+}
+
+#basemap-toggle label {
+  margin-right: 5px;
+}
+
+#basemap-toggle select {
+  padding: 2px 4px;
+}
+
+/* Geocoder */
+.geocoder {
+  min-width: 300px;
+}
+
+/* Settings Button */
+#settings-btn {
+  background: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+}
+
+#settings-btn:hover {
+  background: #f0f0f0;
+}
+
+/* Settings Modal */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 300px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.close-modal {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+  color: black;
+}
+
+/* Settings Form */
+#settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#settings-form label {
+  font-size: 14px;
+}
+
+#settings-form input,
+#settings-form select {
+  padding: 5px;
+  font-size: 14px;
+}
+
+#settings-form button {
+  padding: 8px;
+  font-size: 14px;
+  background-color: #0065a3;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#settings-form button:hover {
+  background-color: #004970;
+}
+
+/* Info Panel */
+#info-panel {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 320px;
+  max-height: 80%;
+  background: #fff;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
+  border-left: 1px solid #ccc;
+  padding: 0 16px 16px 16px;
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 5;
+}
+
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+#close-panel {
+  background: none;
+  border: none;
+  font-size: 24px;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+#location-coords {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+#reverse-geocode {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+#admin-section {
+  margin-top: 10px;
+}
+
+#admin-section h3 {
+  margin-bottom: 6px;
+}
+
+#admin-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+
+#admin-list li {
+  margin: 4px 0;
+}
+
+#admin-list a {
+  color: #0065a3;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+#admin-list a:hover {
+  color: #004970;
+}
+
+#wikipedia-articles h3 {
+  margin-top: 20px;
+}
+
+#categorized-articles {
+  margin-top: 10px;
+}
+
+.category-group {
+  margin-bottom: 15px;
+}
+
+.category-group h4 {
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.category-group ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.category-group li {
+  margin: 4px 0;
+}
+
+.category-group a {
+  color: #0065a3;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.category-group a:hover {
+  text-decoration: underline;
+}
+
+/* Articles Table Styling */
+.articles-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.articles-table th,
+.articles-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.articles-table th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.articles-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.articles-table tr:hover {
+  background-color: #e6f7ff;
+  cursor: pointer;
+}
+
+.articles-table a {
+  color: #0065a3;
+  text-decoration: none;
+}
+
+.articles-table a:hover {
+  text-decoration: underline;
+}
+
+/* Highlighted Marker */
+.highlight-marker {
+  transform: scale(1.5); /* Example: enlarge the marker */
+  transition: transform 0.2s;
+  border: 2px solid #ff9800;
+  border-radius: 50%;
+}
+
+/* Highlighted Table Row */
+.highlight-row {
+  background-color: #ffe0b2; /* Light orange background */
+}
+
+/* Article Preview Modal */
+#article-modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Enable scrolling if needed */
+  background-color: rgba(0, 0, 0, 0.5); /* Black background w/ opacity */
+}
+
+#modal-content {
+  background-color: #fff;
+  margin: 50px auto;
+  max-width: 800px;
+  height: 80%;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #333;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+}
+
+#wiki-iframe {
+  width: 100%;
+  flex: 1; /* So it expands in the modal */
+}
+
+#modal-footer {
+  padding: 10px;
+  background-color: #f2f2f2;
+  text-align: right;
+}
+
+#modal-footer a {
+  color: #0065a3;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#modal-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Marker Styling */
+.poi-marker {
+  /* Marker Container Dimensions */
+  width: 30px; /* Adjust based on your marker image */
+  height: 30px; /* Adjust based on your marker image */
+  
+  /* Marker Image */
+  background-image: url('https://cdn.glitch.global/bdf30b73-5f0b-462a-a785-e57a9e4afb78/pin.png'); /* Replace with your marker image path */
+  background-size: contain; /* Ensures the entire image is visible without stretching */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-position: center; /* Centers the image within the div */
+  
+  /* Cursor */
+  cursor: pointer;
+}
+
+/* Marker Label Styling */
+.marker-label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 2px 4px;
+  border-radius: 3px;
+  pointer-events: none;
+  white-space: nowrap;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 2px;
+  z-index: 10;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  #info-panel {
+    width: 90%;
+    right: 5%;
+  }
+
+  #controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .geocoder {
+    min-width: 250px;
+  }
+
+  /* Adjust marker size for smaller screens */
+  .poi-marker {
+    width: 20px;
+    height: 20px;
+  }
+
+  .marker-label {
+    font-size: 10px;
+    padding: 1px 3px;
+  }
+
+  /* Adjust table font size for smaller screens */
+  .articles-table th,
+  .articles-table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>WikiMap App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Mapbox GL JS CSS -->
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <!-- Roboto Font -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@600&display=swap"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- Controls -->
+    <div id="controls">
+      <div id="basemap-toggle">
+        <label for="basemapSelect">Basemap:</label>
+        <select id="basemapSelect">
+          <option value="mapbox://styles/mapbox/streets-v12">Streets</option>
+          <option value="mapbox://styles/mapbox/satellite-streets-v12">
+            Satellite
+          </option>
+          <option value="mapbox://styles/adoucett/cm6fvb62v005s01s50vq64sb6">
+            Minimo
+          </option>
+          <option value="mapbox://styles/adoucett/cjxkp8o1n05qm1cmwypaiilla">
+            Terrain
+          </option>
+
+          <option value="mapbox://styles/mapbox/dark-v11">Dark</option>
+          <option value="mapbox://styles/mapbox/outdoors-v12">Outdoors</option>
+        </select>
+      </div>
+      <div class="geocoder" id="geocoder"></div>
+      <button id="settings-btn">Settings</button>
+    </div>
+
+    <!-- Info Panel -->
+    <div id="info-panel">
+      <div class="info-header">
+        <h2>Information</h2>
+        <button id="close-panel">&times;</button>
+      </div>
+      <div id="location-coords">Coordinates:</div>
+      <div id="reverse-geocode">Mapbox Reverse Geocode:</div>
+      <div id="admin-section">
+        <h3>Administrative Areas</h3>
+        <ul id="admin-list"></ul>
+      </div>
+      <div id="wikipedia-articles">
+        <h3>Nearby Wikipedia Articles</h3>
+        <div id="categorized-articles"></div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Settings</h2>
+        <form id="settings-form">
+          <label for="resultsCount">Results Count:</label>
+          <input
+            type="number"
+            id="resultsCount"
+            name="resultsCount"
+            min="1"
+            max="100"
+            value="20"
+          />
+
+          <label for="mapStyle">Basemap Style:</label>
+          <select id="mapStyle" name="mapStyle">
+            <option value="mapbox://styles/mapbox/streets-v12">Streets</option>
+            <option value="mapbox://styles/mapbox/satellite-v9">
+              Satellite
+            </option>
+            <option value="mapbox://styles/mapbox/outdoors-v12">
+              Outdoors
+            </option>
+            <option value="mapbox://styles/mapbox/dark-v11">Dark</option>
+            <option value="mapbox://styles/mapbox/light-v11">Light</option>
+          </select>
+
+          <button type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Article Preview Modal -->
+    <div id="article-modal" class="modal">
+      <div id="modal-content">
+        <span id="close-modal">&times;</span>
+        <iframe id="wiki-iframe" src="" frameborder="0"></iframe>
+        <div id="modal-footer">
+          <a href="#" target="_blank" id="full-article-link"
+            >View Full Article on Wikipedia</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Mapbox GL JS -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js"></script>
+    <!-- Mapbox Geocoder -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css"
+      type="text/css"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+  </body>
+</html>
