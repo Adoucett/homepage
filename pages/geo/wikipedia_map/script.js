@@ -94,7 +94,7 @@ closeSettingsModalBtn.addEventListener("click", () => {
 settingsForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const formData = new FormData(settingsForm);
-  let inputResultsCount = parseInt(formData.get("resultsCount"), 10);
+  let inputResultsCount = parseInt(formData.get("resultsCount"), 20);
   settings.resultsCount =
     isNaN(inputResultsCount) || inputResultsCount <= 0
       ? 20
