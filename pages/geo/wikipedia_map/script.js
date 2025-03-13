@@ -117,7 +117,7 @@ settingsForm.addEventListener("submit", (e) => {
 
 closePanelBtn.addEventListener("click", () => {
   infoPanel.style.display = "none";
-  clearPOIMarkers();
+  //  clearPOIMarkers();
 });
 
 closeModalBtn.addEventListener("click", () => {
@@ -177,7 +177,7 @@ async function fetchNearbyWikipediaArticles(
     if (articles.length === 0) return articles;
 
     const pageIds = articles.map((a) => a.pageid).join("|");
-    const imageEndpoint = `https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=pageimages&piprop=thumbnail&pithumbsize=50&pageids=${pageIds}&format=json`;
+    const imageEndpoint = `https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=pageimages&piprop=thumbnail&pithumbsize=150&pageids=${pageIds}&format=json`;
     const imageResponse = await fetch(imageEndpoint);
     if (!imageResponse.ok) throw new Error("Wikipedia Image API failed.");
     const imageData = await imageResponse.json();
@@ -422,7 +422,7 @@ map.on("click", async (e) => {
     geocodeResult.features.length
   ) {
     firstFeature = geocodeResult.features[0];
-    reverseGeocodeDiv.innerHTML = `<strong>Mapbox Reverse Geocode:</strong><br/>${firstFeature.place_name}`;
+    reverseGeocodeDiv.innerHTML = `<strong>Reverse Geocode:</strong><br/>${firstFeature.place_name}`;
   } else {
     reverseGeocodeDiv.innerHTML = "No address info found.";
   }
