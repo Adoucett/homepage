@@ -1,5 +1,5 @@
 mapboxgl.accessToken =
-  "pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY2lvZDFsc2lwMDRnd3Zha2pneWpxcHh6biJ9.sbWgw2zPGyScsp-r4CYQnA";
+  "pk.eyJ1IjoicmVpbWFwIiwiYSI6ImNqbW1qcXJyYzBqcnkzbGxiM3hyZWF5dXcifQ.SytLYT49iiWPQjDwtOls6A";
 
 let settings = {
   resultsCount: 20,
