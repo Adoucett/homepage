@@ -1,112 +1,20 @@
 /*/// Fonts ///*/
 
 
-@font-face {
-	font-family: 'Cera Pro';
-	src: url('../data/fonts/FONTSPRINGDEMO-CeraProMediumRegular.woff2') format('woff2'),
-		url('../data/fonts/FONTSPRINGDEMO-CeraProMediumRegular.woff') format('woff');
-	font-weight: 500;
-	font-style: normal;
-	font-display: swap;
+/* --- NEW TYPOGRAPHY STYLES --- */
+
+/* 1. Set the clean, legible body font */
+body {
+    font-family: 'Inter', sans-serif; /* Use Inter for all body text */
+    font-weight: 400; /* Default to regular weight */
 }
 
-@font-face {
-	font-family: 'Cera Pro';
-	src: url('../data/fonts/FONTSPRINGDEMO-CeraProBoldItalic.woff2') format('woff2'),
-		url('../data/fonts/FONTSPRINGDEMO-CeraProBoldItalic.woff') format('woff');
-	font-weight: bold;
-	font-style: italic;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Cera Pro';
-	src: url('../data/fonts/FONTSPRINGDEMO-CeraProLightItalic.woff2') format('woff2'),
-		url('../data/fonts/FONTSPRINGDEMO-CeraProLightItalic.woff') format('woff');
-	font-weight: 300;
-	font-style: italic;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Cera Pro';
-	src: url('../data/fonts/FONTSPRINGDEMO-CeraProBold.woff2') format('woff2'),
-		url('../data/fonts/FONTSPRINGDEMO-CeraProBold.woff') format('woff');
-	font-weight: bold;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Cera Pro';
-	src: url('../data/fonts/FONTSPRINGDEMO-CeraProBlackItalic.woff2') format('woff2'),
-		url('../data/fonts/FONTSPRINGDEMO-CeraProBlackItalic.woff') format('woff');
-	font-weight: 900;
-	font-style: italic;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Cera Pro';
-	src: url('../data/fonts/FONTSPRINGDEMO-CeraProBlackRegular.woff2') format('woff2'),
-		url('../data/fonts/FONTSPRINGDEMO-CeraProBlackRegular.woff') format('woff');
-	font-weight: 900;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Cera Pro';
-	src: url('../data/fonts/FONTSPRINGDEMO-CeraProLightRegular.woff2') format('woff2'),
-		url('../data/fonts/FONTSPRINGDEMO-CeraProLightRegular.woff') format('woff');
-	font-weight: 300;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Cera Pro';
-	src: url('../data/fonts/FONTSPRINGDEMO-CeraProMediumItalic.woff2') format('woff2'),
-		url('../data/fonts/FONTSPRINGDEMO-CeraProMediumItalic.woff') format('woff');
-	font-weight: 500;
-	font-style: italic;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Cera Pro';
-	src: url('../data/fonts/FONTSPRINGDEMO-CeraProItalic.woff2') format('woff2'),
-		url('../data/fonts/FONTSPRINGDEMO-CeraProItalic.woff') format('woff');
-	font-weight: normal;
-	font-style: italic;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Cera Pro';
-	src: url('../data/fonts/FONTSPRINGDEMO-CeraProThinRegular.woff2') format('woff2'),
-		url('../data/fonts/FONTSPRINGDEMO-CeraProThinRegular.woff') format('woff');
-	font-weight: 100;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Cera Pro';
-	src: url('../data/fonts/FONTSPRINGDEMO-CeraProRegular.woff2') format('woff2'),
-		url('../data/fonts/FONTSPRINGDEMO-CeraProRegular.woff') format('woff');
-	font-weight: normal;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Cera Pro';
-	src: url('../data/fonts/FONTSPRINGDEMO-CeraProThinItalic.woff2') format('woff2'),
-		url('../data/fonts/FONTSPRINGDEMO-CeraProThinItalic.woff') format('woff');
-	font-weight: 100;
-	font-style: italic;
-	font-display: swap;
+/* 2. Set the stylish, geometric heading font */
+h1, h2, h3, h4, h5, h6, .logo {
+    font-family: 'Jost', sans-serif; /* Use Jost for all headings and the logo */
+    font-weight: 800; /* Use a bold weight for impact */
+    text-transform: uppercase; /* Optional: Makes headings feel more Bauhaus */
+    letter-spacing: 0.5px; /* Optional: A little extra space for a high-design feel */
 }
 
 /* Import Geologica Font */
@@ -119,18 +27,7 @@
 	box-sizing: border-box;
 }
 
-body {
-	font-family: 'Cera Pro', sans-serif;
-	/* Updated Font */
-	color: #2c3e50;
-	/* Darker Shade for Better Contrast */
-	background-color: #161A1D;
-	/* Softer Background for Modern Look */
-	overflow-x: hidden;
-	line-height: 1.6;
-	font-weight: 400;
-	/* Base Font Weight */
-}
+
 
 
 /* Header */
