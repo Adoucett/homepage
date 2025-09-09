@@ -1,133 +1,21 @@
 /* About Page Specific Styles */
-
-/* Override if necessary */
 body {
-    font-family: 'Geologica', sans-serif;
-}
-
-/*/// Fonts ///*/
-
-@font-face {
-    font-family: 'Cera Pro';
-    src: url('../data/fonts/FONTSPRINGDEMO-CeraProMediumRegular.woff2') format('woff2'),
-         url('../data/fonts/FONTSPRINGDEMO-CeraProMediumRegular.woff') format('woff');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Cera Pro';
-    src: url('../data/fonts/FONTSPRINGDEMO-CeraProBoldItalic.woff2') format('woff2'),
-         url('../data/fonts/FONTSPRINGDEMO-CeraProBoldItalic.woff') format('woff');
-    font-weight: bold;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Cera Pro';
-    src: url('../data/fonts/FONTSPRINGDEMO-CeraProLightItalic.woff2') format('woff2'),
-         url('../data/fonts/FONTSPRINGDEMO-CeraProLightItalic.woff') format('woff');
-    font-weight: 300;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Cera Pro';
-    src: url('../data/fonts/FONTSPRINGDEMO-CeraProBold.woff2') format('woff2'),
-         url('../data/fonts/FONTSPRINGDEMO-CeraProBold.woff') format('woff');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Cera Pro';
-    src: url('../data/fonts/FONTSPRINGDEMO-CeraProBlackItalic.woff2') format('woff2'),
-         url('../data/fonts/FONTSPRINGDEMO-CeraProBlackItalic.woff') format('woff');
-    font-weight: 900;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Cera Pro';
-    src: url('../data/fonts/FONTSPRINGDEMO-CeraProBlackRegular.woff2') format('woff2'),
-         url('../data/fonts/FONTSPRINGDEMO-CeraProBlackRegular.woff') format('woff');
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Cera Pro';
-    src: url('../data/fonts/FONTSPRINGDEMO-CeraProLightRegular.woff2') format('woff2'),
-         url('../data/fonts/FONTSPRINGDEMO-CeraProLightRegular.woff') format('woff');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Cera Pro';
-    src: url('../data/fonts/FONTSPRINGDEMO-CeraProMediumItalic.woff2') format('woff2'),
-         url('../data/fonts/FONTSPRINGDEMO-CeraProMediumItalic.woff') format('woff');
-    font-weight: 500;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Cera Pro';
-    src: url('../data/fonts/FONTSPRINGDEMO-CeraProItalic.woff2') format('woff2'),
-         url('../data/fonts/FONTSPRINGDEMO-CeraProItalic.woff') format('woff');
-    font-weight: normal;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Cera Pro';
-    src: url('../data/fonts/FONTSPRINGDEMO-CeraProThinRegular.woff2') format('woff2'),
-         url('../data/fonts/FONTSPRINGDEMO-CeraProThinRegular.woff') format('woff');
-    font-weight: 100;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Cera Pro';
-    src: url('../data/fonts/FONTSPRINGDEMO-CeraProRegular.woff2') format('woff2'),
-         url('../data/fonts/FONTSPRINGDEMO-CeraProRegular.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Cera Pro';
-    src: url('../data/fonts/FONTSPRINGDEMO-CeraProThinItalic.woff2') format('woff2'),
-         url('../data/fonts/FONTSPRINGDEMO-CeraProThinItalic.woff') format('woff');
-    font-weight: 100;
-    font-style: italic;
-    font-display: swap;
+    background-color: #161A1D; /* Consistent dark background */
 }
 
 /* Hero Section Styling */
 .hero {
     position: relative;
     height: 100vh;
-    background-image: url('../images/intro-background.jpg'); /* Replace with your hero image */
+    background-image: url('../images/intro-background.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; /* For parallax effect */
+    background-attachment: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
-    overflow: hidden;
+    text-align: center;
 }
 
 .hero .overlay {
@@ -136,483 +24,35 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
-    z-index: 1;
+    background: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
 }
 
 .hero .text-overlay {
     position: relative;
-    z-index: 5;
-    padding: 0;
-    margin-bottom: 2rem;
-    font-family: 'Cera Pro', sans-serif;
-    text-align: center;
+    z-index: 2;
 }
 
 .hero .text-overlay h1 {
-    font-size: 7rem;
+    font-family: 'Cera Pro', 'Geologica', sans-serif;
+    font-size: 6rem;
     font-weight: 800;
-    margin: 0;
-    color: #ffffff;
-    text-transform: lowercase;
-    letter-spacing: 5px;
-    line-height: 1;
-    animation: fadeInDown 2.5s ease-out forwards;
-}
-
-.hero .text-overlay h2 {
-    font-size: 3rem;
-    font-weight: 500;
-    margin: 0;
+    margin: 0 0 1rem 0;
     color: #ffffff;
     letter-spacing: 2px;
-    line-height: 0.9;
-    animation: fadeInUp 2.5s ease-out forwards;
+    animation: fadeInDown 2s ease-out forwards;
 }
 
-.hero .content {
-    position: relative;
-    z-index: 2;
-    width: 33.333%;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.hero .content p {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-    color: #e67e22; /* Vibrant Accent Color */
-    font-weight: 500;
-}
-
-.hero .btn {
-    /* Inherit styles from .btn */
-}
-
-/* Banded Color Sections */
-.banded-color {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-    opacity: 0.2;
-    z-index: 0;
-}
-
-/* Full-Page Image Sections */
-
-
-.section.introduction .full-page-image,
-.section.skills .full-page-image {
-    position: absolute;
-    top: 0;
-    left: 0;    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed; /* Parallax effect */
-    z-index: -1;
-}
-
-.section.introduction {
-        background-color: #000; /* Fallback background color */
-        position: relative;
-
-}
-
-.section.introduction,
-.section.skills {
-    position: relative;
-    color: #fff; /* White text over images */
-}
-
-.section.skills {
-    background-color: #000; /* Fallback background color */
-}
-
-.section.biography,
-.section.contact {
-    background-color: #000; /* Black background */
-    color: #fff; /* White text */
-    position: relative;
-}
-
-.section.biography .banded-color,
-.section.contact .banded-color {
-    /* Positioning handled in HTML */
-}
-
-.section.map-section {
-    padding: 4rem 2rem;
-    background-color: #fdf6e3; /* Light background */
-}
-
-.mapbox-map {
-    width: 100%;
-    height: 500px; /* Adjust as needed */
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-/* Section Container */
-.container {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-    z-index: 1;
-}
-
-.container_intro {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: left;
-    z-index: 1;
-}
-
-/* Section Headings */
-.section h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #fff;
-    transition: transform 0.3s ease;
-}
-
-.section h2:hover {
-    transform: scale(1.02);
-}
-
-/* Section Paragraphs */
-.section p {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #ccc;
-    transition: color 0.3s ease;
-}
-
-.section p:hover {
-    color: #fff;
-}
-
-/* Skills List */
-.skills-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-}
-
-.skills-list li {
-    background-color: #222; /* Dark gray background for skill tags */
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 1rem;
-    color: #fff;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.skills-list li:hover {
-    background-color: #444; /* Lighter gray on hover */
-    transform: translateY(-5px);
-}
-
-/* Contact Links */
-.contact-links {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    flex-wrap: wrap;
-}
-
-.contact-btn {
-    padding: 0.75rem 1.5rem;
-    background-color: #fff; /* White background */
-    color: #000; /* Black text */
-    text-decoration: none;
-    font-weight: 500;
-    border-radius: 25px;
-    transition: background-color 0.3s, transform 0.3s, color 0.3s;
-}
-
-.contact-btn:hover {
-    background-color: #333; /* Dark gray background on hover */
-    color: #fff; /* White text on hover */
-    transform: scale(1.05);
-}
-
-/* North Arrow Styling */
-.north-arrow {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.north-arrow:hover {
-    transform: rotate(360deg);
-}
-
-/* Footer Styles */
-footer {
-    padding: 2rem;
-    text-align: center;
-    background-color: #000; /* Black background */
-    color: #fff; /* White text */
-    font-size: 0.9rem;
-}
-
-/* Button Styling */
-.btn {
-    padding: 0.75rem 2rem;
-    background: #e67e22; /* Vibrant Accent Color */
-    color: #fdf6e3; /* Softer Contrast */
-    text-decoration: none;
-    font-weight: 700; /* Bold for Buttons */
-    border-radius: 50px;
-    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
-    font-size: 1rem;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-
-.btn:hover {
-    background: #d35400; /* Darker Accent on Hover */
-    transform: scale(1.05);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .hero {
-        flex-direction: column;
-        justify-content: center;
-        height: auto;
-        padding: 2rem 1rem;
-    }
-
-    .hero .text-overlay {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100%;
-    }
-
-    .hero .text-overlay h1 {
-        font-size: 2.5rem;
-        text-align: center;
-        letter-spacing: 2px;
-    }
-
-    .hero .text-overlay h2 {
-        font-size: 1.5rem;
-        text-align: center;
-        letter-spacing: 1px;
-    }
-
-    .animated-text-section {
-        margin-top: 1.5rem;
-    }
-
-    .animated-text-section h2 {
-        font-size: 1.5rem;
-        gap: 10px;
-    }
-
-    .animated-text-section #dynamic-word {
-        font-size: 1.5rem;
-    }
-
-    .hero .content {
-        width: 100%;
-        padding: 1rem;
-        text-align: center;
-    }
-
-    .hero .content p {
-        font-size: 1rem;
-    }
-
-    .section {
-        padding: 3rem 1rem;
-    }
-
-    .section h2 {
-        font-size: 2rem;
-    }
-
-    .skills-list {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .skills-list li {
-        width: 80%;
-    }
-
-    .contact-links {
-        flex-direction: column;
-    }
-
-    .contact-btn {
-        width: 100%;
-        text-align: center;
-    }
-
-    .mapbox-map {
-        height: 300px;
-    }
-
-    /* Adjust biography section for mobile */
-    .biography-content {
-        align-items: center;
-        text-align: center;
-    }
-
-    .biography-text,
-    .content-image {
-        max-width: 100%;
-    }
-
-    .biography-text {
-        margin-bottom: 1rem;
-    }
-}
-
-/* Animation Keyframes */
-@keyframes fadeInDown {
-    0% {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Content Section Styling */
-.content {
-    position: relative;
-    z-index: 2;
-    width: 33.333%;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; /* Center content horizontally */
-    text-align: center;
-}
-
-.content p {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-    color: #e67e22; /* Vibrant Accent Color */
-    font-weight: 500;
-}
-
-.content .btn {
-    margin-bottom: 2rem; /* Space between button and image */
-}
-
-.content-image img {
-    width: 100%;
-    max-width: 300px; /* Adjust as needed */
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.content-image img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
-}
-
-/* Biography Section Styles */
-.biography {
-    padding: 4rem 2rem;
-    text-align: left; /* Left-justify all text in the section */
-    background-color: #1c1c1c;
-    color: #f0f0f0;
-}
-
-.biography h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    text-align: left; /* Left-justify the heading */
-}
-
-.biography-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Align content to the left */
-    text-align: left;
-}
-
-.biography-text {
-    max-width: 660px;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-}
-
-.content-image {
-    max-width: 660px;
-    width: 100%;
-    margin-top: 1rem;
-}
-
-.content-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-
-/* Animated Text Section Styles */
-.animated-text-section {
-    text-align: center;
-    margin-top: 3rem;
-}
-
+/* Animated Text Section (Inside Hero) */
 .animated-text-section h2 {
+    font-family: 'Geologica', sans-serif;
     font-size: 2.5rem;
-    font-weight: 700;
+    font-weight: 400;
     color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 15px;
+    gap: 0.75rem;
+    min-height: 60px; /* Prevent layout shift */
 }
 
 #dynamic-word {
@@ -620,75 +60,277 @@ footer {
     transition: opacity 0.5s ease;
 }
 
-/* Define custom font styles for each word */
+/* Custom font styles for each word */
+.font-cartographer { font-family: 'Courier New', monospace; color: #d97706; }
+.font-cyclist { font-family: 'Space Grotesk', sans-serif; color: #4caf50; }
+.font-runner { font-family: 'Poppins', sans-serif; color: #0077b6; }
+.font-geospatial-marketer { font-family: 'IBM Plex Serif', serif; color: #2d6a4f; }
+.font-coffee-lover { font-family: 'Rubik', sans-serif; color: #6f4e37; }
+.font-strava-aficionado { font-family: 'Mulish', sans-serif; color: #fc4c02; }
+.font-ikea-fan { font-family: 'Nunito Sans', sans-serif; color: #FBD915; }
+.font-nordic-skier { font-family: 'Lexend', sans-serif; color: #00a8e8; }
+.font-hot-sauce-lover { font-family: 'Carter One', cursive; color: #e63946; }
+.font-jazz-pianist { font-family: 'Playfair Display', serif; color: #5a189a; }
+.font-sales-engineer { font-family: 'Work Sans', sans-serif; color: #009688; }
 
-.font-cartographer {
-    font-family: 'Courier New', sans-serif;
-    color: #d97706; /* Earthy orange */
-}
-
-.font-cyclist {
-    font-family: 'Space Grotesk', sans-serif;
-    color: #4caf50; /* Vibrant green */
-}
-
-.font-runner {
-    font-family: 'Poppins', sans-serif;
-    color: #0077b6; /* Ocean blue */
-}
-
-.font-geospatial-marketer {
-    font-family: 'IBM Plex Serif', serif;
-    color: #2d6a4f; /* Tech green */
-}
-
-.font-coffee-lover {
-    font-family: 'Rubik', sans-serif;
-    color: #6f4e37; /* Coffee brown */
-}
-
-.font-strava-aficionado {
-    font-family: 'Mulish', sans-serif;
-    color: #fc4c02; /* Strava red-orange */
-}
-
-.font-ikea-fan {
-    font-family: 'Nunito Sans', sans-serif;
-    color: #FBD915; /* IKEA yellow */
-}
-
-.font-nordic-skier {
-    font-family: 'Lexend', sans-serif;
-    color: #00a8e8; /* Icy blue */
-}
-
-.font-hot-sauce-lover {
-    font-family: 'Carter One', cursive;
-    color: #e63946; /* Spicy red */
-}
-
-.font-jazz-pianist {
-    font-family: 'Playfair Display', serif;
-    color: #5a189a; /* Deep purple */
-}
-
-.font-sales-engineer {
-    font-family: 'Work Sans', sans-serif;
-    color: #009688; /* Tech teal */
-}
-
-/* Cursor effect */
 #dynamic-word::after {
-    content: " |";
+    content: "|";
     display: inline-block;
     animation: blink 0.8s infinite;
+    font-weight: 100;
 }
 
+/* General Section Styling */
+.section {
+    padding: 5rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+.container, .container_intro {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+.section h2 {
+    font-size: 2.8rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    font-weight: 700;
+    color: #fdf6e3;
+}
+.section p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #ccc;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Introduction Section */
+.introduction {
+    background-color: #1c1c1c;
+}
+.introduction h2 {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+.introduction .container_intro {
+    max-width: 800px;
+    text-align: left;
+}
+.introduction p {
+    max-width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Biography Section */
+.biography {
+    background-color: #161A1D;
+}
+.biography-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
+    text-align: left;
+}
+.biography-text {
+    flex: 2;
+}
+.content-image {
+    flex: 1;
+    min-width: 280px;
+}
+.content-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.content-image img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+}
+
+/* Journey / Timeline Section */
+.journey {
+    background-color: #1c1c1c;
+}
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    background-color: #e67e22;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -2px;
+    border-radius: 2px;
+}
+.timeline-item {
+    padding: 10px 40px;
+    position: relative;
+    width: 50%;
+}
+.timeline-item:nth-child(odd) {
+    left: 0;
+    text-align: right;
+}
+.timeline-item:nth-child(even) {
+    left: 50%;
+    text-align: left;
+}
+.timeline-icon {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    top: 20px;
+    background-color: #2c3e50;
+    border: 3px solid #e67e22;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 1.5rem;
+    z-index: 1;
+}
+.timeline-item:nth-child(odd) .timeline-icon {
+    right: -25px;
+}
+.timeline-item:nth-child(even) .timeline-icon {
+    left: -25px;
+}
+.timeline-content {
+    padding: 20px 30px;
+    background-color: #2c3e50;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.timeline-content h3 {
+    color: #e67e22;
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+}
+.timeline-content p {
+    font-size: 1rem;
+    color: #ccc;
+    max-width: 100%;
+}
+
+/* Map Section */
+.map-section {
+    background-color: #161A1D;
+    text-align: center;
+}
+.mapbox-map {
+    width: 100%;
+    height: 550px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    border: 1px solid #2c3e50;
+}
+.map-subtitle {
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    color: #ccc;
+}
+/* Mapbox popup styling */
+.mapboxgl-popup-content {
+    background-color: #2c3e50 !important;
+    color: #fdf6e3 !important;
+    font-family: 'Geologica', sans-serif !important;
+    border-radius: 8px !important;
+    padding: 15px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5) !important;
+}
+.mapboxgl-popup-content h4 {
+    color: #e67e22;
+    margin: 0 0 5px 0;
+}
+.mapboxgl-popup-close-button {
+    color: #fdf6e3 !important;
+}
+
+/* Contact Section */
+.contact {
+    background-color: #1c1c1c;
+    position: relative;
+}
+.banded-color {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #e67e22, #d35400, #2c3e50);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    opacity: 0.1;
+    z-index: 0;
+}
+.contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+.contact-btn {
+    padding: 0.8rem 2rem;
+    background: #e67e22;
+    color: #fdf6e3;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+.contact-btn:hover {
+    background: transparent;
+    border-color: #e67e22;
+    color: #e67e22;
+    transform: translateY(-5px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero .text-overlay h1 { font-size: 3rem; }
+    .animated-text-section h2 { font-size: 1.5rem; min-height: 40px; }
+    .section { padding: 3rem 1rem; }
+    .section h2 { font-size: 2rem; }
+    
+    .biography-content { flex-direction: column; }
+
+    /* Timeline on mobile */
+    .timeline::after { left: 31px; }
+    .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
+    .timeline-item:nth-child(odd), .timeline-item:nth-child(even) {
+        left: 0;
+        text-align: left;
+    }
+    .timeline-icon { left: 15px; }
+    .timeline-item:nth-child(odd) .timeline-icon, .timeline-item:nth-child(even) .timeline-icon {
+        left: 15px;
+    }
+}
+
+/* Animation Keyframes */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 @keyframes blink {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
