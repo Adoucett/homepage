@@ -1,2 +1,17 @@
 node_modules
 .env
+.DS_Store
+**/.DS_Store
+
+# Camera originals — keep locally, never commit
+images/photos/originals/
+
+# Backup archives — never commit these
+Clone_*/
+Backup_*/
+
+# Full-res photo originals (source files, not served)
+images/photos/originals/
+
+# Mapbox style exports (reference only, not served)
+**/Good_Style-copy*/

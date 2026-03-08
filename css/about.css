@@ -1,336 +1,200 @@
-/* About Page Specific Styles */
-body {
-    background-color: #161A1D; /* Consistent dark background */
+/* About Page — Extends style.css */
+
+/* Hero */
+.about-hero {
+  min-height: 75vh;
+  background-image: url('../images/intro-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding-top: calc(var(--header-height) + var(--space-4xl));
 }
 
-/* Hero Section Styling */
-.hero {
-    position: relative;
-    height: 100vh;
-    background-image: url('../images/intro-background.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    text-align: center;
+.about-hero .hero__overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(15, 17, 20, 0.65) 0%,
+    rgba(15, 17, 20, 0.9) 100%
+  );
 }
 
-.hero .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+/* Typing Animation */
+.typing-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  min-height: 50px;
 }
 
-.hero .text-overlay {
-    position: relative;
-    z-index: 2;
+.typing-word {
+  font-weight: 700;
+  color: var(--color-accent);
 }
 
-.hero .text-overlay h1 {
-    font-family: 'Cera Pro', 'Geologica', sans-serif;
-    font-size: 6rem;
-    font-weight: 800;
-    margin: 0 0 1rem 0;
-    color: #ffffff;
-    letter-spacing: 2px;
-    animation: fadeInDown 2s ease-out forwards;
+.typing-cursor {
+  font-weight: 100;
+  animation: blink 0.8s infinite;
+  color: var(--color-accent);
 }
 
-/* Animated Text Section (Inside Hero) */
-.animated-text-section h2 {
-    font-family: 'Geologica', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 400;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.75rem;
-    min-height: 60px; /* Prevent layout shift */
-}
-
-#dynamic-word {
-    font-weight: 700;
-    transition: opacity 0.5s ease;
-}
-
-/* Custom font styles for each word */
-.font-cartographer { font-family: 'Courier New', monospace; color: #d97706; }
-.font-cyclist { font-family: 'Space Grotesk', sans-serif; color: #4caf50; }
-.font-runner { font-family: 'Poppins', sans-serif; color: #0077b6; }
-.font-geospatial-marketer { font-family: 'IBM Plex Serif', serif; color: #2d6a4f; }
-.font-coffee-lover { font-family: 'Rubik', sans-serif; color: #6f4e37; }
-.font-strava-aficionado { font-family: 'Mulish', sans-serif; color: #fc4c02; }
-.font-ikea-fan { font-family: 'Nunito Sans', sans-serif; color: #FBD915; }
-.font-nordic-skier { font-family: 'Lexend', sans-serif; color: #00a8e8; }
-.font-hot-sauce-lover { font-family: 'Carter One', cursive; color: #e63946; }
-.font-jazz-pianist { font-family: 'Playfair Display', serif; color: #5a189a; }
-.font-sales-engineer { font-family: 'Work Sans', sans-serif; color: #009688; }
-
-#dynamic-word::after {
-    content: "|";
-    display: inline-block;
-    animation: blink 0.8s infinite;
-    font-weight: 100;
-}
-
-/* General Section Styling */
-.section {
-    padding: 5rem 2rem;
-    position: relative;
-    overflow: hidden;
-}
-.container, .container_intro {
-    max-width: 900px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-}
-.section h2 {
-    font-size: 2.8rem;
-    margin-bottom: 2.5rem;
-    text-align: center;
-    font-weight: 700;
-    color: #fdf6e3;
-}
-.section p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: #ccc;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Introduction Section */
-.introduction {
-    background-color: #1c1c1c;
-}
-.introduction h2 {
-    text-align: left;
-    margin-bottom: 1.5rem;
-}
-.introduction .container_intro {
-    max-width: 800px;
-    text-align: left;
-}
-.introduction p {
-    max-width: 100%;
-    margin-bottom: 1rem;
-}
-
-/* Biography Section */
-.biography {
-    background-color: #161A1D;
-}
-.biography-content {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 3rem;
-    text-align: left;
-}
-.biography-text {
-    flex: 2;
-}
-.content-image {
-    flex: 1;
-    min-width: 280px;
-}
-.content-image img {
-    width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.content-image img:hover {
-    transform: scale(1.03);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-}
-
-/* Journey / Timeline Section */
-.journey {
-    background-color: #1c1c1c;
-}
-.timeline {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-}
-.timeline::after {
-    content: '';
-    position: absolute;
-    width: 4px;
-    background-color: #e67e22;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    margin-left: -2px;
-    border-radius: 2px;
-}
-.timeline-item {
-    padding: 10px 40px;
-    position: relative;
-    width: 50%;
-}
-.timeline-item:nth-child(odd) {
-    left: 0;
-    text-align: right;
-}
-.timeline-item:nth-child(even) {
-    left: 50%;
-    text-align: left;
-}
-.timeline-icon {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    line-height: 50px;
-    top: 20px;
-    background-color: #2c3e50;
-    border: 3px solid #e67e22;
-    border-radius: 50%;
-    text-align: center;
-    font-size: 1.5rem;
-    z-index: 1;
-}
-.timeline-item:nth-child(odd) .timeline-icon {
-    right: -25px;
-}
-.timeline-item:nth-child(even) .timeline-icon {
-    left: -25px;
-}
-.timeline-content {
-    padding: 20px 30px;
-    background-color: #2c3e50;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-.timeline-content h3 {
-    color: #e67e22;
-    margin-bottom: 0.5rem;
-    font-size: 1.4rem;
-}
-.timeline-content p {
-    font-size: 1rem;
-    color: #ccc;
-    max-width: 100%;
-}
-
-/* Map Section */
-.map-section {
-    background-color: #161A1D;
-    text-align: center;
-}
-.mapbox-map {
-    width: 100%;
-    height: 550px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    border: 1px solid #2c3e50;
-}
-.map-subtitle {
-    margin-bottom: 2rem;
-    font-size: 1.2rem;
-    color: #ccc;
-}
-/* Mapbox popup styling */
-.mapboxgl-popup-content {
-    background-color: #2c3e50 !important;
-    color: #fdf6e3 !important;
-    font-family: 'Geologica', sans-serif !important;
-    border-radius: 8px !important;
-    padding: 15px !important;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.5) !important;
-}
-.mapboxgl-popup-content h4 {
-    color: #e67e22;
-    margin: 0 0 5px 0;
-}
-.mapboxgl-popup-close-button {
-    color: #fdf6e3 !important;
-}
-
-/* Contact Section */
-.contact {
-    background-color: #1c1c1c;
-    position: relative;
-}
-.banded-color {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #e67e22, #d35400, #2c3e50);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-    opacity: 0.1;
-    z-index: 0;
-}
-.contact-links {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-top: 2rem;
-    flex-wrap: wrap;
-}
-.contact-btn {
-    padding: 0.8rem 2rem;
-    background: #e67e22;
-    color: #fdf6e3;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
-.contact-btn:hover {
-    background: transparent;
-    border-color: #e67e22;
-    color: #e67e22;
-    transform: translateY(-5px);
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .hero .text-overlay h1 { font-size: 3rem; }
-    .animated-text-section h2 { font-size: 1.5rem; min-height: 40px; }
-    .section { padding: 3rem 1rem; }
-    .section h2 { font-size: 2rem; }
-    
-    .biography-content { flex-direction: column; }
-
-    /* Timeline on mobile */
-    .timeline::after { left: 31px; }
-    .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
-    .timeline-item:nth-child(odd), .timeline-item:nth-child(even) {
-        left: 0;
-        text-align: left;
-    }
-    .timeline-icon { left: 15px; }
-    .timeline-item:nth-child(odd) .timeline-icon, .timeline-item:nth-child(even) .timeline-icon {
-        left: 15px;
-    }
-}
-
-/* Animation Keyframes */
-@keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+
+/* Biography Grid */
+.bio-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
+.bio-text p {
+  text-align: left;
+}
+
+.bio-image img {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-base);
+}
+
+.bio-image img:hover {
+  transform: scale(1.02);
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+  padding-left: var(--space-2xl);
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-accent);
+  opacity: 0.4;
+  border-radius: 2px;
+}
+
+.timeline__item {
+  position: relative;
+  padding-bottom: var(--space-2xl);
+}
+
+.timeline__item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline__marker {
+  position: absolute;
+  left: calc(-1 * var(--space-2xl) + 2px);
+  top: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-bg-primary);
+  border: 3px solid var(--color-accent);
+  z-index: 1;
+}
+
+.timeline__content {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+}
+
+.timeline__content h3 {
+  font-size: var(--text-lg);
+  color: var(--color-accent);
+  margin-bottom: var(--space-xs);
+}
+
+.timeline__content p {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* Map */
+.about-map {
+  width: 100%;
+  height: 500px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+/* Contact links */
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+/* Mapbox Popup Override */
+.mapboxgl-popup-content {
+  background-color: var(--color-bg-surface) !important;
+  color: var(--color-text-primary) !important;
+  font-family: var(--font-body) !important;
+  border-radius: var(--radius-md) !important;
+  padding: var(--space-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.mapboxgl-popup-content h4 {
+  color: var(--color-accent);
+  margin: 0 0 4px 0;
+  font-family: var(--font-heading);
+}
+
+.mapboxgl-popup-close-button {
+  color: var(--color-text-secondary) !important;
+  font-size: 1.2rem;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: var(--color-bg-surface) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .about-hero {
+    min-height: 60vh;
+    background-attachment: scroll;
+  }
+  .typing-section {
+    font-size: var(--text-xl);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .bio-grid {
+    grid-template-columns: 1fr;
+  }
+  .bio-image {
+    order: -1;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  .about-map {
+    height: 350px;
+  }
+  .timeline {
+    padding-left: var(--space-xl);
+  }
 }

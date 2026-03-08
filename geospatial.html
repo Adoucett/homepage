@@ -1,140 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geospatial Projects - Enhanced Gallery</title>
-    <link rel="stylesheet" href="css/geo.css">
-    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Aaron Doucett</title>
+  <meta name="description" content="Interactive maps, data visualizations, and geospatial tools by Aaron Doucett.">
+  <meta name="author" content="Aaron Doucett">
+
+  <meta property="og:title" content="Projects — Aaron Doucett">
+  <meta property="og:description" content="Interactive maps, data visualizations, and geospatial tools.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://doucett.net/geospatial.html">
+  <link rel="canonical" href="https://doucett.net/geospatial.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .projects-hero {
+      min-height: 50vh;
+      background: radial-gradient(ellipse at 50% 80%, rgba(230,126,34,0.08) 0%, transparent 60%),
+                  var(--color-bg-primary);
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+    }
+    .project-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+    .project-card .card__image {
+      aspect-ratio: 16 / 9;
+    }
+    .tech-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2xs);
+      margin-top: var(--space-sm);
+    }
+    .tech-badge {
+      font-size: var(--text-xs);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      background: var(--color-accent-subtle);
+      color: var(--color-accent);
+      font-weight: 500;
+    }
+    @media (max-width: 768px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">Doucett.net</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="geospatial.html" class="active">Projects</a></li>                
-                <li><a href="photography.html">Photography</a></li>
-                <li><a href="media.html">Media</a></li>
-                <li><a href="resume.html">Resume</a></li>
-            </ul>
-        </nav>
-    </header>
+  <a href="#main-content" class="sr-only" style="position:absolute;top:-100px;left:0;background:var(--color-accent);color:#000;padding:0.5rem 1rem;z-index:9999;font-weight:600;" onfocus="this.style.top='0'" onblur="this.style.top='-100px'">Skip to content</a>
 
-    <main>
-        <section class="geospatial-hero">
-            <div class="text-overlay">
-                <h1>Geospatial Projects</h1>
-                <p>Explore the interactive maps and data visualizations I've designed.</p>
+  <header class="site-header">
+    <nav class="site-nav" aria-label="Main Navigation">
+      <a href="index.html" class="site-logo">Doucett.net</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="geospatial.html">Projects</a></li>
+        <li><a href="photography.html">Photography</a></li>
+        <li><a href="media.html">Media</a></li>
+        <li><a href="resume.html">Resume</a></li>
+      </ul>
+      <button class="burger" aria-label="Toggle Navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section class="hero projects-hero">
+      <div class="hero__content">
+        <h1 class="hero__title">Projects</h1>
+        <p class="hero__subtitle">Interactive maps, data visualizations, and geospatial tools I've designed and built.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="projects-grid">
+
+          <a class="card project-card" href="https://doucett.net/pages/geo/wikipedia_map/" target="_blank" rel="noopener noreferrer">
+            <div class="card__image">
+              <img src="images/geo/wiki.jpg" alt="Wikipedia Mapper showing articles near a location" loading="lazy">
             </div>
-        </section>
-
-        <section class="geospatial-gallery">
-            <h2>Geospatial Projects</h2>
-            <div id="gridThumbs" class="portfolio-grid-basic grid-wrapper collection-content-wrapper" data-animation-role="section">
-                
-                <!-- Grid Item Example -->
-                <a class="grid-item" href="https://doucett.net/pages/geo/wikipedia_map/"
-                target="_blank" 
-                rel="noopener noreferrer">
-                    <div class="grid-image">
-                        <img src="/images/geo/wiki.jpg" alt="WikiMappr">
-                        <div class="overlay">
-                            <div class="overlay-text">
-                                <h3>Wikipedia Mapper</h3>
-                                <p>Explore Wikipedia Articles near a Selected Location</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <a class="grid-item" href="https://adoucett.github.io/globe/index.html"
-                target="_blank" 
-                rel="noopener noreferrer">
-                    <div class="grid-image">
-                        <img src="/images/geo/nite1.png" alt="Night Flight">
-                        <div class="overlay">
-                            <div class="overlay-text">
-                                <h3>Night Flight</h3>
-                                <p>A new Mapbox style that simulates the Earth at Night</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                
-                <!-- Repeat similar grid-items for other projects -->
-                <a class="grid-item" href="/pages/geo/MAvalues.html" target="_blank" 
-                rel="noopener noreferrer"> <div class="grid-image">
-                        <img src="/images/geo/propvalues.png" alt="Property Values Visualizer">
-                        <div class="overlay">
-                            <div class="overlay-text">
-                                <h3>Property Values Map</h3>
-                                <p>Property Values Visualizer</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <a class="grid-item" href="/pages/geo/zips.html" target="_blank" 
-                rel="noopener noreferrer">
-                    <div class="grid-image">
-                        <img src="/images/geo/zipcode_explorer.png" alt="Zipcode Census ACS Analysis">
-                        <div class="overlay">
-                            <div class="overlay-text">
-                                <h3>USA Zipcode Statistics</h3>
-                                <p>Interactive map of US ZIP codes by HH Income</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <a class="grid-item" href="https://adoucett.github.io/swipe/stl/" target="_blank" 
-                rel="noopener noreferrer">
-                    <div class="grid-image">
-                        <img src="/images/geo/swipe.jpg" alt="Swipe Map">
-                        <div class="overlay">
-                            <div class="overlay-text">
-                                <h3>STL Historic Imagery</h3>
-                                <p>Swipe to view before/after imagery in St Louis, MO.</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <a class="grid-item" href="/pages/geo/runmap/">
-                    <div class="grid-image">
-                        <img src="/images/geo/runmap.jpg" alt="Running Routes Viz">
-                        <div class="overlay">
-                            <div class="overlay-text">
-                                <h3>Running Routes Map</h3>
-                                <p>Creating a visual for over 1,300 runs with geojson</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <a class="grid-item" href="https://cambridgegis.maps.arcgis.com/apps/webappviewer/index.html?id=1d30c73456d246f48daf8489405c6629" target="_blank" rel="noopener noreferrer">
-                    <div class="grid-image">
-                        <img src="/images/geo/floodmapper.jpg" alt="FloodMapper">
-                        <div class="overlay">
-                            <div class="overlay-text">
-                                <h3>Cambridge FloodViewer</h3>
-                                <p>City of Cambridge FloodViewer Tool</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                
-                <!-- Add more grid-items as needed -->
-
+            <div class="card__body">
+              <span class="card__tag">Web Application</span>
+              <h3 class="card__title">Wikipedia Mapper</h3>
+              <p class="card__desc">Explore Wikipedia articles near any selected location on an interactive map.</p>
+              <div class="tech-badges">
+                <span class="tech-badge">Mapbox</span>
+                <span class="tech-badge">Wikipedia API</span>
+                <span class="tech-badge">JavaScript</span>
+              </div>
             </div>
-        </section>
-    </main>
+          </a>
 
-    <footer>
-        <p>&copy; 2024 Aaron Doucett. All rights reserved.</p>
-    </footer>
+          <a class="card project-card" href="https://adoucett.github.io/globe/index.html" target="_blank" rel="noopener noreferrer">
+            <div class="card__image">
+              <img src="images/geo/nite1.png" alt="Night Flight globe visualization" loading="lazy">
+            </div>
+            <div class="card__body">
+              <span class="card__tag">Map Style</span>
+              <h3 class="card__title">Night Flight</h3>
+              <p class="card__desc">A custom Mapbox globe style that simulates the Earth at night with city lights.</p>
+              <div class="tech-badges">
+                <span class="tech-badge">Mapbox GL</span>
+                <span class="tech-badge">Custom Style</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="card project-card" href="pages/geo/MAValues_map/MAvalues.html" target="_blank" rel="noopener noreferrer">
+            <div class="card__image">
+              <img src="images/geo/propvalues.png" alt="Massachusetts property values visualization" loading="lazy">
+            </div>
+            <div class="card__body">
+              <span class="card__tag">Data Visualization</span>
+              <h3 class="card__title">Property Values Map</h3>
+              <p class="card__desc">Interactive choropleth of residential property values across Massachusetts.</p>
+              <div class="tech-badges">
+                <span class="tech-badge">Mapbox</span>
+                <span class="tech-badge">Vector Tiles</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="card project-card" href="pages/geo/zips.html" target="_blank" rel="noopener noreferrer">
+            <div class="card__image">
+              <img src="images/geo/zipcode_explorer.png" alt="US ZIP code income statistics map" loading="lazy">
+            </div>
+            <div class="card__body">
+              <span class="card__tag">Data Visualization</span>
+              <h3 class="card__title">USA Zipcode Statistics</h3>
+              <p class="card__desc">Interactive map of US ZIP codes by household income with Chart.js analytics.</p>
+              <div class="tech-badges">
+                <span class="tech-badge">Mapbox</span>
+                <span class="tech-badge">Chart.js</span>
+                <span class="tech-badge">Census ACS</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="card project-card" href="https://adoucett.github.io/swipe/stl/" target="_blank" rel="noopener noreferrer">
+            <div class="card__image">
+              <img src="images/geo/swipe.jpg" alt="Historic aerial imagery comparison of St. Louis" loading="lazy">
+            </div>
+            <div class="card__body">
+              <span class="card__tag">Earth Observation</span>
+              <h3 class="card__title">STL Historic Imagery</h3>
+              <p class="card__desc">Swipe-compare tool for before/after aerial photography in St. Louis, MO.</p>
+              <div class="tech-badges">
+                <span class="tech-badge">Mapbox Compare</span>
+                <span class="tech-badge">Aerial Imagery</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="card project-card" href="pages/geo/runmap/" target="_blank" rel="noopener noreferrer">
+            <div class="card__image">
+              <img src="images/geo/runmap.jpg" alt="Running routes visualization" loading="lazy">
+            </div>
+            <div class="card__body">
+              <span class="card__tag">Geospatial</span>
+              <h3 class="card__title">Running Routes Map</h3>
+              <p class="card__desc">Over 1,300 Strava runs visualized with route details, elevation profiles, and statistics.</p>
+              <div class="tech-badges">
+                <span class="tech-badge">Leaflet</span>
+                <span class="tech-badge">Chart.js</span>
+                <span class="tech-badge">GeoJSON</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="card project-card" href="https://cambridgegis.maps.arcgis.com/apps/webappviewer/index.html?id=1d30c73456d246f48daf8489405c6629" target="_blank" rel="noopener noreferrer">
+            <div class="card__image">
+              <img src="images/geo/floodmapper.jpg" alt="Cambridge FloodViewer application" loading="lazy">
+            </div>
+            <div class="card__body">
+              <span class="card__tag">Web Application</span>
+              <h3 class="card__title">Cambridge FloodViewer</h3>
+              <p class="card__desc">Flood risk analysis tool built for the City of Cambridge using ArcGIS WebAppBuilder.</p>
+              <div class="tech-badges">
+                <span class="tech-badge">ArcGIS</span>
+                <span class="tech-badge">WebAppBuilder</span>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/adoucett/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/adoucett" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://unsplash.com/@adoucett" target="_blank" rel="noopener noreferrer">Unsplash</a>
+      </div>
+      <p class="site-footer__copy">&copy; <span id="copyright-year"></span> Aaron Doucett. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,73 @@
+:root {
+  /* Color Palette — Geospatial Dark Theme */
+  --color-bg-primary: #0F1114;
+  --color-bg-secondary: #161A1D;
+  --color-bg-surface: #1E2328;
+  --color-bg-elevated: #262B31;
+
+  --color-accent: #E67E22;
+  --color-accent-hover: #D35400;
+  --color-accent-subtle: rgba(230, 126, 34, 0.08);
+  --color-accent-glow: rgba(230, 126, 34, 0.25);
+
+  --color-teal: #4ECDC4;
+  --color-teal-subtle: rgba(78, 205, 196, 0.08);
+
+  --color-text-primary: #F2F0EB;
+  --color-text-secondary: #A0AABA;
+  --color-text-muted: #6B7280;
+
+  --color-border: rgba(255, 255, 255, 0.06);
+  --color-border-accent: rgba(230, 126, 34, 0.3);
+
+  /* Typography */
+  --font-heading: 'Geologica', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  --text-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.8rem);
+  --text-sm: clamp(0.85rem, 0.8rem + 0.2vw, 0.9rem);
+  --text-base: clamp(0.95rem, 0.9rem + 0.25vw, 1.05rem);
+  --text-lg: clamp(1.1rem, 1rem + 0.4vw, 1.25rem);
+  --text-xl: clamp(1.3rem, 1.1rem + 0.6vw, 1.5rem);
+  --text-2xl: clamp(1.6rem, 1.3rem + 0.8vw, 2rem);
+  --text-3xl: clamp(2rem, 1.5rem + 1.5vw, 2.8rem);
+  --text-4xl: clamp(2.5rem, 2rem + 2vw, 4rem);
+  --text-hero: clamp(3rem, 2rem + 3vw, 5.5rem);
+
+  /* Spacing — 8pt grid */
+  --space-2xs: 0.25rem;   /* 4px */
+  --space-xs: 0.5rem;     /* 8px */
+  --space-sm: 0.75rem;    /* 12px */
+  --space-md: 1rem;       /* 16px */
+  --space-lg: 1.5rem;     /* 24px */
+  --space-xl: 2rem;       /* 32px */
+  --space-2xl: 3rem;      /* 48px */
+  --space-3xl: 4rem;      /* 64px */
+  --space-4xl: 6rem;      /* 96px */
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px var(--color-accent-glow);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  /* Layout */
+  --max-width: 1200px;
+  --max-width-narrow: 800px;
+  --header-height: 64px;
+
+  /* Contour texture via SVG data URI */
+  --contour-pattern: url("data:image/svg+xml,%3Csvg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 200 Q100 180 200 200 T400 200' fill='none' stroke='rgba(230,126,34,0.04)' stroke-width='1'/%3E%3Cpath d='M0 160 Q120 140 200 160 T400 160' fill='none' stroke='rgba(230,126,34,0.03)' stroke-width='1'/%3E%3Cpath d='M0 240 Q80 260 200 240 T400 240' fill='none' stroke='rgba(230,126,34,0.03)' stroke-width='1'/%3E%3Cpath d='M0 120 Q140 100 200 120 T400 120' fill='none' stroke='rgba(230,126,34,0.025)' stroke-width='1'/%3E%3Cpath d='M0 280 Q60 300 200 280 T400 280' fill='none' stroke='rgba(230,126,34,0.025)' stroke-width='1'/%3E%3Cpath d='M0 80 Q160 60 200 80 T400 80' fill='none' stroke='rgba(230,126,34,0.02)' stroke-width='1'/%3E%3Cpath d='M0 320 Q40 340 200 320 T400 320' fill='none' stroke='rgba(230,126,34,0.02)' stroke-width='1'/%3E%3C/svg%3E");
+}

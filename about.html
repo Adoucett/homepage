@@ -1,144 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aaron Doucett - About</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/about.css">
-    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-    <meta name="description" content="Learn more about Aaron Doucett, a passionate geospatial professional, creative problem solver, and endurance athlete.">
-    <meta name="keywords" content="About, Aaron Doucett, Geospatial, GIS, Photography, Portfolio, Creative, Runner, Cyclist">
-    <meta name="author" content="Aaron Doucett">
-    <link href='https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css' rel='stylesheet' />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Aaron Doucett</title>
+  <meta name="description" content="Learn about Aaron Doucett — geospatial professional, data visualization engineer, photographer, and endurance athlete.">
+  <meta name="author" content="Aaron Doucett">
+
+  <meta property="og:title" content="About — Aaron Doucett">
+  <meta property="og:description" content="Geospatial professional, data visualization engineer, photographer, and endurance athlete.">
+  <meta property="og:type" content="profile">
+  <meta property="og:url" content="https://doucett.net/about.html">
+  <link rel="canonical" href="https://doucett.net/about.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.mapbox.com">
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/about.css">
 </head>
 <body>
-    <header>
-        <nav aria-label="Main Navigation">
-            <div class="logo">Doucett.net</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html" class="active">About</a></li>
-                <li><a href="geospatial.html">Projects</a></li>
-                <li><a href="photography.html">Photography</a></li>
-                <li><a href="media.html">Media</a></li>
-                <li><a href="resume.html">Resume</a></li>
-            </ul>
-            <button class="burger" aria-label="Toggle Navigation Menu" aria-expanded="false">
-                <span class="line1"></span>
-                <span class="line2"></span>
-                <span class="line3"></span>
-            </button>
-        </nav>
-    </header>
+  <a href="#main-content" class="sr-only" style="position:absolute;top:-100px;left:0;background:var(--color-accent);color:#000;padding:0.5rem 1rem;z-index:9999;font-weight:600;" onfocus="this.style.top='0'" onblur="this.style.top='-100px'">Skip to content</a>
 
-    <main>
-        <section class="hero" id="hero">
-            <div class="overlay"></div>
-            <div class="text-overlay">
-                <h1>About Me</h1>
-                <div class="animated-text-section">
-                    <h2>
-                        I AM A <span id="dynamic-word"></span>
-                    </h2>
-                </div>
+  <header class="site-header">
+    <nav class="site-nav" aria-label="Main Navigation">
+      <a href="index.html" class="site-logo">Doucett.net</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="geospatial.html">Projects</a></li>
+        <li><a href="photography.html">Photography</a></li>
+        <li><a href="media.html">Media</a></li>
+        <li><a href="resume.html">Resume</a></li>
+      </ul>
+      <button class="burger" aria-label="Toggle Navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section class="hero about-hero">
+      <div class="hero__overlay"></div>
+      <div class="hero__content">
+        <h1 class="hero__title">About Me</h1>
+        <div class="typing-section">
+          <p class="typing-prefix">I am a</p>
+          <span id="dynamic-word" class="typing-word"></span>
+          <span class="typing-cursor" aria-hidden="true">|</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--contour" id="introduction">
+      <div class="container container--narrow">
+        <h2>Introduction</h2>
+        <p>I'm Aaron Doucett, a geospatial professional and creative problem solver with a background in GIS, Earth observation, and data-driven storytelling. Over the past decade, I've worked on everything from climate research and urban planning to developing marketing strategies for cutting-edge geospatial technology.</p>
+        <p>I've built this site to share my work, passions, and the projects that keep me inspired. Thanks for visiting — take a look around, and feel free to connect.</p>
+      </div>
+    </section>
+
+    <section class="section section--alt" id="biography">
+      <div class="container">
+        <h2>My Story</h2>
+        <div class="bio-grid">
+          <div class="bio-text">
+            <p>I grew up surrounded by the landscapes of Western Massachusetts, where I developed a love for exploring nature. After graduating from UMass Amherst with a degree in Earth Systems, I moved to the Greater Boston area, where I spent a decade building my career in geospatial technology and SaaS platforms.</p>
+            <p>Outside of work, I'm passionate about creativity and the outdoors. I've been playing jazz piano for years and enjoy photography. Endurance sports are a key part of my life — as an avid cyclist and runner, I love pushing my limits. These experiences have taught me resilience, discipline, and the power of setting big goals.</p>
+            <p>Now living in St. Louis, I'm exploring new horizons both professionally at Planet Labs and personally in the Midwest.</p>
+          </div>
+          <div class="bio-image">
+            <img src="images/aaron-doucett-profile.jpg" alt="Aaron Doucett portrait">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--contour" id="journey">
+      <div class="container container--narrow">
+        <h2>My Journey</h2>
+        <div class="timeline">
+          <div class="timeline__item">
+            <div class="timeline__marker"></div>
+            <div class="timeline__content">
+              <h3>UMass Amherst</h3>
+              <p>Graduated with a B.Sc in Earth Systems, focusing on GIS and Remote Sensing — laying the foundation for my career in geospatial technology.</p>
             </div>
-        </section>
-
-        <section class="section introduction" id="introduction">
-            <div class="container_intro">
-                <h2>Introduction</h2>
-                <p>
-                    I'm Aaron Doucett, a geospatial professional and creative problem solver with a background in GIS, earth observation, and data-driven storytelling. Over the past decade, I've worked on everything from climate research and urban planning to developing marketing strategies for cutting-edge geospatial tech.
-                </p>
-                <p>
-                    I’ve built this site to share my work, passions, and the projects that keep me inspired. Thanks for visiting—take a look around, and feel free to connect!
-                </p>
+          </div>
+          <div class="timeline__item">
+            <div class="timeline__marker"></div>
+            <div class="timeline__content">
+              <h3>A Decade in Boston</h3>
+              <p>Built my career in the Boston tech scene, moving from environmental consulting to marketing and sales engineering roles at innovative startups and industry leaders.</p>
             </div>
-        </section>
-
-        <section class="section biography" id="biography">
-            <div class="container">
-                <h2>My Story</h2>
-                <div class="biography-content">
-                    <div class="biography-text">
-                        <p>I grew up surrounded by the beautiful landscapes of Western Massachusetts, where I developed a love for exploring nature. After graduating from UMass Amherst with a degree in Earth Systems, I moved to the Greater Boston area, where I spent a decade building my career in innovative industries like geospatial technology and SaaS platforms.</p>
-                        <p>Outside of work, I am passionate about creativity and the outdoors. I’ve been playing jazz piano for years and enjoy photography. Endurance sports are also a key part of my life—as an avid cyclist and runner, I love pushing my limits. These experiences have taught me resilience, discipline, and the power of setting big goals.</p>
-                        <p>Now living in St. Louis, I’m excited to be exploring new horizons, both professionally and personally.</p>
-                    </div>
-                    <div class="content-image">
-                        <img src="images/aaron-doucett-profile.jpg" alt="A portrait of Aaron Doucett">
-                    </div>
-                </div>
+          </div>
+          <div class="timeline__item">
+            <div class="timeline__marker"></div>
+            <div class="timeline__content">
+              <h3>Marathon Milestones</h3>
+              <p>Completed three marathons in 2024 — Boston, Chicago, and Indianapolis — achieving a personal best of 2:52:16.</p>
             </div>
-        </section>
-        
-        <section class="section journey" id="journey">
-            <div class="container">
-                <h2>My Journey</h2>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-icon">🎓</div>
-                        <div class="timeline-content">
-                            <h3>UMass Amherst</h3>
-                            <p>Graduated with a B.Sc in Earth Systems, focusing on GIS and Remote Sensing, laying the foundation for my career in geospatial technology.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-icon">🏙️</div>
-                        <div class="timeline-content">
-                            <h3>A Decade in Boston</h3>
-                            <p>Built my career in the Boston tech scene, moving from environmental consulting to marketing and sales engineering roles at innovative startups and industry leaders.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-icon">🏃‍♂️</div>
-                        <div class="timeline-content">
-                            <h3>Marathon Milestones</h3>
-                            <p>Completed three marathons in 2024—Boston, Chicago, and Indianapolis—achieving a personal best of 2:52:16. A true test of discipline and resilience.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-icon">🌉</div>
-                        <div class="timeline-content">
-                            <h3>Hello, St. Louis!</h3>
-                            <p>Relocated to St. Louis to start a new chapter, joining Planet Labs as a Sr. Data Visualization Engineer and embracing life in the Midwest.</p>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="timeline__item">
+            <div class="timeline__marker"></div>
+            <div class="timeline__content">
+              <h3>Planet Labs, St. Louis</h3>
+              <p>Relocated to St. Louis to join Planet Labs as a Sr. Data Visualization Engineer, building tools that bring satellite imagery and geospatial data to life.</p>
             </div>
-        </section>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <section class="section map-section" id="map-section">
-            <div class="container">
-                <h2>My Map</h2>
-                <p class="map-subtitle">A few of the places I've called home.</p>
-                <div id="about-map" class="mapbox-map"></div>
-            </div>
-        </section>
+    <section class="section section--alt" id="map-section">
+      <div class="container">
+        <h2>My Map</h2>
+        <p style="text-align:center; color:var(--color-text-secondary); margin-bottom:var(--space-xl);">A few of the places I've called home.</p>
+        <div id="about-map" class="about-map"></div>
+      </div>
+    </section>
 
-        <section class="section contact" id="contact">
-            <div class="banded-color"></div>
-            <div class="container">
-                <h2>Get In Touch</h2>
-                <p>Feel free to reach out or follow me on other platforms:</p>
-                <div class="contact-links">
-                    <a href="https://www.linkedin.com/in/adoucett/" target="_blank" class="contact-btn">LinkedIn</a>
-                    <a href="https://unsplash.com/@adoucett" target="_blank" class="contact-btn">Unsplash</a>
-                    <a href="https://instagram.com/thedoucett" target="_blank" class="contact-btn">Instagram</a>
-                    <a href="https://www.strava.com/athletes/2721840" target="_blank" class="contact-btn">Strava</a>
-                </div>
-            </div>
-        </section>
-    </main>
+    <section class="section section--contour" id="contact">
+      <div class="container container--narrow" style="text-align:center;">
+        <h2>Get In Touch</h2>
+        <p>Feel free to reach out or follow me on other platforms.</p>
+        <div class="contact-links">
+          <a href="https://www.linkedin.com/in/adoucett/" target="_blank" rel="noopener noreferrer" class="btn btn--primary">LinkedIn</a>
+          <a href="https://unsplash.com/@adoucett" target="_blank" rel="noopener noreferrer" class="btn btn--outline">Unsplash</a>
+          <a href="https://instagram.com/thedoucett" target="_blank" rel="noopener noreferrer" class="btn btn--outline">Instagram</a>
+          <a href="https://www.strava.com/athletes/2721840" target="_blank" rel="noopener noreferrer" class="btn btn--ghost">Strava</a>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    <footer>
-        <p>&copy; 2025 Aaron Doucett. All rights reserved.</p>
-    </footer>
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/adoucett/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/adoucett" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://unsplash.com/@adoucett" target="_blank" rel="noopener noreferrer">Unsplash</a>
+      </div>
+      <p class="site-footer__copy">&copy; <span id="copyright-year"></span> Aaron Doucett. All rights reserved.</p>
+    </div>
+  </footer>
 
-    <script src='https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js'></script>
-    <script src="js/script.js"></script>
-    <script src="js/about.js"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/about.js" defer></script>
 </body>
 </html>

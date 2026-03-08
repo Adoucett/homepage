@@ -1,249 +1,280 @@
-// Photography Page Specific JavaScript
-// photography.js
+(function () {
+  'use strict';
 
-/* =========================
-   Slideshow Functionality
-   ========================= */
-let slideIndex = 0;
-let slides = [];
-let dots = [];
-let slideshowInterval;
+  var PHOTOS_URL = 'images/photos/photos.json';
+  var CURATION_URL = 'images/photos/curation.json';
 
-// Function to show slides with fade effect
-function showSlides(n) {
-    const slideshowSlides = document.getElementsByClassName("slides");
-    const dotElements = document.getElementsByClassName("dot");
+  var state = {
+    selected: [],
+    archive: [],
+    gallery: [],
+    lightboxIndex: 0,
+    heroIndex: 0,
+    heroTimer: null
+  };
 
-    if (n >= slideshowSlides.length) { slideIndex = 0 }
-    if (n < 0) { slideIndex = slideshowSlides.length - 1 }
+  var els = {
+    heroSlides: document.getElementById('hero-slides'),
+    selectedGrid: document.getElementById('selected-grid'),
+    archiveGrid: document.getElementById('archive-grid'),
+    archiveSection: document.getElementById('archive'),
+    lightbox: document.getElementById('photo-lightbox'),
+    lbImg: document.getElementById('photo-lightbox-img'),
+    lbCaption: document.getElementById('photo-lightbox-caption'),
+    lbClose: document.querySelector('.photo-lightbox__close'),
+    lbPrev: document.querySelector('.photo-lightbox__nav--prev'),
+    lbNext: document.querySelector('.photo-lightbox__nav--next')
+  };
 
-    // Hide all slides and remove active class from dots
-    for (let i = 0; i < slideshowSlides.length; i++) {
-        slideshowSlides[i].classList.remove('active');
-    }
+  /* ---- Fetch ---- */
 
-    for (let i = 0; i < dotElements.length; i++) {
-        dotElements[i].classList.remove('active');
-    }
+  function safeFetch(url, fallback) {
+    return fetch(url)
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .catch(function () { return fallback; });
+  }
 
-    // Show current slide and add active class to corresponding dot
-    if (slideshowSlides.length > 0) {
-        slideshowSlides[slideIndex].classList.add('active');
-    }
-    if (dotElements.length > 0) {
-        dotElements[slideIndex].classList.add('active');
-    }
-}
+  /* ---- Normalize ---- */
 
-// Function to next slide
-function nextSlide() {
-    slideIndex++;
-    showSlides(slideIndex);
-}
+  function filename(path) {
+    return decodeURIComponent((path || '').split('/').pop());
+  }
 
-// Function to previous slide
-function prevSlide() {
-    slideIndex--;
-    showSlides(slideIndex);
-}
+  function normalize(raw, curation) {
+    var meta = curation.photos || {};
+    var order = curation.featuredOrder || [];
+    var orderSet = {};
+    order.forEach(function (name, i) { orderSet[name] = i; });
 
-// Function to set current slide based on dot click
-function currentSlide(n) {
-    slideIndex = n;
-    showSlides(slideIndex);
-}
-
-// Function to setup slideshow
-function setupSlideshow() {
-    // Fetch photos.json to use the same photos for slideshow
-    fetch('images/photos/photos.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            const slideshowSlidesContainer = document.querySelector('.slides-container');
-            const dotContainer = document.querySelector('.dot-container');
-
-            data.photos.forEach((photo, index) => {
-                // Create slide div
-                const slideDiv = document.createElement('div');
-                slideDiv.classList.add('slides', 'fade');
-
-                // Create image element
-                const img = document.createElement('img');
-                img.src = photo.full;
-                img.alt = photo.alt;
-
-                // Append image to slide div
-                slideDiv.appendChild(img);
-
-                // Append slide to slideshow container
-                slideshowSlidesContainer.appendChild(slideDiv);
-
-                // Create dot
-                const dot = document.createElement('span');
-                dot.classList.add('dot');
-                dot.addEventListener('click', () => {
-                    clearInterval(slideshowInterval); // Stop automatic slideshow on manual navigation
-                    currentSlide(index);
-                    slideshowInterval = setInterval(nextSlide, 10000); // Restart automatic slideshow
-                });
-
-                // Append dot to dot container
-                dotContainer.appendChild(dot);
-            });
-
-            slides = document.getElementsByClassName("slides");
-            dots = document.getElementsByClassName("dot");
-
-            // Initialize slideshow
-            showSlides(slideIndex);
-
-            // Start automatic slideshow
-            slideshowInterval = setInterval(nextSlide, 10000); // Change slide every 5 seconds
-        })
-        .catch(error => console.error('Error loading photos.json for slideshow:', error));
-
-    // Add event listeners to Prev and Next buttons
-    const prevButton = document.querySelector('.prev');
-    const nextButton = document.querySelector('.next');
-
-    if (prevButton && nextButton) {
-        prevButton.addEventListener('click', () => {
-            clearInterval(slideshowInterval); // Stop automatic slideshow on manual navigation
-            prevSlide();
-            slideshowInterval = setInterval(nextSlide, 10000); // Restart automatic slideshow
-        });
-
-        nextButton.addEventListener('click', () => {
-            clearInterval(slideshowInterval); // Stop automatic slideshow on manual navigation
-            nextSlide();
-            slideshowInterval = setInterval(nextSlide, 10000); // Restart automatic slideshow
-        });
-    }
-}
-
-// Initialize slideshow on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', setupSlideshow);
-
-/* =========================
-   Gallery Auto-Population and Lightbox
-   ========================= */
-
-// Function to fetch photos.json and populate the gallery
-function populateGallery() {
-    fetch('images/photos/photos.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            const gallery = document.getElementById('gallery');
-            data.photos.forEach((photo, index) => {
-                // Create gallery item div
-                const galleryItem = document.createElement('div');
-                galleryItem.classList.add('gallery-item');
-
-                // Create img element for thumbnail
-                const img = document.createElement('img');
-                img.src = photo.thumbnail;
-                img.alt = photo.alt;
-                img.loading = 'lazy';
-                img.dataset.full = photo.full; // Store full-resolution path
-
-                // Append img to gallery item
-                galleryItem.appendChild(img);
-
-                // Append gallery item to gallery
-                gallery.appendChild(galleryItem);
-            });
-
-            // After populating, initialize lightbox functionality
-            initializeLightbox();
-        })
-        .catch(error => console.error('Error loading photos.json:', error));
-}
-
-// Function to initialize lightbox
-function initializeLightbox() {
-    // Select all gallery images
-    const galleryImages = document.querySelectorAll('.gallery-item img');
-
-    // Select lightbox elements
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    const captionText = document.getElementById('caption');
-    const closeBtn = document.querySelector('.close');
-
-    // Function to open lightbox
-    galleryImages.forEach(image => {
-        image.addEventListener('click', () => {
-            lightbox.style.display = 'block';
-            lightboxImg.src = image.dataset.full; // Use full-resolution image
-            captionText.textContent = image.alt;
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
-            closeBtn.focus(); // Shift focus to close button for accessibility
-        });
+    var enriched = raw.map(function (p) {
+      var name = filename(p.full);
+      var c = meta[name] || {};
+      return {
+        thumbnail: p.thumbnail,
+        full: p.full,
+        filename: name,
+        title: c.title || '',
+        description: c.description || '',
+        location: c.location || '',
+        year: c.year || '',
+        featured: Boolean(c.featured) || name in orderSet,
+        rank: name in orderSet ? orderSet[name] : 9999
+      };
     });
 
-    // Function to close lightbox
-    closeBtn.addEventListener('click', () => {
-        lightbox.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Restore scrolling
+    var selected = enriched
+      .filter(function (p) { return p.featured; })
+      .sort(function (a, b) { return a.rank - b.rank; });
+
+    var selectedSet = {};
+    selected.forEach(function (p) { selectedSet[p.full] = true; });
+
+    var archive = enriched.filter(function (p) { return !selectedSet[p.full]; });
+
+    return { selected: selected, archive: archive };
+  }
+
+  /* ---- Hero ---- */
+
+  function renderHero() {
+    if (!els.heroSlides) return;
+    var source = state.selected.length ? state.selected : state.gallery.slice(0, 8);
+    if (!source.length) return;
+
+    els.heroSlides.innerHTML = '';
+
+    source.forEach(function (photo, i) {
+      var slide = document.createElement('div');
+      slide.className = 'photo-hero__slide' + (i === 0 ? ' is-active' : '');
+      var img = document.createElement('img');
+      img.src = photo.full;
+      img.alt = photo.title || 'Photography by Aaron Doucett';
+      slide.appendChild(img);
+      els.heroSlides.appendChild(slide);
     });
 
-    // Close lightbox when clicking outside the image
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
-            lightbox.style.display = 'none';
-            document.body.style.overflow = 'auto';
+    state.heroIndex = 0;
+    clearInterval(state.heroTimer);
+
+    if (source.length < 2) return;
+
+    state.heroTimer = setInterval(function () {
+      var slides = els.heroSlides.querySelectorAll('.photo-hero__slide');
+      slides[state.heroIndex].classList.remove('is-active');
+      state.heroIndex = (state.heroIndex + 1) % slides.length;
+      slides[state.heroIndex].classList.add('is-active');
+    }, 7000);
+  }
+
+  /* ---- Gallery ---- */
+
+  function photoButton(photo, index, staggerIndex) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'photo-item';
+    btn.setAttribute('aria-label', photo.title ? 'View: ' + photo.title : 'View photograph');
+    btn.style.setProperty('--reveal-delay', (staggerIndex % 4) * 80 + 'ms');
+
+    var img = document.createElement('img');
+    img.src = photo.thumbnail;
+    img.alt = photo.title || 'Photograph';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    btn.appendChild(img);
+
+    btn.addEventListener('click', function () { openLightbox(index); });
+    return btn;
+  }
+
+  function renderGallery() {
+    state.gallery = [];
+    var stagger = 0;
+
+    if (els.selectedGrid && state.selected.length) {
+      els.selectedGrid.innerHTML = '';
+      state.selected.forEach(function (photo) {
+        var idx = state.gallery.length;
+        state.gallery.push(photo);
+        els.selectedGrid.appendChild(photoButton(photo, idx, stagger++));
+      });
+    }
+
+    if (els.archiveGrid && state.archive.length) {
+      els.archiveGrid.innerHTML = '';
+      stagger = 0;
+      state.archive.forEach(function (photo) {
+        var idx = state.gallery.length;
+        state.gallery.push(photo);
+        els.archiveGrid.appendChild(photoButton(photo, idx, stagger++));
+      });
+    }
+
+    if (els.archiveSection && !state.archive.length) {
+      els.archiveSection.style.display = 'none';
+    }
+
+    observeItems();
+  }
+
+  /* ---- Scroll reveal ---- */
+
+  function observeItems() {
+    var items = document.querySelectorAll('.photo-item');
+    if (!items.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
         }
-    });
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px 80px 0px' });
 
-    // Close lightbox on 'Esc' key press
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && lightbox.style.display === 'block') {
-            lightbox.style.display = 'none';
-            document.body.style.overflow = 'auto';
+    items.forEach(function (el) { observer.observe(el); });
+  }
+
+  /* ---- Lightbox ---- */
+
+  function captionFor(photo) {
+    var parts = [photo.title, photo.location, photo.year].filter(Boolean);
+    return parts.join(' \u2014 ');
+  }
+
+  function updateLightbox() {
+    var photo = state.gallery[state.lightboxIndex];
+    if (!photo || !els.lbImg) return;
+
+    els.lbImg.style.opacity = '0';
+    var preload = new Image();
+    preload.onload = function () {
+      els.lbImg.src = photo.full;
+      els.lbImg.alt = photo.title || 'Photograph';
+      requestAnimationFrame(function () {
+        els.lbImg.style.opacity = '1';
+      });
+    };
+    preload.src = photo.full;
+
+    if (els.lbCaption) els.lbCaption.textContent = captionFor(photo);
+
+    [-1, 1].forEach(function (offset) {
+      var n = state.gallery[(state.lightboxIndex + offset + state.gallery.length) % state.gallery.length];
+      if (n) { var p = new Image(); p.src = n.full; }
+    });
+  }
+
+  function openLightbox(index) {
+    if (!els.lightbox || !state.gallery.length) return;
+    state.lightboxIndex = index;
+    els.lightbox.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    updateLightbox();
+  }
+
+  function closeLightbox() {
+    if (!els.lightbox) return;
+    els.lightbox.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  function navLightbox(dir) {
+    if (!state.gallery.length) return;
+    state.lightboxIndex = (state.lightboxIndex + dir + state.gallery.length) % state.gallery.length;
+    updateLightbox();
+  }
+
+  /* ---- Events ---- */
+
+  function wireEvents() {
+    if (els.lbClose) els.lbClose.addEventListener('click', closeLightbox);
+    if (els.lbPrev) els.lbPrev.addEventListener('click', function () { navLightbox(-1); });
+    if (els.lbNext) els.lbNext.addEventListener('click', function () { navLightbox(1); });
+
+    if (els.lightbox) {
+      els.lightbox.addEventListener('click', function (e) {
+        if (e.target === els.lightbox || e.target === els.lightbox.querySelector('.photo-lightbox__body')) {
+          closeLightbox();
         }
-    });
-}
-
-// Initialize gallery on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', populateGallery);
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Function to show the next slide
-    function showNextSlide() {
-        document.querySelector('.next').click();
+      });
     }
 
-    // Function to show the previous slide
-    function showPrevSlide() {
-        document.querySelector('.prev').click();
-    }
-
-    // Listen for keydown events
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'ArrowRight') {
-            showNextSlide();
-        } else if (event.key === 'ArrowLeft') {
-            showPrevSlide();
-        }
+    document.addEventListener('keydown', function (e) {
+      if (!els.lightbox || !els.lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navLightbox(-1);
+      if (e.key === 'ArrowRight') navLightbox(1);
     });
+  }
 
-    // Optional: Close lightbox with Esc key
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            const lightbox = document.querySelector('.lightbox');
-            if (lightbox.style.display === 'block') {
-                lightbox.style.display = 'none';
-            }
-        }
+  /* ---- Init ---- */
+
+  function init() {
+    Promise.all([
+      safeFetch(PHOTOS_URL, { photos: [] }),
+      safeFetch(CURATION_URL, {})
+    ]).then(function (results) {
+      var photosData = results[0];
+      var curation = results[1];
+      var result = normalize(photosData.photos || [], curation);
+
+      state.selected = result.selected;
+      state.archive = result.archive;
+
+      renderHero();
+      renderGallery();
+      wireEvents();
     });
-});
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

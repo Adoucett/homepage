@@ -1,0 +1,367 @@
+{
+  "featuredOrder": [
+    "IMG_5683-Enhanced-Edit-2.jpg",
+    "IMG_5896.jpg",
+    "IMG_5604.jpg",
+    "IMG_4816.jpg",
+    "IMG_4101.jpg",
+    "IMG_4509.jpg",
+    "IMG_4636.jpg",
+    "IMG_4843.jpg",
+    "IMG_8207.JPG",
+    "20230128-IMG_9493.jpg"
+  ],
+  "subjects": [
+    "Nature/Wildlife",
+    "Black and White",
+    "Places/Landscape",
+    "Macro",
+    "People/Sports",
+    "Abstract"
+  ],
+  "photos": {
+    "IMG_5683-Enhanced-Edit-2.jpg": {
+      "title": "Full Moon",
+      "description": "Detailed lunar surface, crater textures visible.",
+      "tags": ["Nature/Wildlife"],
+      "featured": true
+    },
+    "IMG_5896.jpg": {
+      "title": "Crystal Bridges in Fog",
+      "description": "Morning mist rising off the stream, autumn color framing the pavilion.",
+      "location": "Bentonville, AR",
+      "tags": ["Places/Landscape"],
+      "featured": true
+    },
+    "IMG_5604.jpg": {
+      "title": "Anhinga",
+      "description": "Perched among cypress and Spanish moss.",
+      "tags": ["Nature/Wildlife"],
+      "featured": true
+    },
+    "IMG_4816.jpg": {
+      "title": "Dust Bath",
+      "description": "Elephant in a cloud of spray and dust.",
+      "tags": ["Black and White"],
+      "featured": true
+    },
+    "IMG_4101.jpg": {
+      "title": "Hummingbird",
+      "description": "Frozen mid-hover approaching the feeder.",
+      "tags": ["Nature/Wildlife"],
+      "featured": true
+    },
+    "IMG_4509.jpg": {
+      "title": "Red Panda",
+      "description": "Chin resting on a log, eyes forward.",
+      "tags": ["Nature/Wildlife"],
+      "featured": true
+    },
+    "IMG_4636.jpg": {
+      "title": "Zebra",
+      "description": "Profile study in natural contrast.",
+      "tags": ["Black and White"],
+      "featured": true
+    },
+    "IMG_4843.jpg": {
+      "title": "Elephant",
+      "description": "Trunk raised, throwing water against a dark background.",
+      "tags": ["Black and White"],
+      "featured": true
+    },
+    "IMG_8207.JPG": {
+      "title": "Autumn Overlook",
+      "description": "Fall foliage from a New England summit.",
+      "tags": ["People/Sports"],
+      "featured": true
+    },
+    "20230128-IMG_9493.jpg": {
+      "title": "Live Oak Arch",
+      "description": "Spanish moss canopy framing a sandy trail.",
+      "tags": ["Places/Landscape"],
+      "featured": true
+    },
+    "20210313-IMG_0448.jpg": {
+      "title": "Carolina Wren",
+      "tags": ["Nature/Wildlife"]
+    },
+    "20210320-IMG_0560.jpg": {
+      "title": "Boardwalk Through Reeds",
+      "tags": ["Places/Landscape"]
+    },
+    "20210320-IMG_0763.jpg": {
+      "title": "Purple Sandpiper",
+      "tags": ["Nature/Wildlife"]
+    },
+    "20210327-IMG_1948.jpg": {
+      "title": "Boston Skyline",
+      "description": "City across the harbor in haze.",
+      "tags": ["Places/Landscape"]
+    },
+    "20210327-IMG_1978.jpg": {
+      "title": "Eastern Point Light",
+      "description": "Lighthouse and stone jetty.",
+      "location": "Gloucester, MA",
+      "tags": ["Places/Landscape"]
+    },
+    "20210327-IMG_2009.jpg": {
+      "title": "Coast Guard",
+      "tags": ["Places/Landscape"]
+    },
+    "20210410-IMG_2391.jpg": {
+      "title": "Screech Owl",
+      "description": "Tucked inside a tree cavity at dusk.",
+      "tags": ["Nature/Wildlife"]
+    },
+    "20210411-IMG_2212.jpg": {
+      "title": "Screech Owl Resting",
+      "description": "Eyes closed in a hollow.",
+      "tags": ["Nature/Wildlife"]
+    },
+    "20210519-IMG_2956.jpg": {
+      "title": "Red-bellied Woodpecker",
+      "tags": ["Nature/Wildlife"]
+    },
+    "20210519-IMG_2962.jpg": {
+      "title": "Blue Jay",
+      "tags": ["Nature/Wildlife"]
+    },
+    "20211103-IMG_6247.jpg": {
+      "title": "Rime Ice",
+      "description": "Frosted pines on a ridgeline.",
+      "tags": ["Places/Landscape"]
+    },
+    "20211103-IMG_6265.jpg": {
+      "title": "Ridgeline",
+      "description": "Trail along the spine of a summit in cloud.",
+      "tags": ["Places/Landscape"]
+    },
+    "20211220-IMG_6740.jpg": {
+      "title": "Squirrel",
+      "tags": ["Nature/Wildlife"]
+    },
+    "20220102-IMG_6797_Original.jpg": {
+      "title": "Squirrel in Hollow",
+      "tags": ["Nature/Wildlife"]
+    },
+    "20220102-IMG_6881-2.jpg": {
+      "title": "Great Blue Heron",
+      "description": "Low-key portrait against a dark background.",
+      "tags": ["Nature/Wildlife"]
+    },
+    "20220120-IMG_6085.jpg": {
+      "title": "Hooded Merganser",
+      "description": "Drake on rippled water.",
+      "tags": ["Nature/Wildlife"]
+    },
+    "20220223-IMG_7627.jpg": {
+      "title": "Biathlete",
+      "description": "Aiming on the range.",
+      "tags": ["People/Sports"]
+    },
+    "20220507-IMG_8276.jpg": {
+      "title": "Goslings",
+      "tags": ["Nature/Wildlife"]
+    },
+    "20220522-IMG_8455.jpg": {
+      "title": "Screech Owl at Dusk",
+      "tags": ["Nature/Wildlife"]
+    },
+    "20220902-IMG_8354.jpg": {
+      "title": "Compass Rose",
+      "description": "Mosaic overlooking the Atlantic.",
+      "tags": ["Places/Landscape"]
+    },
+    "20220902-IMG_8461.jpg": {
+      "title": "Rigging Detail",
+      "description": "Canvas and hardware against bokeh water.",
+      "tags": ["Abstract"]
+    },
+    "20220902-IMG_8472.jpg": {
+      "title": "Sailmaker's Mark",
+      "description": "Aaron Jasper, Sailmaker stamp on cloth.",
+      "tags": ["Abstract"]
+    },
+    "20220902-IMG_8489.jpg": {
+      "title": "Under Sail",
+      "description": "Looking up through the main and jib.",
+      "tags": ["Abstract"]
+    },
+    "20220903-IMG_8797.jpg": {
+      "title": "Polo",
+      "description": "Full gallop, mid-match.",
+      "tags": ["People/Sports"]
+    },
+    "20230127-IMG_5926.jpg": {
+      "title": "Alligator",
+      "description": "Basking in grass.",
+      "tags": ["Nature/Wildlife"]
+    },
+    "20230129-IMG_0020.jpg": {
+      "title": "Half Moon",
+      "description": "First quarter, detailed surface.",
+      "tags": ["Nature/Wildlife"]
+    },
+    "6A6905BD-C273-4522-AF4F-472E7DE588A4.jpg": {
+      "title": "Red-tailed Hawk",
+      "description": "Portrait from below.",
+      "tags": ["Nature/Wildlife"]
+    },
+    "E28688AF-DB25-4B30-BB33-79F867CB926B.jpg": {
+      "title": "Tidal Patterns",
+      "description": "Water channels carving through sand.",
+      "tags": ["Abstract"]
+    },
+    "5FDE8D71-F4CB-4625-833A-E1A985711B4D.jpg": {
+      "title": "Hull Stripes",
+      "description": "Peeling paint layers on a boat.",
+      "tags": ["Abstract"]
+    },
+    "IMG_0023.jpg": {
+      "title": "Main and Sky",
+      "description": "Sail geometry against clouds.",
+      "tags": ["Abstract"]
+    },
+    "IMG_0092.jpg": {
+      "title": "Sailing at Dusk",
+      "description": "Open water and moody light.",
+      "tags": ["Places/Landscape"]
+    },
+    "IMG_0155.jpg": {
+      "title": "Sunset on Deck",
+      "description": "Golden hour from the bow.",
+      "tags": ["Places/Landscape"]
+    },
+    "IMG_0167.jpg": {
+      "title": "US 22",
+      "description": "Mainsail against scattered clouds.",
+      "tags": ["Abstract"]
+    },
+    "IMG_0220.jpg": {
+      "title": "Compass on Deck",
+      "description": "Etched detail on a teal hull.",
+      "tags": ["Abstract"]
+    },
+    "IMG_0280.jpg": {
+      "title": "Wood Duck",
+      "description": "Drake in dark water.",
+      "tags": ["Nature/Wildlife"]
+    },
+    "IMG_0625.jpg": {
+      "title": "RFC Striders",
+      "description": "Race day, #1102.",
+      "tags": ["People/Sports", "Black and White"]
+    },
+    "IMG_0796.jpg": {
+      "title": "Leaf Texture",
+      "description": "Close-up vein structure, dark background.",
+      "tags": ["Macro"]
+    },
+    "IMG_0870.jpg": {
+      "title": "Track Race",
+      "description": "HFC #1104 in the final stretch.",
+      "tags": ["People/Sports", "Black and White"]
+    },
+    "IMG_1361.jpg": {
+      "title": "Geodesic",
+      "description": "Glass and steel lattice structure.",
+      "tags": ["Abstract"]
+    },
+    "IMG_1384.jpg": {
+      "title": "Palm Center",
+      "description": "Radial fronds from the crown.",
+      "tags": ["Macro"]
+    },
+    "IMG_1386.jpg": {
+      "title": "Palm Frond",
+      "description": "Water droplets along the blade.",
+      "tags": ["Macro"]
+    },
+    "IMG_1401.jpg": {
+      "title": "Frond Detail",
+      "description": "Rain on tropical leaf structure.",
+      "tags": ["Macro"]
+    },
+    "IMG_1423.jpg": {
+      "title": "Succulent Spiral",
+      "description": "Frosted edges, geometric growth.",
+      "tags": ["Macro"]
+    },
+    "IMG_1440.jpg": {
+      "title": "Swallowtail on Zinnia",
+      "description": "Pipevine swallowtail, orange zinnia.",
+      "tags": ["Nature/Wildlife"]
+    },
+    "IMG_1442.jpg": {
+      "title": "Pineapple",
+      "description": "Growing on the plant.",
+      "tags": ["Macro"]
+    },
+    "IMG_1453.jpg": {
+      "title": "Wall Sculpture",
+      "description": "Wavy metal and wood form on white.",
+      "tags": ["Abstract"]
+    },
+    "IMG_1480.jpg": {
+      "title": "Pink Zinnia",
+      "description": "Close-up bloom, saturated.",
+      "tags": ["Macro"]
+    },
+    "IMG_1486.jpg": {
+      "title": "Nautical Chart Detail",
+      "description": "Compass lines and annotations at macro scale.",
+      "tags": ["Abstract"]
+    },
+    "IMG_1527.jpg": {
+      "title": "Climatron",
+      "description": "Geodesic dome through the canopy.",
+      "location": "Missouri Botanical Garden",
+      "tags": ["Places/Landscape"]
+    },
+    "IMG_1530.jpg": {
+      "title": "Perforated Screen",
+      "description": "Light through a patterned surface.",
+      "tags": ["Black and White"]
+    },
+    "IMG_1680.jpg": {
+      "title": "Mannequin and Plant",
+      "description": "Wooden figure holding a potted plant.",
+      "tags": ["Abstract"]
+    },
+    "IMG_1690.jpg": {
+      "title": "Cambridge Running Club",
+      "description": "Mid-race, #511.",
+      "tags": ["People/Sports", "Black and White"]
+    },
+    "IMG_1722.jpg": {
+      "title": "Victoria Water Lily",
+      "description": "Giant lily pads with upturned rims.",
+      "tags": ["Nature/Wildlife"]
+    },
+    "IMG_2531.jpg": {
+      "title": "Facade at Night",
+      "description": "Classical pediment and statuary, warm light.",
+      "tags": ["Places/Landscape"]
+    },
+    "IMG_2626.jpg": {
+      "title": "Hull Detail",
+      "description": "Color stripes where paint meets wood.",
+      "tags": ["Abstract"]
+    },
+    "IMG_3878.jpg": {
+      "title": "Swan",
+      "description": "Mute swan reflected in still water.",
+      "tags": ["Nature/Wildlife"]
+    },
+    "IMG_4515.jpg": {
+      "title": "Red-tailed Hawk",
+      "description": "Profile portrait, soft background.",
+      "tags": ["Nature/Wildlife"]
+    },
+    "IMG_5618.jpg": {
+      "title": "Great Blue Heron",
+      "description": "Standing in marsh grass.",
+      "tags": ["Nature/Wildlife"]
+    }
+  }
+}

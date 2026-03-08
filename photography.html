@@ -1,87 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aaron Doucett - Photography</title>
-    <!-- Shared CSS -->
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Photography Page Specific CSS -->
-    <link rel="stylesheet" href="css/photography.css">
-    <!-- Google Fonts: DM Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Favicon (optional) -->
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Photos by Aaron Doucett">
-    <meta name="keywords" content="Photography, Portfolio, Unsplash, Instagram">
-    <meta name="author" content="Aaron Doucett">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photography — Aaron Doucett</title>
+  <meta name="description" content="Photography by Aaron Doucett — landscapes, architecture, and observational studies from life in motion.">
+  <meta name="author" content="Aaron Doucett">
+
+  <meta property="og:title" content="Photography — Aaron Doucett">
+  <meta property="og:description" content="Landscapes, architecture, and observational studies by Aaron Doucett.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://doucett.net/photography.html">
+  <link rel="canonical" href="https://doucett.net/photography.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/photography.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">Doucett.net</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="photography.html" class="active">Photography</a></li>
-                <li><a href="geospatial.html">Projects</a></li>
-                <li><a href="media.html">Media</a></li>
-                <li><a href="resume.html">Resume</a></li>
-            </ul>
-            <div class="burger">
-                <div class="line1"></div>
-                <div class="line2"></div>
-                <div class="line3"></div>
-            </div>
-        </nav>
-    </header>
+  <a href="#main-content" class="sr-only" style="position:absolute;top:-100px;left:0;background:var(--color-accent);color:#000;padding:0.5rem 1rem;z-index:9999;font-weight:600;" onfocus="this.style.top='0'" onblur="this.style.top='-100px'">Skip to content</a>
 
-    <main>
-        <!-- Full-Screen Slideshow -->
-        <section class="slideshow">
-            <div class="slides-container">
-                <!-- Slideshow images will be injected here by photography.js -->
-            </div>
-            <!-- Slideshow Controls -->
-            <a class="prev">&#10094;</a>
-            <a class="next">&#10095;</a>
-            <!-- Slideshow Indicators -->
-            <div class="dot-container">
-                <!-- Dots will be injected here by photography.js -->
-            </div>
-        </section>
+  <header class="site-header">
+    <nav class="site-nav" aria-label="Main Navigation">
+      <a href="index.html" class="site-logo">Doucett.net</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="geospatial.html">Projects</a></li>
+        <li><a href="photography.html">Photography</a></li>
+        <li><a href="media.html">Media</a></li>
+        <li><a href="resume.html">Resume</a></li>
+      </ul>
+      <button class="burger" aria-label="Toggle Navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
 
-        <!-- Photography Header -->
-        <section class="photography-header">
-            <h1>Photography Portfolio</h1>
-            <p>A few of my favorite shots. </p>
-            <div class="social-links">
-                <a href="https://unsplash.com/@adoucett" target="_blank" class="social-btn">Unsplash</a>
-                <a href="https://instagram.com/thedoucett" target="_blank" class="social-btn">Instagram</a>
-            </div>
-        </section>
+  <main id="main-content">
 
-        <!-- Gallery Section -->
-        <section class="gallery" id="gallery">
-            <!-- Gallery items will be injected here by photography.js -->
-        </section>
-    </main>
+    <section class="photo-hero" aria-label="Featured photography">
+      <div class="photo-hero__slides" id="hero-slides"></div>
+      <div class="photo-hero__vignette"></div>
+      <p class="photo-hero__tagline">Observation in motion</p>
+    </section>
 
-    <!-- Lightbox Modal -->
-    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-labelledby="caption">
-        <span class="close" aria-label="Close">&times;</span>
-        <img class="lightbox-content" id="lightbox-img" alt="">
-        <div id="caption"></div>
+    <div class="photo-intro">
+      <p class="photo-intro__text">A visual practice rooted in light, landscape, and the quiet patterns of place.</p>
+      <p class="photo-intro__links">
+        Also on
+        <a href="https://unsplash.com/@adoucett" target="_blank" rel="noopener noreferrer">Unsplash</a> and
+        <a href="https://instagram.com/thedoucett" target="_blank" rel="noopener noreferrer">Instagram</a>
+      </p>
     </div>
 
-    <footer>
-        <p>&copy; 2024 Your Name. All rights reserved.</p>
-    </footer>
+    <section class="photo-selected" id="selected" aria-label="Selected works">
+      <div class="photo-selected__grid" id="selected-grid"></div>
+    </section>
 
-    <!-- Shared JS -->
-    <script src="js/script.js"></script>
-    <!-- Photography Page Specific JS -->
-    <script src="js/photography.js"></script>
+    <section class="photo-archive" id="archive" aria-label="Archive">
+      <p class="photo-archive__label">Archive</p>
+      <div class="photo-archive__grid" id="archive-grid"></div>
+    </section>
+
+  </main>
+
+  <div id="photo-lightbox" class="photo-lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button class="photo-lightbox__close" aria-label="Close viewer">&times;</button>
+    <div class="photo-lightbox__body">
+      <button class="photo-lightbox__nav photo-lightbox__nav--prev" aria-label="Previous photo">&#10094;</button>
+      <figure class="photo-lightbox__figure">
+        <img class="photo-lightbox__img" id="photo-lightbox-img" alt="">
+        <figcaption class="photo-lightbox__caption" id="photo-lightbox-caption"></figcaption>
+      </figure>
+      <button class="photo-lightbox__nav photo-lightbox__nav--next" aria-label="Next photo">&#10095;</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/adoucett/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/adoucett" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://unsplash.com/@adoucett" target="_blank" rel="noopener noreferrer">Unsplash</a>
+      </div>
+      <p class="site-footer__copy">&copy; <span id="copyright-year"></span> Aaron Doucett. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+  <script src="js/photography.js" defer></script>
 </body>
 </html>

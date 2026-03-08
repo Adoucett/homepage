@@ -1,479 +1,170 @@
-/* Import Poppins Font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+/* Resume Page — Extends style.css */
 
-/* Global Font Family Override */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #000; /* Black background */
-    color: #fff; /* White text */
-    line-height: 1.6;
-    margin: 0;
-    padding: 0 0%;
-    font-size: 1rem; /* Base font size */
+/* Hero */
+.resume-hero {
+  min-height: 50vh;
+  background: radial-gradient(ellipse at 50% 80%, rgba(230,126,34,0.06) 0%, transparent 60%),
+              var(--color-bg-primary);
 }
 
-/* Contour Lines Background for Sections */
-.section {
-    position: relative;
-    padding: 2rem 2rem;
-    background-color: #000; /* Black background */
-    color: #fff; /* White text */
-    overflow: hidden;
-    box-sizing: border-box;
+/* Resume Card styling */
+.resume-card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
 }
 
-.section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('../images/uploads/contours.png'); /* Ensure correct path */
-    background-repeat: repeat-y; /* Repeat only vertically */
-    background-size: cover; /* Scale the image to cover the entire section */
-    background-position: center top; /* Center the image horizontally, align to top */
-    background-attachment: fixed; /* Parallax effect for a smooth background scroll */
-    opacity: 0.3; /* Adjust opacity for a more subtle effect */
-    pointer-events: none;
-    z-index: 0;
+.resume-card h2 {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--color-border);
 }
 
-.container {
-    position: relative;
-    max-width: 900px;
-    margin: 0 auto;
-    text-align: left;
-    z-index: 1;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    background-color: #111;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    box-sizing: border-box;
+/* Job Entries */
+.job {
+  margin-bottom: var(--space-2xl);
 }
 
-/* Hero Section */
-.hero {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50vh;
-    background-color: #000; /* Black background */
-    opacity: 0.9;
-    color: #fff; /* White text */
-    text-align: center;
-    position: relative;
-    padding: 2rem;
-    box-sizing: border-box;
+.job:last-child {
+  margin-bottom: 0;
 }
 
-.hero::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100px;
-    background-image: url('../images/uploads/contours.png');
-    background-repeat: repeat-x;
-    opacity: 0.1;
-    pointer-events: none;
-    z-index: 0;
+.job__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-md);
 }
 
-.hero-content h1 {
-    font-size: 3rem;
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    transition: transform 0.5s ease, letter-spacing 0.5s ease;
+.job__logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px;
 }
 
-.hero-content p {
-    font-size: 1rem;
-    color: #aaa; /* Light gray */
-    transition: color 0.5s ease;
+.job__title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  margin-bottom: 2px;
 }
 
-/* Scaling Effects on Hover */
-.hero-content h1:hover {
-    transform: scale(1.05);
-    letter-spacing: 6px;
+.job__meta {
+  font-size: var(--text-sm);
+  color: var(--color-teal);
+  margin: 0;
+  font-weight: 500;
 }
 
-.hero-content p:hover {
-    color: #fff;
+.job__list {
+  list-style: none;
+  padding: 0;
 }
 
-/* Hero Buttons */
-.hero-buttons {
-    margin-top: 2rem;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+.job__list li {
+  position: relative;
+  padding-left: var(--space-lg);
+  margin-bottom: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
 }
 
-.hero-buttons .download-btn,
-.hero-buttons .linkedin-btn {
-    padding: 0.75rem 1.5rem;
-    background-color: #0A66C2; /* Default background */
-    color: #fff; /* White text */
-    text-decoration: none;
-    font-weight: 500;
-    border-radius: 25px;
-    transition: background-color 0.3s, transform 0.3s, color 0.3s;
-    font-size: 1rem;
+.job__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  opacity: 0.6;
 }
 
-.hero-buttons .download-btn:hover,
-.hero-buttons .linkedin-btn:hover {
-    background-color: #333; /* Dark gray background on hover */
-    color: #fff; /* White text on hover */
-    transform: scale(1.05);
+/* Skills Grid */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-xl);
 }
 
-/* LinkedIn Button Specific Styling */
-.linkedin-btn {
-    background-color: #0077B5; /* LinkedIn Blue */
+.skill-group h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+  color: var(--color-accent);
 }
 
-.linkedin-btn:hover {
-    background-color: #005582; /* Darker LinkedIn Blue on hover */
+.skill-group ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
 }
 
-/* Section Headings */
-.section h2 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #fff; /* White text */
-    transition: transform 0.3s ease;
+.skill-group ul li {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  padding: var(--space-xs) var(--space-md);
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-full);
+  transition: background var(--transition-fast);
 }
 
-.section h2:hover {
-    transform: scale(1.02);
+.skill-group ul li:hover {
+  background: rgba(230, 126, 34, 0.1);
 }
 
-/* Work Experience */
-.work-experience {
-    margin-bottom: 2rem;
-    text-align: left;
+/* Back to Top (North Arrow) */
+.back-to-top {
+  position: fixed;
+  top: calc(var(--header-height) + var(--space-md));
+  right: var(--space-lg);
+  z-index: 100;
+  opacity: 0.5;
+  transition: opacity var(--transition-fast), transform var(--transition-base);
+  text-decoration: none;
 }
 
-.work-experience h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: #fff;
-    transition: transform 0.3s ease;
+.back-to-top:hover {
+  opacity: 1;
+  transform: rotate(360deg);
 }
 
-.work-experience h4 {
-    font-size: 1rem;
-    margin-bottom: 0.75rem;
-    color: #0092CC;
-}
-
-.work-experience ul {
-    list-style: disc inside;
-    color: #ccc;
-}
-
-.work-experience ul li {
-    margin-bottom: 0.5rem;
-    line-height: 1.6;
-    font-size: 0.9rem;
-    color: #fffffa;
-    letter-spacing: 0.35px;
-    padding-left: 1.5rem;
-    text-indent: -1.5rem;
-    list-style-type: disc;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-/* Education */
-.section#education h3 {
-    font-size: 1.5rem;
-    text-align: left;
-    margin-bottom: 0.5rem;
-    color: #fff;
-    transition: transform 0.3s ease;
-
-}
-
-.section#education p {
-    font-size: 1rem;
-    color: #ccc;
-    text-align: left;
-    transition: color 0.3s ease;
-}
-
-.section#education p:hover {
-    color: #fff;
-}
-
-
-
-.section#education .company-logo {
-    width: 180px;
-    object-fit: contain;
-    border-radius: 2px;
-    flex-shrink: 0;
-    margin-right: 1rem; /* Add spacing between the logo and text */
-}
-
-
-/* Professional Skills */
-
-
-.company-logo {
-    width: 150px;
-    object-fit: contain;
-    border-radius: 2px;
-    flex-shrink: 0; /* Prevents the logo from shrinking */
-    padding: .09rem
-}
-
-.skills-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
-}
-
-.skills-category {
-    flex: 1 1 300px; /* Flex-grow, flex-shrink, flex-basis */
-    max-width: 400px;
-    text-align: left;
-}
-
-.skills-category h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
-    color: #fff;
-    transition: transform 0.3s ease;
-}
-
-.skills-category h3:hover {
-    transform: scale(1.01);
-}
-
-.skills-category ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.skills-category ul li {
-    background-color: #222; /* Dark gray background for skill tags */
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    color: #fff; /* White text */
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.skills-category ul li:hover {
-    background-color: #444; /* Lighter gray on hover */
-    transform: translateY(-5px);
-}
-
-/* North Arrow Styling */
-.north-arrow {
-    position: fixed;
-    top: 80px;
-    right: 20px;
-    z-index: 1000;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.north-arrow:hover {
-    transform: rotate(360deg);
-    opacity: 0.7;
-}
-
-/* Footer Styles */
-footer {
-    padding: 2rem;
-    text-align: center;
-    background-color: #000; /* Black background */
-    color: #fff; /* White text */
-    font-size: 0.9rem;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 1024px) {
-    /* Adjust background attachment for tablets */
-    .section::before {
-        background-attachment: scroll;
-    }
-}
-
+/* Responsive */
 @media (max-width: 768px) {
-    /* Hero Section Adjustments */
-    .hero {
-        height: auto;
-        padding: 2rem 1rem;
-    }
+  .resume-card {
+    padding: var(--space-lg);
+  }
 
-    .hero-content h1 {
-        font-size: 2rem;
-        padding-top: 3rem;
-    }
+  .job__header {
+    flex-direction: row;
+    gap: var(--space-md);
+  }
 
-    .hero-content p {
-        font-size: 0.9rem;
-    }
+  .job__logo {
+    width: 36px;
+    height: 36px;
+  }
 
-    .hero-buttons {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .hero-buttons .download-btn,
-    .hero-buttons .linkedin-btn {
-        width: 100%;
-        text-align: center;
-    }
+  .back-to-top {
+    right: var(--space-md);
+    top: calc(var(--header-height) + var(--space-xs));
+  }
 
-    /* Section Padding */
-    .section {
-        padding: 3rem 1rem;
-    }
-
-    .section h2 {
-        font-size: 1.8rem;
-    }
-
-    /* Work Experience Adjustments */
-    .work-experience h3 {
-        font-size: 1.3rem;
-    }
-
-    .work-experience h4 {
-        font-size: 0.9rem;
-    }
-
-    .work-experience ul li {
-        font-size: 0.85rem;
-    }
-
-    /* Education Adjustments */
-    .section#education h3 {
-        font-size: 1.3rem;
-    }
-
-    .section#education p {
-        font-size: 0.9rem;
-    }
-
-    /* Professional Skills Adjustments */
-    .skills-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .skills-category {
-        max-width: 100%;
-    }
-
-    .skills-category h3 {
-        font-size: 1.3rem;
-    }
-
-    .skills-category ul li {
-        font-size: 0.85rem;
-    }
-
-    /* Container Adjustments */
-    .container {
-        padding: 2rem;
-    }
-
-    /* North Arrow Position */
-    .north-arrow {
-        top: 70px;
-        right: 10px;
-        width: 40px;
-        height: 40px;
-    }
-}
-
-@media (max-width: 480px) {
-    /* Further adjustments for smaller mobile devices */
-    .hero-content h1 {
-        padding-top: 3rem;
-        font-size: 1.8rem;
-    }
-
-    .hero-content p {
-        font-size: 0.8rem;
-    }
-
-    .hero-buttons .download-btn,
-    .hero-buttons .linkedin-btn {
-        font-size: 0.9rem;
-        padding: 0.6rem 1.2rem;
-    }
-
-    .section h2 {
-        font-size: 1.6rem;
-    }
-
-    .work-experience h3 {
-        font-size: 1.2rem;
-    }
-
-    .work-experience h4 {
-        font-size: 0.85rem;
-    }
-
-    .work-experience ul li {
-        font-size: 0.8rem;
-    }
-
-    .section#education h3 {
-        font-size: 1.2rem;
-    }
-
-    .section#education p {
-        font-size: 0.85rem;
-    }
-
-    .skills-category h3 {
-        font-size: 1.2rem;
-    }
-
-    .skills-category ul li {
-        font-size: 0.8rem;
-    }
-
-    .north-arrow {
-        top: 60px;
-        right: 5px;
-        width: 35px;
-        height: 35px;
-    }
-}
-
-/* Main Reading Area */
-.container {
-    /* Already defined above */
-    box-sizing: border-box;
-}
-
-/* Paper Effect */
-.section {
-    border-radius: 10px;
-    background-color: #222;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  .back-to-top svg {
+    width: 24px;
+    height: 34px;
+  }
 }

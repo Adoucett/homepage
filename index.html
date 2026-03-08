@@ -1,114 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Aaron Doucett - Portfolio</title>
-      <link rel="stylesheet" href="css/style.css">
-      <!-- Google Fonts: Geologica -->
-      <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Jost:wght@700;800&display=swap" rel="stylesheet">
-      <!-- Mapbox GL JS CSS -->
-      <link href='https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css' rel='stylesheet' />
-      <!-- Favicon (optional) -->
-      <link rel="icon" href="images/uploads/favicon.ico" type="image/x-icon">
-   </head>
-   <body>
-      <header>
-         <nav aria-label="Main Navigation">
-            <div class="logo">Doucett.net</div>
-            <ul class="nav-links">
-               <li>
-                  <a href="index.html" class="active">Home</a>
-               </li>
-               <li>
-                  <a href="about.html">About</a>
-               </li>
-               <li>
-                  <a href="geospatial.html">Projects</a>
-               </li>
-               <li>
-                  <a href="photography.html">Photography</a>
-               </li>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aaron Doucett — Data Visualization &amp; Geospatial</title>
+  <meta name="description" content="Aaron Doucett is a Sr. Data Visualization Engineer at Planet Labs — building interactive maps, data stories, and geospatial tools.">
+  <meta name="author" content="Aaron Doucett">
 
-               <li>
-                  <a href="media.html">Media</a>
-               </li>
-               <li>
-                  <a href="resume.html">Resume</a>
-               </li>
-            </ul>
-            <div class="burger" aria-label="Toggle Navigation Menu">
-               <div></div>
-               <div></div>
-               <div></div>
-            </div>
-         </nav>
-      </header>
-      <main>
-         <section class="hero">
-            <!-- Interactive Map (Desktop) -->
-            <div id="map" class="map-container">
-               <!-- Map Embed Code Goes Here -->
-            </div>
-            <!-- Static Hero Image (Mobile) -->
-            <div class="mobile-hero"></div>
-            <!-- Text Overlay -->
-            <div class="text-overlay">
-               <h1>Welcome to my world</h1>
-            </div>
+  <meta property="og:title" content="Aaron Doucett — Data Visualization & Geospatial">
+  <meta property="og:description" content="Sr. Data Visualization Engineer at Planet Labs. Maps, data stories, and creative geospatial work.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://doucett.net/">
+  <link rel="canonical" href="https://doucett.net/">
 
-<div id="intro-text">
-    <h5>About Me</h5>
-    <p1>
-        Hi, I'm Aaron Doucett. Welcome to my portfolio! I'm a geospatial professional, photographer, and runner, passionate about mapping the world, capturing moments, and exploring new ways of seeing things. This site showcases my recent projects and creative work.
-    </p1>
-  <p2>
-<br> <br>    
- This site was built from scratch with HTML, css, js, and is hosted with GitHub Pages.
-    </p2>
-</div>
-           
-         </section>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.mapbox.com">
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 
-         <section class="featured-work">
+  <style>
+    .home-hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+      background: var(--color-bg-primary);
+    }
+    .home-hero__map {
+      width: 65%;
+      height: 100%;
+      position: relative;
+    }
+    .home-hero__map::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 120px; height: 100%;
+      background: linear-gradient(to right, transparent, var(--color-bg-primary));
+      z-index: 2;
+      pointer-events: none;
+    }
+    #map { width: 100%; height: 100%; }
+    .home-hero__content {
+      width: 35%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--space-3xl);
+      position: relative;
+      z-index: 2;
+    }
+    .home-hero__label {
+      font-family: var(--font-heading);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: var(--space-md);
+    }
+    .home-hero__title {
+      font-size: var(--text-hero);
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: var(--space-lg);
+      letter-spacing: -0.03em;
+    }
+    .home-hero__desc {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      margin-bottom: var(--space-xl);
+    }
+    .home-hero__actions {
+      display: flex;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
 
-            <h2>Featured Projects</h2>
- <div class="buttons">
-               <a href="geospatial.html" class="btn">Map Gallery</a>
-               <a href="photography.html" class="btn">Photography</a>
+    .capabilities {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--space-lg);
+      margin-top: var(--space-2xl);
+    }
+    .capability {
+      padding: var(--space-xl);
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      transition: border-color var(--transition-base), transform var(--transition-base);
+    }
+    .capability:hover {
+      border-color: var(--color-border-accent);
+      transform: translateY(-2px);
+    }
+    .capability__icon {
+      font-size: 1.8rem;
+      margin-bottom: var(--space-md);
+      display: block;
+    }
+    .capability__title {
+      font-size: var(--text-lg);
+      font-weight: 600;
+      margin-bottom: var(--space-xs);
+    }
+    .capability__desc {
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .home-hero {
+        flex-direction: column;
+        height: auto;
+        min-height: 80vh;
+      }
+      .home-hero__map { display: none; }
+      .home-hero__content {
+        width: 100%;
+        padding: calc(var(--header-height) + var(--space-3xl)) var(--space-xl) var(--space-3xl);
+        background: radial-gradient(ellipse at 30% 20%, rgba(230,126,34,0.06) 0%, transparent 60%),
+                    var(--color-bg-primary);
+      }
+      .home-hero__title { font-size: var(--text-4xl); }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="sr-only" style="position:absolute;top:-100px;left:0;background:var(--color-accent);color:#000;padding:0.5rem 1rem;z-index:9999;font-weight:600;" onfocus="this.style.top='0'" onblur="this.style.top='-100px'">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="site-nav" aria-label="Main Navigation">
+      <a href="index.html" class="site-logo">Doucett.net</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="geospatial.html">Projects</a></li>
+        <li><a href="photography.html">Photography</a></li>
+        <li><a href="media.html">Media</a></li>
+        <li><a href="resume.html">Resume</a></li>
+      </ul>
+      <button class="burger" aria-label="Toggle Navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section class="home-hero">
+      <div class="home-hero__map">
+        <div id="map"></div>
+      </div>
+      <div class="home-hero__content">
+        <span class="home-hero__label">Sr. Data Visualization Engineer — Planet Labs</span>
+        <h1 class="home-hero__title">Mapping the<br>world through<br>data &amp; design</h1>
+        <p class="home-hero__desc">Geospatial professional, photographer, and endurance athlete building interactive data stories and tools that help people see the planet differently.</p>
+        <div class="home-hero__actions">
+          <a href="geospatial.html" class="btn btn--primary">View Projects</a>
+          <a href="about.html" class="btn btn--outline">About Me</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--contour" id="what-i-do">
+      <div class="container">
+        <h2>What I Do</h2>
+        <div class="capabilities">
+          <div class="capability">
+            <span class="capability__icon" aria-hidden="true">&#9678;</span>
+            <h3 class="capability__title">Data Visualization</h3>
+            <p class="capability__desc">Transforming complex geospatial and analytical data into clear, compelling interactive visuals and dashboards.</p>
+          </div>
+          <div class="capability">
+            <span class="capability__icon" aria-hidden="true">&#9672;</span>
+            <h3 class="capability__title">Geospatial Technology</h3>
+            <p class="capability__desc">Building web maps, spatial analysis tools, and Earth observation applications with Mapbox, Leaflet, and Planet APIs.</p>
+          </div>
+          <div class="capability">
+            <span class="capability__icon" aria-hidden="true">&#9686;</span>
+            <h3 class="capability__title">Photography</h3>
+            <p class="capability__desc">Capturing landscapes, architecture, and moments — with work featured on Unsplash reaching millions of views.</p>
+          </div>
+          <div class="capability">
+            <span class="capability__icon" aria-hidden="true">&#9733;</span>
+            <h3 class="capability__title">Creative Storytelling</h3>
+            <p class="capability__desc">Combining cartography, design, and narrative to communicate ideas that inform and inspire across technical and non-technical audiences.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt" id="featured-projects">
+      <div class="container">
+        <h2>Featured Projects</h2>
+        <div class="gallery-grid">
+          <a href="/pages/geo/timeline/timeline2.html" target="_blank" rel="noopener noreferrer" class="card">
+            <div class="card__image">
+              <img src="images/uploads/timeline.jpg" alt="Google Timeline data visualization showing travel history" loading="lazy">
             </div>
-          <div class="gallery">
-    <div class="gallery-item">
-        <a href="/pages/geo/timeline/timeline2.html" target="_blank" title="Visualize Google Timeline data">
-            <img src="images/uploads/timeline.jpg" alt="Google Timeline Data Viz.">
-        </a>
+            <div class="card__body">
+              <span class="card__tag">Data Visualization</span>
+              <h3 class="card__title">Google Timeline Viz</h3>
+              <p class="card__desc">Interactive visualization of Google Location History data with time-based filtering and route replay.</p>
+            </div>
+          </a>
+          <a href="/pages/geo/runmap/" target="_blank" rel="noopener noreferrer" class="card">
+            <div class="card__image">
+              <img src="images/geo/runmap.jpg" alt="Map showing running routes across New England" loading="lazy">
+            </div>
+            <div class="card__body">
+              <span class="card__tag">Geospatial</span>
+              <h3 class="card__title">Running Routes Map</h3>
+              <p class="card__desc">Over 1,300 Strava runs visualized as an interactive map with route details and statistics.</p>
+            </div>
+          </a>
+          <a href="https://cambridgegis.maps.arcgis.com/apps/webappviewer/index.html?id=1d30c73456d246f48daf8489405c6629" target="_blank" rel="noopener noreferrer" class="card">
+            <div class="card__image">
+              <img src="images/geo/floodmapper.jpg" alt="City of Cambridge flood risk analysis map" loading="lazy">
+            </div>
+            <div class="card__body">
+              <span class="card__tag">Web Application</span>
+              <h3 class="card__title">Cambridge FloodViewer</h3>
+              <p class="card__desc">A flood risk analysis tool built for the City of Cambridge, MA using ArcGIS Web AppBuilder.</p>
+            </div>
+          </a>
+          <a href="https://adoucett.github.io/swipe/stl/" target="_blank" rel="noopener noreferrer" class="card">
+            <div class="card__image">
+              <img src="images/geo/swipe.jpg" alt="Before and after aerial imagery comparison of St. Louis" loading="lazy">
+            </div>
+            <div class="card__body">
+              <span class="card__tag">Earth Observation</span>
+              <h3 class="card__title">STL Historic Imagery</h3>
+              <p class="card__desc">Swipe-compare tool for exploring historical and modern aerial photography of St. Louis, MO.</p>
+            </div>
+          </a>
+        </div>
+        <div style="text-align:center; margin-top:var(--space-2xl);">
+          <a href="geospatial.html" class="btn btn--outline">View All Projects</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/adoucett/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/adoucett" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://unsplash.com/@adoucett" target="_blank" rel="noopener noreferrer">Unsplash</a>
+        <a href="https://www.strava.com/athletes/2721840" target="_blank" rel="noopener noreferrer">Strava</a>
+      </div>
+      <p class="site-footer__copy">&copy; <span id="copyright-year"></span> Aaron Doucett. All rights reserved.</p>
     </div>
-    <div class="gallery-item">
-        <a href="/pages/geo/runmap/" target="_blank" title="Explore interactive maps of Strava running routes.">
-            <img src="images/geo/runmap.jpg" alt="Strava Running Routes Viz">
-        </a>
-    </div>
-    <div class="gallery-item">
-        <a href="https://cambridgegis.maps.arcgis.com/apps/webappviewer/index.html?id=1d30c73456d246f48daf8489405c6629" target="_blank" title="View the City of Cambridge FloodViewer Tool for flood analysis.">
-            <img src="images/geo/floodmapper.jpg" alt="City of Cambridge FloodViewer Tool.">
-        </a>
-    </div>
-    <div class="gallery-item">
-        <a href="https://adoucett.github.io/swipe/stl/" target="_blank" title="Discover aerial photography showcasing geographical features.">
-            <img src="images/geo/swipe.jpg" alt="Aerial shots highlighting geographical features.">
-        </a>
-    </div>
-</div>
-         </section>
-      </main>
-      <footer>
-         <p>&copy; Aaron Doucett. All rights reserved.</p>
-      </footer>
-      <!-- Mapbox GL JS -->
-      <script src='https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js'></script>
-      <script src="js/script.js"></script>
-   </body>
+  </footer>
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/script.js" defer></script>
+</body>
 </html>
