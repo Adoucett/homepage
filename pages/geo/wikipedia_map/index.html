@@ -2,115 +2,103 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>WikiMappr App</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@600&display=swap"
-    />
+    <title>WikiMappr</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.19.1/mapbox-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.1.0/mapbox-gl-geocoder.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div id="map"></div>
+
     <div id="controls">
       <div id="basemap-toggle">
-        <label for="basemapSelect">🗺️ Basemap:</label>
-        <select id="basemapSelect">
+        <select id="basemapSelect" aria-label="Basemap style">
           <option value="mapbox://styles/mapbox/streets-v12">Streets</option>
-          <option value="mapbox://styles/mapbox/satellite-streets-v12">
-            Satellite
-          </option>
-          <option value="mapbox://styles/adoucett/cm6fvb62v005s01s50vq64sb6">
-            Minimo
-          </option>
-          <option value="mapbox://styles/adoucett/cjxkp8o1n05qm1cmwypaiilla">
-            Terrain
-          </option>
+          <option value="mapbox://styles/mapbox/satellite-streets-v12">Satellite</option>
+          <option value="mapbox://styles/adoucett/cm6fvb62v005s01s50vq64sb6">Minimo</option>
+          <option value="mapbox://styles/adoucett/cjxkp8o1n05qm1cmwypaiilla">Terrain</option>
           <option value="mapbox://styles/mapbox/dark-v11">Dark</option>
           <option value="mapbox://styles/mapbox/outdoors-v12">Outdoors</option>
         </select>
       </div>
       <div class="geocoder" id="geocoder"></div>
-      <button id="settings-btn">Settings</button>
-      <button id="locate-me">🌎 Locate Me</button>
+      <div id="control-buttons">
+        <button id="locate-me" aria-label="Find my location">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+          <span>Locate Me</span>
+        </button>
+        <button id="heatmap-toggle" aria-label="Toggle density heatmap">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" opacity="0.3"/><circle cx="12" cy="12" r="7" opacity="0.2"/><circle cx="12" cy="12" r="10" opacity="0.1"/><circle cx="12" cy="12" r="2"/></svg>
+          <span>Density</span>
+        </button>
+        <button id="settings-btn" aria-label="Settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+      </div>
     </div>
+
     <div id="info-panel">
+      <div id="panel-drag-handle"><div class="handle-bar"></div></div>
       <div class="info-header">
-        <h2>Information</h2>
-        <button id="close-panel">×</button>
+        <h2 id="panel-title">WikiMappr</h2>
+        <button id="close-panel" aria-label="Close panel">&times;</button>
       </div>
-      <div id="location-coords">Coordinates:</div>
-      <div id="reverse-geocode">Mapbox Reverse Geocode:</div>
-      <div id="admin-section">
-        <h3>Administrative Areas</h3>
-        <ul id="admin-list"></ul>
-      </div>
-      <div id="wikipedia-articles">
-        <h3>Nearby Wikipedia Articles</h3>
-        <div id="categorized-articles"></div>
-      </div>
-    </div>
-    <div id="settings-modal" class="modal">
-      <div class="modal-content">
-        <span class="close-modal">×</span>
-        <h2>Settings</h2>
-        <form id="settings-form">
-          <label for="resultsCount">Results Count:</label>
-          <input
-            type="number"
-            id="resultsCount"
-            name="resultsCount"
-            min="1"
-            max="100"
-            value="30"
-          />
-          <label for="searchRadius">Search Radius (meters):</label>
-          <input
-            type="number"
-            id="searchRadius"
-            name="searchRadius"
-            min="10"
-            max="10000"
-            value="10000"
-          />
-          <label for="mapStyle">Basemap Style:</label>
-          <select id="mapStyle" name="mapStyle">
-            <option value="mapbox://styles/mapbox/streets-v12">Streets</option>
-            <option value="mapbox://styles/mapbox/satellite-v9">
-              Satellite
-            </option>
-            <option value="mapbox://styles/mapbox/outdoors-v12">
-              Outdoors
-            </option>
-            <option value="mapbox://styles/mapbox/dark-v11">Dark</option>
-            <option value="mapbox://styles/mapbox/light-v11">Light</option>
-          </select>
-          <button type="submit">Save</button>
-        </form>
-      </div>
-    </div>
-    <div id="article-modal" class="modal">
-      <div id="modal-content">
-        <span id="close-modal">×</span>
-        <iframe id="wiki-iframe" src="" frameborder="0"></iframe>
-        <div id="modal-footer">
-          <a href="#" target="_blank" id="full-article-link"
-            >View Full Article on Wikipedia</a
-          >
+      <div id="panel-body">
+        <div id="location-info">
+          <div id="reverse-geocode"></div>
+          <div id="location-coords"></div>
+        </div>
+        <div id="admin-section">
+          <ul id="admin-list"></ul>
+        </div>
+        <div id="wikipedia-articles">
+          <div id="articles-header">
+            <h3>Nearby Articles</h3>
+            <span id="article-count"></span>
+          </div>
+          <div id="categorized-articles"></div>
         </div>
       </div>
     </div>
-    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js"></script>
-    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css"
-      type="text/css"
-    />
+
+    <div id="article-preview" class="modal-overlay">
+      <div id="preview-content">
+        <button id="close-preview" aria-label="Close preview">&times;</button>
+        <div id="preview-hero"></div>
+        <div id="preview-body">
+          <h2 id="preview-title"></h2>
+          <p id="preview-description"></p>
+          <div id="preview-extract"></div>
+          <a id="preview-link" href="#" target="_blank" rel="noopener noreferrer">Read on Wikipedia</a>
+        </div>
+        <div id="preview-loading">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="settings-overlay" class="modal-overlay">
+      <div id="settings-content">
+        <div class="settings-header">
+          <h3>Settings</h3>
+          <button id="close-settings" aria-label="Close settings">&times;</button>
+        </div>
+        <form id="settings-form">
+          <label for="resultsCount">Max results</label>
+          <input type="range" id="resultsCount" name="resultsCount" min="5" max="50" value="30" />
+          <output id="resultsCountVal">30</output>
+          <label for="searchRadius">Search radius</label>
+          <input type="range" id="searchRadius" name="searchRadius" min="500" max="10000" step="500" value="10000" />
+          <output id="searchRadiusVal">10 km</output>
+          <button type="submit">Apply</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.19.1/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.1.0/mapbox-gl-geocoder.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
     <script src="script.js"></script>
   </body>

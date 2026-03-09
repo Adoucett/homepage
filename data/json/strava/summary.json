@@ -1,0 +1,35 @@
+{
+  "total_activities": 2738,
+  "total_miles": 33825.0,
+  "date_range": {
+    "earliest": "2013-08-06T20:45:29",
+    "latest": "2026-03-06T22:55:30"
+  },
+  "activity_types": {
+    "Ride": 779,
+    "Run": 1407,
+    "Nordic Ski": 203,
+    "Rowing": 20,
+    "Ice Skate": 1,
+    "Kayaking": 7,
+    "Hike": 48,
+    "Swim": 61,
+    "Walk": 210,
+    "E-Bike Ride": 1,
+    "Stand Up Paddling": 1
+  },
+  "activity_miles": {
+    "Ride": 19757.7,
+    "Run": 11294.6,
+    "Nordic Ski": 1579.7,
+    "Rowing": 101.9,
+    "Ice Skate": 2.7,
+    "Kayaking": 49.8,
+    "Hike": 227.6,
+    "Swim": 220.1,
+    "Walk": 584.9,
+    "E-Bike Ride": 4.0,
+    "Stand Up Paddling": 2.0
+  },
+  "generated": "2026-03-08T14:11:50.664679"
+}

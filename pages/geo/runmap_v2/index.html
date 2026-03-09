@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expressions of Geometry</title>
+  <meta name="description" content="Where geospatial meets the urban fabric. A decade of motion rendered as line, shape, and pattern.">
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@200;300;400;600&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div id="map"></div>
+
+  <div id="title-block">
+    <h1>Expressions of Geometry</h1>
+    <p class="subtitle">where geospatial meets the urban fabric</p>
+  </div>
+
+  <div id="ambient-stats">
+    <div class="ambient-stat">
+      <span class="ambient-num" id="stat-miles">&mdash;</span>
+      <span class="ambient-label">miles</span>
+    </div>
+    <div class="ambient-stat">
+      <span class="ambient-num" id="stat-count">&mdash;</span>
+      <span class="ambient-label">routes</span>
+    </div>
+    <div class="ambient-stat ambient-stat--range">
+      <span class="ambient-num ambient-num--small" id="stat-range">&mdash;</span>
+    </div>
+  </div>
+
+  <div id="controls">
+    <div id="type-filters"></div>
+    <div id="mode-controls">
+      <button class="mode-btn active" data-mode="mapped" title="Dark basemap">Mapped</button>
+      <button class="mode-btn" data-mode="void" title="Pure geometry, no map">Void</button>
+      <button class="mode-btn" data-mode="temporal" title="Color by date">Temporal</button>
+      <button class="mode-btn" data-mode="gallery" title="Individual route prints">Gallery</button>
+    </div>
+  </div>
+
+  <div id="location-nav"></div>
+
+  <div id="location-nav"></div>
+
+  <div id="route-detail" class="panel hidden">
+    <button id="detail-close">&times;</button>
+    <div id="detail-content"></div>
+  </div>
+
+  <div id="gallery-overlay" class="hidden">
+    <div id="gallery-header">
+      <h2>Gallery</h2>
+      <button id="gallery-close">&times;</button>
+    </div>
+    <div id="gallery-grid"></div>
+  </div>
+
+  <div id="loading">
+    <div class="spinner"></div>
+    <span>Loading geometry&hellip;</span>
+  </div>
+
+  <div id="temporal-legend">
+    <span class="temporal-label" id="temporal-start"></span>
+    <div class="temporal-bar"></div>
+    <span class="temporal-label" id="temporal-end"></span>
+  </div>
+
+  <div id="nav-back">
+    <a href="/geospatial.html">&larr; Projects</a>
+  </div>
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

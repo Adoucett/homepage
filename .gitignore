@@ -15,3 +15,7 @@ images/photos/originals/
 
 # Mapbox style exports (reference only, not served)
 **/Good_Style-copy*/
+
+# Strava pipeline - inbox ZIPs and quality logs
+pages/geo/runmap_v2/prepare_data/inbox/*.zip
+data/json/strava/quality_report.txt

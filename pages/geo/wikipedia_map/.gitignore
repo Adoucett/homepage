@@ -1,0 +1,3 @@
+*.mbtiles
+*.geojson.ndjson
+*.sql.gz
