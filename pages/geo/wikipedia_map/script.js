@@ -1,5 +1,5 @@
 mapboxgl.accessToken =
-  "pk.eyJ1IjoicmVpbWFwIiwiYSI6ImNqbW1qcXJyYzBqcnkzbGxiM3hyZWF5dXcifQ.SytLYT49iiWPQjDwtOls6A";
+  "pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY20zZXZyN20zMGd3MzJycTBxYTFza29iYiJ9.ozrkMII8kTiKtHYTS54P2w";
 
 // ── Settings ────────────────────────────────────────────────
 const DEFAULTS = {

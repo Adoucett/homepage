@@ -11,15 +11,17 @@
   <meta property="og:description" content="Geospatial professional, data visualization engineer, photographer, and endurance athlete.">
   <meta property="og:type" content="profile">
   <meta property="og:url" content="https://doucett.net/about.html">
+  <meta property="og:image" content="https://doucett.net/images/aaron-doucett-profile.jpg">
   <link rel="canonical" href="https://doucett.net/about.html">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://api.mapbox.com">
   <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/about.css">
+  <!-- Mapbox GL temporarily removed while the "My Map" section is hidden. Re-add both the CSS (here) and JS (before about.js) to restore it. -->
+  <!-- <link href="https://api.mapbox.com/mapbox-gl-js/v3.19.1/mapbox-gl.css" rel="stylesheet"> -->
 </head>
 <body>
   <a href="#main-content" class="sr-only" style="position:absolute;top:-100px;left:0;background:var(--color-accent);color:#000;padding:0.5rem 1rem;z-index:9999;font-weight:600;" onfocus="this.style.top='0'" onblur="this.style.top='-100px'">Skip to content</a>
@@ -57,8 +59,8 @@
     <section class="section section--contour" id="introduction">
       <div class="container container--narrow">
         <h2>Introduction</h2>
-        <p>I'm Aaron Doucett, a geospatial professional and creative problem solver with a background in GIS, Earth observation, and data-driven storytelling. Over the past decade, I've worked on everything from climate research and urban planning to developing marketing strategies for cutting-edge geospatial technology.</p>
-        <p>I've built this site to share my work, passions, and the projects that keep me inspired. Thanks for visiting — take a look around, and feel free to connect.</p>
+        <p>I'm Aaron Doucett, a data visualization and geospatial engineer based in St. Louis. Over the past decade I've worked across GIS, Earth observation, and the web — from environmental and urban-planning work to building interactive maps and data tools.</p>
+        <p>This site is where I keep my maps, projects, and photography. Take a look around.</p>
       </div>
     </section>
 
@@ -68,8 +70,8 @@
         <div class="bio-grid">
           <div class="bio-text">
             <p>I grew up surrounded by the landscapes of Western Massachusetts, where I developed a love for exploring nature. After graduating from UMass Amherst with a degree in Earth Systems, I moved to the Greater Boston area, where I spent a decade building my career in geospatial technology and SaaS platforms.</p>
-            <p>Outside of work, I'm passionate about creativity and the outdoors. I've been playing jazz piano for years and enjoy photography. Endurance sports are a key part of my life — as an avid cyclist and runner, I love pushing my limits. These experiences have taught me resilience, discipline, and the power of setting big goals.</p>
-            <p>Now living in St. Louis, I'm exploring new horizons both professionally at Planet Labs and personally in the Midwest.</p>
+            <p>Outside of work, I've played jazz piano for years and shoot photography. Endurance sports are a big part of my life too — I'm an avid cyclist and runner.</p>
+            <p>After a decade in Boston, I moved to St. Louis, where I'm now based.</p>
           </div>
           <div class="bio-image">
             <img src="images/aaron-doucett-profile.jpg" alt="Aaron Doucett portrait">
@@ -107,13 +109,15 @@
             <div class="timeline__marker"></div>
             <div class="timeline__content">
               <h3>Planet Labs, St. Louis</h3>
-              <p>Relocated to St. Louis to join Planet Labs as a Sr. Data Visualization Engineer, building tools that bring satellite imagery and geospatial data to life.</p>
+              <p>Joined Planet Labs in St. Louis as a Sr. Data Visualization Engineer, building tools that bring satellite imagery and geospatial data to life.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- "My Map" section hidden for now pending a redesign. To restore: uncomment this block,
+         the Mapbox GL CSS in <head>, and the Mapbox GL JS before about.js.
     <section class="section section--alt" id="map-section">
       <div class="container">
         <h2>My Map</h2>
@@ -121,6 +125,7 @@
         <div id="about-map" class="about-map"></div>
       </div>
     </section>
+    -->
 
     <section class="section section--contour" id="contact">
       <div class="container container--narrow" style="text-align:center;">
@@ -147,7 +152,7 @@
     </div>
   </footer>
 
-  <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js" defer></script>
+  <!-- <script src="https://api.mapbox.com/mapbox-gl-js/v3.19.1/mapbox-gl.js" defer></script> -->
   <script src="js/main.js" defer></script>
   <script src="js/about.js" defer></script>
 </body>
