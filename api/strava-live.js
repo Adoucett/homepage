@@ -15,7 +15,7 @@ const EMPTY = { type: 'FeatureCollection', features: [] };
 
 module.exports = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=3600');
+  res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
   try {
     const { list } = await import('@vercel/blob');
     const { blobs } = await list({ prefix: LIVE_PATH });
