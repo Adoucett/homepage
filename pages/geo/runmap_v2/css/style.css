@@ -40,8 +40,10 @@ body {
   z-index: 1;
 }
 
-.mapboxgl-ctrl-attrib { opacity: 0.3; }
-.mapboxgl-ctrl-attrib:hover { opacity: 0.8; }
+.mapboxgl-ctrl-attrib,
+.maplibregl-ctrl-attrib { opacity: 0.3; }
+.mapboxgl-ctrl-attrib:hover,
+.maplibregl-ctrl-attrib:hover { opacity: 0.8; }
 
 /* ---- Title block ---- */
 #title-block {
@@ -400,6 +402,73 @@ body {
 }
 
 .gallery-card:hover .gallery-label { opacity: 1; }
+
+/* ---- Poster overlay ---- */
+#poster-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: var(--bg-void);
+  display: flex;
+  flex-direction: column;
+  transition: opacity 300ms ease;
+}
+
+#poster-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#poster-header {
+  position: sticky;
+  top: 0;
+  z-index: 51;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 28px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+#poster-header h2 {
+  font-family: var(--font-heading);
+  font-weight: 200;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  opacity: 0.8;
+}
+
+.poster-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#poster-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+}
+#poster-close:hover { color: var(--text-primary); }
+
+#poster-stage {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+}
+
+#poster-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 
 /* ---- Loading ---- */
 #loading {

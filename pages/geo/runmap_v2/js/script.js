@@ -5,22 +5,32 @@
    =========================================================== */
 
 const CFG = {
-  token: 'pk.eyJ1IjoiYWRvdWNldHQiLCJhIjoiY2lvZDFsc2lwMDRnd3Zha2pneWpxcHh6biJ9.sbWgw2zPGyScsp-r4CYQnA',
-  darkStyle: 'mapbox://styles/mapbox/dark-v11',
+  // Free, no-token dark vector basemap (CARTO). MapLibre GL — no Mapbox account.
+  darkStyle: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
   voidStyle: {
     version: 8, name: 'void', sources: {},
     layers: [{ id: 'background', type: 'background', paint: { 'background-color': '#000000' } }]
   },
   routesUrl: '/data/json/strava/routes.geojson',
   summaryUrl: '/data/json/strava/summary.json',
+  liveUrl: '/api/strava-live',
 
   typeColors: {
-    'Run':        '#fc5200',
-    'Ride':       '#3b82f6',
-    'Walk':       '#a78bfa',
-    'Nordic Ski': '#38bdf8',
-    'Swim':       '#06b6d4',
-    'Hike':       '#22c55e',
+    'Run':                '#fc5200',
+    'Trail Run':          '#ff7a33',
+    'Ride':               '#3b82f6',
+    'Gravel Ride':        '#2dd4bf',
+    'Mountain Bike Ride': '#0ea5e9',
+    'E-Bike Ride':        '#6366f1',
+    'Walk':               '#a78bfa',
+    'Hike':               '#22c55e',
+    'Nordic Ski':         '#38bdf8',
+    'Alpine Ski':         '#818cf8',
+    'Swim':               '#06b6d4',
+    'Rowing':             '#eab308',
+    'Kayaking':           '#14b8a6',
+    'Stand Up Paddling':  '#facc15',
+    'Ice Skate':          '#e879f9',
   },
   defaultColor: 'rgba(255, 180, 80, 0.3)',
   highlight: '#ffffff',
@@ -45,17 +55,15 @@ const defaultType = 'Run';
    Init
    ----------------------------------------------------------- */
 
-mapboxgl.accessToken = CFG.token;
-
 document.addEventListener('DOMContentLoaded', async () => {
   const loc = CFG.locations[CFG.defaultLocation];
-  map = new mapboxgl.Map({
+  map = new maplibregl.Map({
     container: 'map', style: CFG.darkStyle,
     center: loc.center, zoom: loc.zoom,
     attributionControl: false,
   });
-  map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-left');
-  map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right');
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-left');
+  map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
 
   const [rRes, sRes] = await Promise.all([fetch(CFG.routesUrl), fetch(CFG.summaryUrl)]);
   if (!rRes.ok) {
@@ -65,6 +73,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   routesGJ = await rRes.json();
   summary = sRes.ok ? await sRes.json() : null;
+
+  // Merge recent activities from the live Strava delta (auto-updated nightly).
+  // Fails silently off-Vercel / before the first sync — baseline still renders.
+  const live = await loadLive();
+  const liveAdded = mergeLive(live);
+  if (liveAdded) console.info(`[runmap] merged ${liveAdded} live activities`);
 
   filterSmallTypes();
   computeEpochRange();
@@ -80,11 +94,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (map.loaded()) go(); else map.on('load', go);
   bindModeButtons();
   bindGallery();
+  bindPoster();
   bindDetail();
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       if (selectedId) deselectRoute();
-      if (currentMode === 'gallery') setMode('mapped');
+      if (currentMode === 'gallery' || currentMode === 'poster') setMode('mapped');
     }
   });
 });
@@ -116,14 +131,54 @@ function computeEpochRange() {
 }
 
 /* -----------------------------------------------------------
+   Live delta -- recent activities synced nightly from Strava
+   ----------------------------------------------------------- */
+
+async function loadLive() {
+  try {
+    const r = await fetch(CFG.liveUrl, { cache: 'no-store' });
+    if (!r.ok) return null;
+    return await r.json();
+  } catch (e) {
+    return null;
+  }
+}
+
+function mergeLive(live) {
+  if (!live || !Array.isArray(live.features) || !live.features.length) return 0;
+  const have = new Set(routesGJ.features.map(f => String(f.properties.id)));
+  let added = 0;
+  for (const f of live.features) {
+    if (!f || !f.geometry || !f.properties) continue;
+    const id = String(f.properties.id);
+    if (have.has(id)) continue;
+    routesGJ.features.push(f);
+    have.add(id);
+    added++;
+  }
+  return added;
+}
+
+/* -----------------------------------------------------------
    Ambient stats
    ----------------------------------------------------------- */
 
 function populateAmbient() {
   updateAmbientForFilter();
-  const dr = summary ? summary.date_range || {} : {};
-  if (dr.earliest && dr.latest) {
-    const y0 = dr.earliest.slice(0, 4), y1 = dr.latest.slice(0, 4);
+  // Derive the range from the merged features so live updates are reflected.
+  let earliest = null, latest = null;
+  for (const f of routesGJ.features) {
+    const d = f.properties.date;
+    if (!d) continue;
+    if (!earliest || d < earliest) earliest = d;
+    if (!latest || d > latest) latest = d;
+  }
+  if (!earliest && summary && summary.date_range) {
+    earliest = summary.date_range.earliest;
+    latest = summary.date_range.latest;
+  }
+  if (earliest && latest) {
+    const y0 = earliest.slice(0, 4), y1 = latest.slice(0, 4);
     const el = document.getElementById('stat-range');
     if (el) el.textContent = y0 === y1 ? y0 : y0 + ' \u2013 ' + y1;
   }
@@ -193,7 +248,7 @@ function updateSportBtnState() {
 function flyToTypeCenter(type) {
   const feats = routesGJ.features.filter(f => f.properties.activity_type === type);
   if (!feats.length) return;
-  const bounds = new mapboxgl.LngLatBounds();
+  const bounds = new maplibregl.LngLatBounds();
   for (const f of feats) {
     for (const c of f.geometry.coordinates) bounds.extend(c);
   }
@@ -353,7 +408,7 @@ function deselectRoute() {
 function flyToFeature(feat) {
   const c = feat.geometry.coordinates;
   if (!c || c.length < 2) return;
-  const b = c.reduce((bounds, coord) => bounds.extend(coord), new mapboxgl.LngLatBounds(c[0], c[0]));
+  const b = c.reduce((bounds, coord) => bounds.extend(coord), new maplibregl.LngLatBounds(c[0], c[0]));
   map.fitBounds(b, { padding: 80, maxZoom: 15, duration: 800 });
 }
 
@@ -411,6 +466,9 @@ function setMode(mode) {
 
   if (mode === 'gallery') { enterGallery(); return; }
   if (prev === 'gallery') exitGallery();
+
+  if (mode === 'poster') { enterPoster(); return; }
+  if (prev === 'poster') exitPoster();
 
   if (mode === 'temporal') {
     enterTemporal();
@@ -672,4 +730,99 @@ function drawRoute(cvs, coords, color) {
   }
   ctx.stroke();
   ctx.globalAlpha = 1;
+}
+
+/* -----------------------------------------------------------
+   Poster -- every route as one composition ("motion fingerprint")
+   Each active route is centered on its own centroid and overlaid with
+   additive blending, so a decade-plus of movement collapses into a single
+   radial bloom. Downloadable as a print.
+   ----------------------------------------------------------- */
+
+function bindPoster() {
+  const close = document.getElementById('poster-close');
+  const dl = document.getElementById('poster-download');
+  if (close) close.addEventListener('click', () => setMode('mapped'));
+  if (dl) dl.addEventListener('click', downloadPoster);
+  window.addEventListener('resize', () => { if (currentMode === 'poster') renderPoster(); });
+}
+
+function enterPoster() {
+  const overlay = document.getElementById('poster-overlay');
+  if (!overlay) return;
+  overlay.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => requestAnimationFrame(renderPoster));
+}
+
+function exitPoster() {
+  const overlay = document.getElementById('poster-overlay');
+  if (overlay) overlay.classList.add('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderPoster() {
+  const cvs = document.getElementById('poster-canvas');
+  const stage = document.getElementById('poster-stage');
+  if (!cvs || !stage) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const W = stage.clientWidth, H = stage.clientHeight;
+  if (W < 2 || H < 2) return;
+  cvs.width = Math.round(W * dpr);
+  cvs.height = Math.round(H * dpr);
+  cvs.style.width = W + 'px';
+  cvs.style.height = H + 'px';
+  const ctx = cvs.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, W, H);
+
+  const feats = routesGJ.features.filter(f => activeTypes.has(f.properties.activity_type));
+  if (!feats.length) return;
+
+  const routes = [];
+  const spans = [];
+  for (const f of feats) {
+    const c = f.geometry.coordinates;
+    if (!c || c.length < 2) continue;
+    let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    for (const p of c) { x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); }
+    const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+    const latf = Math.cos(cy * Math.PI / 180) || 1;
+    const span = Math.max((x1 - x0) * latf, y1 - y0);
+    routes.push({ c, cx, cy, latf, type: f.properties.activity_type });
+    if (span > 0) spans.push(span);
+  }
+  if (!routes.length) return;
+
+  spans.sort((a, b) => a - b);
+  const ref = spans[Math.floor(spans.length * 0.92)] || spans[spans.length - 1] || 0.05;
+  const scale = (Math.min(W, H) * 0.42) / (ref / 2);
+
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.globalCompositeOperation = 'lighter';
+  for (const r of routes) {
+    ctx.strokeStyle = CFG.typeColors[r.type] || 'rgba(255, 190, 100, 0.6)';
+    ctx.globalAlpha = 0.09;
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    for (let i = 0; i < r.c.length; i++) {
+      const px = W / 2 + (r.c[i][0] - r.cx) * r.latf * scale;
+      const py = H / 2 - (r.c[i][1] - r.cy) * scale;
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+  }
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.globalAlpha = 1;
+}
+
+function downloadPoster() {
+  const cvs = document.getElementById('poster-canvas');
+  if (!cvs) return;
+  const a = document.createElement('a');
+  a.download = 'motion-fingerprint.png';
+  a.href = cvs.toDataURL('image/png');
+  a.click();
 }

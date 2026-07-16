@@ -6,7 +6,7 @@
   <title>Expressions of Geometry</title>
   <meta name="description" content="Where geospatial meets the urban fabric. A decade of motion rendered as line, shape, and pattern.">
   <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@200;300;400;600&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
-  <link href="https://api.mapbox.com/mapbox-gl-js/v3.19.1/mapbox-gl.css" rel="stylesheet">
+  <link href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -38,11 +38,10 @@
       <button class="mode-btn active" data-mode="mapped" title="Dark basemap">Mapped</button>
       <button class="mode-btn" data-mode="void" title="Pure geometry, no map">Void</button>
       <button class="mode-btn" data-mode="temporal" title="Color by date">Temporal</button>
+      <button class="mode-btn" data-mode="poster" title="Every route as one print">Poster</button>
       <button class="mode-btn" data-mode="gallery" title="Individual route prints">Gallery</button>
     </div>
   </div>
-
-  <div id="location-nav"></div>
 
   <div id="location-nav"></div>
 
@@ -57,6 +56,17 @@
       <button id="gallery-close">&times;</button>
     </div>
     <div id="gallery-grid"></div>
+  </div>
+
+  <div id="poster-overlay" class="hidden">
+    <div id="poster-header">
+      <h2>Motion Fingerprint</h2>
+      <div class="poster-actions">
+        <button id="poster-download" class="loc-btn">Download PNG</button>
+        <button id="poster-close">&times;</button>
+      </div>
+    </div>
+    <div id="poster-stage"><canvas id="poster-canvas"></canvas></div>
   </div>
 
   <div id="loading">
@@ -74,7 +84,7 @@
     <a href="/geospatial.html">&larr; Projects</a>
   </div>
 
-  <script src="https://api.mapbox.com/mapbox-gl-js/v3.19.1/mapbox-gl.js"></script>
+  <script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>
