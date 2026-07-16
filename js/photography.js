@@ -43,12 +43,25 @@
   function normalize(raw, curation) {
     var meta = curation.photos || {};
     var order = curation.featuredOrder || [];
+    var subjects = curation.subjects || [];
     var orderSet = {};
     order.forEach(function (name, i) { orderSet[name] = i; });
+
+    var subjectRank = {};
+    subjects.forEach(function (s, i) { subjectRank[s] = i; });
+
+    function primarySubject(tags) {
+      var t = tags || [];
+      for (var i = 0; i < t.length; i++) {
+        if (t[i] in subjectRank) return t[i];
+      }
+      return t[0] || 'Other';
+    }
 
     var enriched = raw.map(function (p) {
       var name = filename(p.full);
       var c = meta[name] || {};
+      var subject = primarySubject(c.tags);
       return {
         thumbnail: p.thumbnail,
         full: p.full,
@@ -57,10 +70,13 @@
         description: c.description || '',
         location: c.location || '',
         year: c.year || '',
+        hidden: Boolean(c.hidden),
+        subject: subject,
+        subjectRank: subject in subjectRank ? subjectRank[subject] : 999,
         featured: Boolean(c.featured) || name in orderSet,
         rank: name in orderSet ? orderSet[name] : 9999
       };
-    });
+    }).filter(function (p) { return !p.hidden; });
 
     var selected = enriched
       .filter(function (p) { return p.featured; })
@@ -69,7 +85,12 @@
     var selectedSet = {};
     selected.forEach(function (p) { selectedSet[p.full] = true; });
 
-    var archive = enriched.filter(function (p) { return !selectedSet[p.full]; });
+    var archive = enriched
+      .filter(function (p) { return !selectedSet[p.full]; })
+      .sort(function (a, b) {
+        if (a.subjectRank !== b.subjectRank) return a.subjectRank - b.subjectRank;
+        return (a.title || '').localeCompare(b.title || '');
+      });
 
     return { selected: selected, archive: archive };
   }
@@ -142,7 +163,16 @@
     if (els.archiveGrid && state.archive.length) {
       els.archiveGrid.innerHTML = '';
       stagger = 0;
+      var currentSubject = null;
       state.archive.forEach(function (photo) {
+        if (photo.subject !== currentSubject) {
+          currentSubject = photo.subject;
+          var heading = document.createElement('h3');
+          heading.className = 'photo-archive__subject';
+          heading.textContent = photo.subject;
+          els.archiveGrid.appendChild(heading);
+          stagger = 0;
+        }
         var idx = state.gallery.length;
         state.gallery.push(photo);
         els.archiveGrid.appendChild(photoButton(photo, idx, stagger++));

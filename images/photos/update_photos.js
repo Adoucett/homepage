@@ -8,8 +8,18 @@
  *   thumbnails/  — 1200px max dimension, quality 80, progressive JPEG (retina grid)
  *   photos.json  — manifest consumed by photography.js
  *
+ * Also keeps curation.json in sync: any new photo gets a blank stub
+ * ({ "title": "", "tags": [] }) appended so you only fill in a title and
+ * tags instead of hand-writing JSON. Existing entries are never touched.
+ *
+ * Images are auto-oriented from EXIF (no more sideways verticals) and EXIF is
+ * stripped from the web copies (smaller files, no embedded GPS/camera data).
+ *
  * Skips images whose output already exists and is newer than the source.
  * Removes orphaned outputs that no longer have a matching original.
+ *
+ * To hide a weak shot without deleting the file, set "hidden": true on its
+ * entry in curation.json. To feature one, add its filename to featuredOrder.
  *
  * Usage:
  *   node update_photos.js            (incremental — skip unchanged)
@@ -25,6 +35,7 @@ const ORIGINALS_DIR = path.join(ROOT, 'originals');
 const FULL_DIR = path.join(ROOT, 'full');
 const THUMB_DIR = path.join(ROOT, 'thumbnails');
 const JSON_PATH = path.join(ROOT, 'photos.json');
+const CURATION_PATH = path.join(ROOT, 'curation.json');
 
 const FULL_SIZE = 3200;
 const FULL_QUALITY = 85;
@@ -82,6 +93,7 @@ async function processImage(file) {
     results.fullSkipped = true;
   } else {
     await sharp(srcPath)
+      .rotate()
       .resize({
         width: FULL_SIZE,
         height: FULL_SIZE,
@@ -96,6 +108,7 @@ async function processImage(file) {
     results.thumbSkipped = true;
   } else {
     await sharp(srcPath)
+      .rotate()
       .resize({
         width: THUMB_SIZE,
         height: THUMB_SIZE,
@@ -130,6 +143,39 @@ function writeManifest(files) {
   }));
 
   fs.writeFileSync(JSON_PATH, JSON.stringify({ photos }, null, 2), 'utf8');
+}
+
+/**
+ * Non-destructively add a blank curation stub for any new photo.
+ * Returns the list of filenames that still need a title.
+ */
+function syncCuration(files) {
+  let curation;
+  try {
+    curation = JSON.parse(fs.readFileSync(CURATION_PATH, 'utf8'));
+  } catch (err) {
+    curation = { featuredOrder: [], subjects: [], photos: {} };
+  }
+  if (!curation.photos) curation.photos = {};
+
+  let added = 0;
+  for (const file of files) {
+    if (!(file in curation.photos)) {
+      curation.photos[file] = { title: '', tags: [] };
+      added++;
+    }
+  }
+
+  if (added) {
+    fs.writeFileSync(CURATION_PATH, JSON.stringify(curation, null, 2) + '\n', 'utf8');
+  }
+
+  const needsTitle = files.filter(f => {
+    const c = curation.photos[f] || {};
+    return !c.hidden && !c.title;
+  });
+
+  return { added, needsTitle };
 }
 
 async function main() {
@@ -173,6 +219,7 @@ async function main() {
   const totalOrphans = orphansFull + orphansThumb;
 
   writeManifest(originals);
+  const curationSync = syncCuration(originals);
 
   const fullSize = dirSize(FULL_DIR);
   const thumbSize = dirSize(THUMB_DIR);
@@ -188,7 +235,16 @@ async function main() {
   console.log(`  Full:       ${formatBytes(fullSize)} (3200px, q${FULL_QUALITY})`);
   console.log(`  Thumbnails: ${formatBytes(thumbSize)} (1200px, q${THUMB_QUALITY})`);
   console.log(`  Manifest:   photos.json (${originals.length} entries)`);
+  if (curationSync.added) {
+    console.log(`  Curation:   ${curationSync.added} new stub(s) added to curation.json`);
+  }
   console.log('');
+
+  if (curationSync.needsTitle.length) {
+    console.log('  ⚠ Needs a title/tags in curation.json (otherwise shows untitled):');
+    curationSync.needsTitle.forEach(f => console.log(`      ${f}`));
+    console.log('');
+  }
 }
 
 main().catch(err => {
