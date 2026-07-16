@@ -19,3 +19,6 @@ images/photos/originals/
 # Strava pipeline - inbox ZIPs and quality logs
 pages/geo/runmap_v2/prepare_data/inbox/*.zip
 data/json/strava/quality_report.txt
+# Vercel local project metadata
+.vercel
+.env*
