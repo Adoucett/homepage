@@ -1,0 +1,101 @@
+{
+  "raw_points": 146297,
+  "clean_points": 105872,
+  "days_tracked": 2681,
+  "approx_miles": 80719.0,
+  "approx_km": 129905.0,
+  "year_range": [
+    2013,
+    2024
+  ],
+  "points_per_year": {
+    "2013": 234,
+    "2014": 22,
+    "2015": 9694,
+    "2016": 6359,
+    "2017": 4228,
+    "2018": 12867,
+    "2019": 14766,
+    "2020": 5949,
+    "2021": 11366,
+    "2022": 15228,
+    "2023": 18360,
+    "2024": 6799
+  },
+  "home_bases": {
+    "2013": {
+      "label": "Amherst, MA",
+      "hours": 138.3
+    },
+    "2015": {
+      "label": "Somerville, MA",
+      "hours": 3482.0
+    },
+    "2016": {
+      "label": "Somerville, MA",
+      "hours": 2928.8
+    },
+    "2017": {
+      "label": "Somerville, MA",
+      "hours": 2998.5
+    },
+    "2018": {
+      "label": "Somerville, MA",
+      "hours": 2281.0
+    },
+    "2019": {
+      "label": "Somerville, MA",
+      "hours": 2494.9
+    },
+    "2020": {
+      "label": "Somerville, MA",
+      "hours": 4687.0
+    },
+    "2021": {
+      "label": "Somerville, MA",
+      "hours": 4767.1
+    },
+    "2022": {
+      "label": "Somerville, MA",
+      "hours": 6184.7
+    },
+    "2023": {
+      "label": "Somerville, MA",
+      "hours": 3043.5
+    },
+    "2024": {
+      "label": "St. Louis, MO",
+      "hours": 2623.9
+    }
+  },
+  "places": 951,
+  "trips": 127,
+  "longest_trip": {
+    "from": [
+      -112.03106,
+      33.43821
+    ],
+    "to": [
+      -71.01589,
+      42.35901
+    ],
+    "date": "2019-10-05",
+    "year": 2019,
+    "km": 3694.2,
+    "mode": "air",
+    "from_label": null,
+    "to_label": "Boston, MA"
+  },
+  "bbox": [
+    -115.48389,
+    26.48625,
+    -64.70358,
+    45.31005
+  ],
+  "extent": {
+    "north": 45.31005,
+    "south": 26.48625,
+    "east": -64.70358,
+    "west": -115.48389
+  }
+}

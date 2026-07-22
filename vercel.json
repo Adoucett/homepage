@@ -4,7 +4,11 @@
   "trailingSlash": true,
   "redirects": [
     { "source": "/pages/geo/runmap", "destination": "/pages/geo/runmap_v2/", "permanent": true },
-    { "source": "/pages/geo/runmap/", "destination": "/pages/geo/runmap_v2/", "permanent": true }
+    { "source": "/pages/geo/runmap/", "destination": "/pages/geo/runmap_v2/", "permanent": true },
+    { "source": "/pages/geo/timeline/timeline2.html", "destination": "/pages/geo/timeline_v3/", "permanent": true },
+    { "source": "/pages/geo/timeline/timeline.html", "destination": "/pages/geo/timeline_v3/", "permanent": true },
+    { "source": "/pages/geo/timeline", "destination": "/pages/geo/timeline_v3/", "permanent": true },
+    { "source": "/pages/geo/timeline/", "destination": "/pages/geo/timeline_v3/", "permanent": true }
   ],
   "crons": [
     { "path": "/api/cron/strava", "schedule": "0 6 * * *" }
@@ -23,6 +27,12 @@
       "source": "/data/json/strava/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800" }
+      ]
+    },
+    {
+      "source": "/data/json/timeline/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400, s-maxage=604800, stale-while-revalidate=2592000" }
       ]
     }
   ]

@@ -1,0 +1,114 @@
+{
+  "chapters": [
+    {
+      "id": "intro",
+      "title": "A Decade in Motion",
+      "caption": "Every place I slept, worked, ran, drove, and flew for 12 years — 146,297 GPS points, cleaned and rendered.",
+      "camera": {
+        "center": [
+          -92.0,
+          40.0
+        ],
+        "zoom": 3.1,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "layer": "heatmap",
+      "globe": true,
+      "stats": [
+        {
+          "num": "80,719",
+          "label": "miles"
+        },
+        {
+          "num": "2,681",
+          "label": "days tracked"
+        },
+        {
+          "num": "951",
+          "label": "places"
+        }
+      ]
+    },
+    {
+      "id": "amherst",
+      "title": "Where it began — Amherst",
+      "caption": "UMass Amherst. Earth Systems, GIS, and the first tracks in the dataset.",
+      "camera": {
+        "center": [
+          -72.71285,
+          42.30151
+        ],
+        "zoom": 11.5,
+        "pitch": 45,
+        "bearing": -20
+      },
+      "layer": "temporal",
+      "globe": false
+    },
+    {
+      "id": "boston",
+      "title": "A decade in Boston",
+      "caption": "Consulting to startups. Years of daily movement etched across the city.",
+      "camera": {
+        "center": [
+          -71.07969,
+          42.36434
+        ],
+        "zoom": 11.2,
+        "pitch": 50,
+        "bearing": 15
+      },
+      "layer": "heatmap",
+      "globe": false
+    },
+    {
+      "id": "travels",
+      "title": "Everywhere else",
+      "caption": "Flights and road trips — the long jumps between the places I called home.",
+      "camera": {
+        "center": [
+          -92.0,
+          39.0
+        ],
+        "zoom": 3.3,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "layer": "trips",
+      "globe": true
+    },
+    {
+      "id": "stl",
+      "title": "St. Louis",
+      "caption": "Planet Labs — Sr. Data Visualization Engineer. A new grid to trace.",
+      "camera": {
+        "center": [
+          -90.25798,
+          38.62615
+        ],
+        "zoom": 11.2,
+        "pitch": 50,
+        "bearing": -10
+      },
+      "layer": "temporal",
+      "globe": false
+    },
+    {
+      "id": "finale",
+      "title": "The whole pattern",
+      "caption": "Eleven years of a life, drawn as one continuous line.",
+      "camera": {
+        "center": [
+          -85.0,
+          40.5
+        ],
+        "zoom": 4.2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "layer": "temporal",
+      "globe": true
+    }
+  ]
+}

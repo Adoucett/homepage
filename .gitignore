@@ -19,6 +19,9 @@ images/photos/originals/
 # Strava pipeline - inbox ZIPs and quality logs
 pages/geo/runmap_v2/prepare_data/inbox/*.zip
 data/json/strava/quality_report.txt
+
+# Timeline raw export — keep locally, never commit (artifacts are rebuilt via build.py)
+pages/geo/timeline_v3/prepare_data/source/
 # Vercel local project metadata
 .vercel
 .env*

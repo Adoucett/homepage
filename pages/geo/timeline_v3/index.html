@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pattern of Life — Aaron Doucett</title>
+  <meta name="description" content="A decade of movement rendered as data art — 146,000 GPS points across eleven years, cleaned and told as an interactive map story.">
+
+  <meta property="og:title" content="Pattern of Life — A Decade in Motion">
+  <meta property="og:description" content="Eleven years of movement (Amherst → Boston → St. Louis), rendered as an interactive data story.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://doucett.net/pages/geo/timeline_v3/">
+
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@200;300;400;600&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.1/mapbox-gl.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div id="map"></div>
+  <div id="vignette"></div>
+
+  <!-- Title -->
+  <div id="title-block">
+    <h1>Pattern of Life</h1>
+    <p class="subtitle">a decade in motion</p>
+  </div>
+
+  <!-- Back to projects -->
+  <div id="nav-back"><a href="/geospatial.html">&larr; Projects</a></div>
+
+  <!-- Ambient stats (bottom-left) -->
+  <div id="ambient-stats">
+    <div class="ambient-stat">
+      <span class="ambient-num" id="stat-miles">&mdash;</span>
+      <span class="ambient-label">miles traced</span>
+    </div>
+    <div class="ambient-stat">
+      <span class="ambient-num" id="stat-days">&mdash;</span>
+      <span class="ambient-label">days tracked</span>
+    </div>
+    <div class="ambient-stat">
+      <span class="ambient-num" id="stat-places">&mdash;</span>
+      <span class="ambient-label">places</span>
+    </div>
+    <div class="ambient-stat ambient-stat--range">
+      <span class="ambient-num ambient-num--small" id="stat-range">&mdash;</span>
+    </div>
+  </div>
+
+  <!-- Mode controls (bottom-right) -->
+  <div id="controls">
+    <div id="mode-controls">
+      <button class="mode-btn" data-mode="story" title="The narrative">Story</button>
+      <button class="mode-btn active" data-mode="heatmap" title="Density of life">Heatmap</button>
+      <button class="mode-btn" data-mode="temporal" title="Colored by year">Temporal</button>
+      <button class="mode-btn" data-mode="playback" title="Fly through time">Playback</button>
+      <button class="mode-btn" data-mode="places" title="Where I dwelled">Places</button>
+      <button class="mode-btn" data-mode="trips" title="Flights & road trips">Trips</button>
+      <button class="mode-btn" data-mode="poster" title="The whole decade as one print">Poster</button>
+    </div>
+  </div>
+
+  <!-- Temporal legend -->
+  <div id="temporal-legend">
+    <span class="temporal-label" id="temporal-start"></span>
+    <div class="temporal-bar"></div>
+    <span class="temporal-label" id="temporal-end"></span>
+  </div>
+
+  <!-- Playback control bar -->
+  <div id="playback-bar" class="hidden">
+    <button id="pb-play" class="pb-btn" aria-label="Play">&#9654;</button>
+    <div id="pb-readout">
+      <span id="pb-date">&mdash;</span>
+      <span id="pb-place"></span>
+    </div>
+    <input id="pb-scrub" type="range" min="0" max="1000" value="0">
+    <div id="pb-speeds">
+      <button class="pb-speed" data-mult="120">1&times;</button>
+      <button class="pb-speed active" data-mult="600">5&times;</button>
+      <button class="pb-speed" data-mult="2400">20&times;</button>
+    </div>
+  </div>
+
+  <!-- Story narrative rail -->
+  <div id="story" class="hidden">
+    <div id="story-progress"><div id="story-progress-fill"></div></div>
+    <div id="story-scroll"></div>
+    <div id="story-tools">
+      <button id="story-play" class="loc-btn">&#9654; Play film</button>
+      <button id="story-exit" class="loc-btn">Explore &rarr;</button>
+    </div>
+  </div>
+
+  <!-- Cinematic caption (auto-tour) -->
+  <div id="cinema" class="hidden">
+    <div id="cinema-inner">
+      <h2 id="cinema-title"></h2>
+      <p id="cinema-caption"></p>
+    </div>
+    <button id="cinema-skip" class="loc-btn">Skip &times;</button>
+  </div>
+
+  <!-- Place detail -->
+  <div id="place-detail" class="panel hidden">
+    <button id="place-close">&times;</button>
+    <div id="place-content"></div>
+  </div>
+
+  <!-- Poster overlay -->
+  <div id="poster-overlay" class="hidden">
+    <div id="poster-header">
+      <h2>A Decade, One Line</h2>
+      <div class="poster-actions">
+        <button id="poster-download" class="loc-btn">Download PNG</button>
+        <button id="poster-close">&times;</button>
+      </div>
+    </div>
+    <div id="poster-stage"><canvas id="poster-canvas"></canvas></div>
+  </div>
+
+  <!-- Loading -->
+  <div id="loading">
+    <div class="spinner"></div>
+    <span>Cleaning a decade of GPS&hellip;</span>
+  </div>
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.1/mapbox-gl.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
